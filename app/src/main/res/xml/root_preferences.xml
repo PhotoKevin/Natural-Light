@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/design_default_color_background">
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Compass Appearance">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_show_sun_rise_set_needle"
+            android:title="Show Sun rise/set needle" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_show_crosshair"
+            android:title="Show Crosshair" />
+        <ListPreference
+            android:defaultValue="Default value"
+            android:key="nl_tick_mark_spacing"
+            android:entries="@array/tick_mark_degrees_entries"
+            android:entryValues="@array/tick_mark_degrees_values"
+            android:summary="@string/tick_mark_summary"
+            android:title="@string/tick_mark_title" />
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/tick_mark_degrees_entries"
+            android:entryValues="@array/tick_mark_degrees_values"
+            android:key="nl_degree_spacing"
+            android:summary="@string/tick_mark_degrees_summary"
+            android:title="@string/tick_mark_degrees_title" />
+        <ListPreference
+            android:defaultValue="Northern America"
+            android:entries="@array/countries"
+            android:entryValues="@array/countries"
+            android:key="nl_region"
+            android:summary="@string/regions_summary"
+            android:title="@string/regions_title" />
+    </PreferenceCategory>
+
+    <SwitchPreferenceCompat
+        android:id="@+id/showAdvanced"
+        android:defaultValue="false"
+        android:key="nl_show_advanced_preferences"
+        android:title="@string/title_show_advanced_options"
+        android:visibility="visible" />
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Advanced Compass Appearance"
+        app:key="nladv_compass_appearance">
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="compass_radius_percent"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Compass Radius Percent" />
+        <EditTextPreference
+            android:defaultValue="2"
+            android:inputType="numberDecimal"
+            android:key="nl_degree_font_size"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Degree Font Size" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Sun rise/set needle"
+        app:isPreferenceVisible="true"
+        app:key="nladv_sun_rise_set_needle_group">
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_text_preference_1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Sun Rise/Set needle color" />
+        <EditTextPreference
+            android:defaultValue="2.0"
+            android:digits="0123456789."
+            android:inputType="numberDecimal"
+            android:key="nl_rise_set_needle_thickness"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Sun Rise/Set needle thickness" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Crosshair"
+        app:key="nladv_crosshair" >
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="nl_crosshair_thickness"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Crosshair thickness" />
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="nl_crosshair_length"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Crosshair length" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Misc" app:key="nladv_misc">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_show_debug_data"
+            android:title="Show debug data" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="nl_low_accuracy"
+            android:title="Lower Accuracy" />
+    </PreferenceCategory>
+
+    <!--    </PreferenceCategory>
+                android:summary="Up to %s ingredients may be missing for the Tomorrow display"
+
+    -->
+
+</PreferenceScreen>

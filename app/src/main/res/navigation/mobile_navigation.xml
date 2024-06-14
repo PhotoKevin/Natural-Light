@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_map">
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.blackholeofphotography.naturallight.ui.map.MapDisplayFragment"
+        android:label="@string/menu_map"
+        tools:layout="@layout/map_fragment">
+        <action
+            android:id="@+id/action_nav_map_to_editLocationFragment"
+            app:destination="@id/nav_edit_location" />
+        <argument
+            android:name="aUid"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='@null' />
+        <action
+            android:id="@+id/action_nav_map_to_dateTimeFragment"
+            app:destination="@id/nav_date_time" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detail"
+        android:name="com.blackholeofphotography.naturallight.ui.details.DetailFragment"
+        android:label="@string/menu_details"
+        tools:layout="@layout/detail_fragment" />
+
+    <fragment
+        android:id="@+id/nav_locations"
+        android:name="com.blackholeofphotography.naturallight.ui.locations.LocationsFragment"
+        android:label="@string/menu_locations"
+        tools:layout="@layout/locations_fragment">
+        <action
+            android:id="@+id/action_nav_locations_to_nav_map"
+            app:destination="@id/nav_map" >
+            <argument
+                android:name="aUid"
+                android:defaultValue="a"
+                app:nullable="true" />
+        </action>
+        <argument
+            android:name="aUid"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_nav_locations_to_editLocationFragment"
+            app:destination="@id/nav_edit_location" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.blackholeofphotography.naturallight.settings.SettingsFragment"
+        android:label="@string/header_settings"
+        tools:layout="@layout/settings_activity" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.blackholeofphotography.naturallight.ui.about.AboutFragment"
+        android:label="@string/header_about"
+        tools:layout="@layout/about_activity" />
+
+    <fragment
+        android:id="@+id/nav_edit_location"
+        android:name="com.blackholeofphotography.naturallight.ui.editlocation.EditLocationFragment"
+        tools:layout="@layout/edit_location_fragment"
+        android:label="@string/title_edit_location">
+
+        <argument
+            android:name="aUid"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_date_time"
+        android:name="com.blackholeofphotography.naturallight.ui.datetime.DateTimeFragment"
+        android:label="@string/title_select_date_time" />
+
+</navigation>

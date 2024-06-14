@@ -1,0 +1,68 @@
+/* middle grey  style="background: #7a7467" */
+/* light grey style="background: #a9a395" */
+/* dark drey style="background: #4e493d" */
+
+body
+{
+   font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif"; 
+   font-size: 2em;
+/*   background: red; */
+}
+
+.centerHorizontal
+{
+   margin-left: auto;
+   margin-right: auto;
+   width: 95%;
+}
+
+.top
+{
+   font-size: 2em;
+   text-align: center;
+   background: #7a7467;
+   padding-bottom: 0.5em;
+   padding-top: 0.5em;
+}
+
+
+/* If screen width >=  */
+@media only screen and (min-width: 1000px)
+{
+   body
+   {
+      font-size: 1.5em;
+      width: 750px;
+   }
+   .top
+   {
+      font-size: 2em;
+   }
+}
+
+
+.normal
+{
+   font-size: 1.5em;
+}
+
+.main
+{
+   margin-top: 1em;
+   margin-bottom: 0.0em;
+   font-size: inherit;
+}
+
+
+.answers
+{
+   background: #a9a395;
+   border: 0.15em solid currentColor;
+   padding: .1em;
+   margin-top: .75em;
+   margin-left: 5%;
+   margin-right: 5%;
+   font-size: 1.75em;
+   /* align: center; */
+}
+

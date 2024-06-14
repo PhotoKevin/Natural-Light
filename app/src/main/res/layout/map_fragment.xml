@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.map.MapDisplayFragment">
+
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/add_marker"
+        android:src="@drawable/sharp_add_black_36"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/textDebug"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+    </org.osmdroid.views.MapView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="72dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="120dp" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineThird"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="168dp" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineZeroth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_end="24dp" />
+
+
+    <TextView
+        android:id="@+id/textDebug"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineThird"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        tools:text="Debug data" />
+
+    <TextView
+        android:id="@+id/map_center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineSecond"
+        app:layout_constraintEnd_toStartOf="@id/center_vertical"
+        app:layout_constraintHorizontal_weight="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDebug"
+        tools:text="47.2123, -68.4123 5.0" />
+
+    <TextView
+        android:id="@+id/display_timezone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/primaryTextColor"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/lighting_date"
+        app:layout_constraintStart_toStartOf="@+id/lighting_date"
+        app:layout_constraintTop_toTopOf="@+id/guidelineZeroth"
+        app:layout_constraintWidth_min="20dp"
+        tools:text="America/Detroit" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/display_timezone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/display_timezone"
+        app:layout_constraintTop_toTopOf="@+id/display_timezone" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerline_bottomX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp" />
+
+    <TextView
+        android:id="@+id/text_sun_left"
+        android:layout_width="48sp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/primaryTextColor"
+
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSecond"
+        tools:text="Rise:\n07:00" />
+
+
+    <ImageButton
+        android:id="@+id/buttonSpacer"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:contentDescription="@string/spacer_button"
+        android:src="@android:drawable/ic_lock_idle_alarm"
+        android:textColor="@color/primaryTextColor"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="@id/guidelineZeroth"
+        app:layout_constraintEnd_toStartOf="@id/lighting_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintWidth_min="48dp" />
+
+    <TextView
+        android:id="@+id/lighting_date"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_marginEnd="48dp"
+        android:gravity="center"
+
+        android:lines="1"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineZeroth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonSetDateTime"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFirst"
+        tools:text="2024-05-24 8:00" />
+
+    <ImageButton
+        android:id="@+id/buttonSetDateTime"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:contentDescription="@string/date_time_selector"
+        android:src="@android:drawable/ic_lock_idle_alarm"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineZeroth"
+        app:layout_constraintEnd_toStartOf="@+id/lighting_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineFirst" />
+
+    <TextView
+        android:id="@+id/text_sun_right"
+        android:layout_width="48sp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:gravity="center"
+
+        android:textAlignment="textEnd"
+        android:textColor="@color/primaryTextColor"
+
+
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineSecond"
+        tools:text="Set:\n19:20" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:text="New thing"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineSecond"
+        app:layout_constraintEnd_toStartOf="@+id/text_sun_right"
+        app:layout_constraintTop_toBottomOf="@+id/display_timezone" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

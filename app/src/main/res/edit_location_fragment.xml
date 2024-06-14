@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textAlignment="center"
+    tools:context=".ui.editlocation.EditLocationFragment">
+
+    <EditText
+        android:id="@+id/textTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/title_of_the_location"
+        android:importantForAutofill="no"
+        android:inputType="textNoSuggestions"
+        android:textAlignment="center"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="488dp"
+        tools:text="Location 1" />
+
+    <EditText
+        android:id="@+id/textLatitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/latitude_of_location"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:textAlignment="textEnd"
+        android:textSize="20sp"
+        app:layout_constraintWidth_max="488dp"
+        app:layout_constraintEnd_toStartOf="@+id/textLongitude"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle"
+        tools:text="42.5" />
+
+    <EditText
+        android:id="@+id/textLongitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:hint="@string/longitude_of_location"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:textAlignment="textStart"
+        android:textSize="20sp"
+        app:layout_constraintWidth_max="488dp"
+        app:layout_constraintEnd_toStartOf="@+id/spinZoomLevel"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/textLatitude"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle"
+        tools:text="-88.5" />
+
+    <Spinner
+        android:id="@+id/spinZoomLevel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="@string/hint_zoom_level"
+        app:layout_constraintBottom_toTopOf="@+id/timeZone"
+        android:importantForAutofill="no"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/textLongitude"
+        app:layout_constraintTop_toBottomOf="@+id/textTitle" />
+
+    <DatePicker
+        android:id="@+id/datePicker1"
+        android:textColor="@color/primaryTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useCurrentTime" />
+
+    <TimePicker
+        android:id="@+id/timePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:timePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker1" />
+
+    <CheckBox
+        android:id="@+id/useCurrentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="@string/use_current_time"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLatitude" />
+
+    <TextView
+        android:id="@+id/timeZone"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/useCurrentTime"
+
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toEndOf="@+id/useCurrentTime"
+        app:layout_constraintTop_toBottomOf="@+id/textLongitude"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/primaryColor"
+        android:contentDescription="@string/delete"
+        android:src="@android:drawable/ic_menu_delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mdpi"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
