@@ -108,22 +108,13 @@ public class TimeZoneAreas
    }
 
 
-   public void serialize (File f)
+   public void serialize (File f) throws IOException
    {
-      try
-      {
-         FileOutputStream fileOutputStream = new FileOutputStream (f, false);
-         ObjectOutputStream objectOutputStream = new ObjectOutputStream (new BufferedOutputStream (fileOutputStream));
-         objectOutputStream.writeObject (mTimeZoneAreas);
-         objectOutputStream.flush ();
-         objectOutputStream.close ();
-      }
-      catch (Exception ex)
-      {
-         log.error ("TimeZoneArea", ex);
-         //noinspection ResultOfMethodCallIgnored
-         f.delete ();
-      }
+      FileOutputStream fileOutputStream = new FileOutputStream (f, false);
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream (new BufferedOutputStream (fileOutputStream));
+      objectOutputStream.writeObject (mTimeZoneAreas);
+      objectOutputStream.flush ();
+      objectOutputStream.close ();
    }
 
 
@@ -134,34 +125,16 @@ public class TimeZoneAreas
       {
          if (f.exists ())
          {
-            log.trace ("deSerialize from {}", f.getAbsolutePath ());
-            long s = System.currentTimeMillis ();
-
             FileInputStream fileInputStream = new FileInputStream (f);
             ObjectInputStream objectInputStream = new ObjectInputStream (fileInputStream);
             ArrayList<TimeZoneArea> entries = (ArrayList<TimeZoneArea>) objectInputStream.readObject ();
             objectInputStream.close ();
-            long d = System.currentTimeMillis () - s;
-            log.error ("TimeZoneAreas.deSerialize took {}ms", d);
-
             return new TimeZoneAreas (entries);
          }
       }
-      catch (FileNotFoundException e)
+      catch (IOException | ClassNotFoundException e)
       {
-         log.error ("TimeZoneArea", e);
-      }
-      catch (IOException e)
-      {
-         //noinspection ResultOfMethodCallIgnored
-         f.delete ();
-         Log.e ("TimeZoneArea", e.toString ());
-      }
-      catch (ClassNotFoundException e)
-      {
-         //noinspection ResultOfMethodCallIgnored
-         f.delete ();
-         log.error ("TimeZoneArea", e);
+         log.error ("TimeZoneAreas.deSerialize", e);
       }
 
       return null;

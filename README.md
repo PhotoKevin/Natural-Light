@@ -27,5 +27,4 @@ Timezone data is from Roman Iakovlev's [Timeshape](https://github.com/RomanIakov
 Astronomical calculations are based on Jean Meeus' Astronomical Algorithms 2nd edition ISBN 978-0943396613. 
 
 
-Country Bounding Boxes are from CplPearce
-https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee
+Country Bounding Boxes are from [cplpearce/country_codes](https://gist.github.com/cplpearce/3bc5f1e9b1187df51d2085ffca795bee).
