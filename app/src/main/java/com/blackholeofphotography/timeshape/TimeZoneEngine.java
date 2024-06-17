@@ -33,7 +33,7 @@ import java.io.Serializable;
  * Class {@link TimeZoneEngine} is used to lookup the instance of
  * {@link java.time.ZoneId} based on latitude and longitude.
  */
-public final class TimeZoneEngine {
+public final class TimeZoneEngine implements Serializable {
 
     private final Index index;
 
@@ -257,35 +257,5 @@ public final class TimeZoneEngine {
         }
     }
 
-   /**
-    * Serializes an instance of {@link TimeZoneEngine} to a file
-    * This is a blocking long running operation.
-    *
-    * @param f Destination File.
-    */
-
-   public void serialize (File f) throws IOException
-   {
-      FileOutputStream fileOutputStream = new FileOutputStream (f, false);
-      try (ObjectOutputStream objectOutputStream = new ObjectOutputStream (new BufferedOutputStream (fileOutputStream))) {
-         objectOutputStream.writeObject (this.index);
-         objectOutputStream.flush ();
-      }
-   }
-
-
-   /**
-    * Creates a new instance of {@link TimeZoneEngine} from previously serialized data.
-    * This is a blocking long running operation.
-    *
-    * @return an initialized instance of {@link TimeZoneEngine}
-    */
-   public static TimeZoneEngine deserialize (File f) throws IOException, ClassNotFoundException
-   {
-      FileInputStream fileInputStream = new FileInputStream(f);
-      try (ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-         return new TimeZoneEngine ((Index) objectInputStream.readObject ());
-      }
-   }
 
 }

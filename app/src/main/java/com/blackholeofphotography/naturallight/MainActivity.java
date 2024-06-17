@@ -1,6 +1,5 @@
 package com.blackholeofphotography.naturallight;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -27,10 +25,6 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -106,7 +100,7 @@ public class MainActivity extends AppCompatActivity
       //https://osmdroid.github.io/osmdroid/How-to-use-the-osmdroid-library.html
       Context ctx = getApplicationContext();
       Configuration.getInstance().load(ctx, androidx.preference.PreferenceManager.getDefaultSharedPreferences(ctx));
-      loadTimeEngine ();
+      loadTimeZoneEngine ();
 
       //AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_YES);
 
@@ -119,128 +113,64 @@ public class MainActivity extends AppCompatActivity
       }
    }
 
-   private static TimeZoneEngine loadTimeEngineFromFile (File f)
-   {
-      TimeZoneEngine engine = null;
-      if (f.exists ())
-      {
-         try
-         {
-            long s = System.currentTimeMillis ();
-            engine = TimeZoneEngine.deserialize (f);
-            long d = System.currentTimeMillis () - s;
-            log.error ("TimeZoneEngine.deSerialize took {}ms", d);
-         }
-         catch (IOException | ClassNotFoundException e)
-         {
-            //noinspection ResultOfMethodCallIgnored
-            f.delete ();
-         }
-      }
 
-      return engine;
-   }
 
-   private static File timeZoneEngineCacheFile ()
-   {
-      final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
-      @SuppressLint("DefaultLocale")
-      final String fileName = String.format ("TZ_%s_%d.cache", Settings.getRegion (), BuildConfig.VERSION_CODE);
-      final Path saved = Paths.get (outputDir.toString (), fileName);
-
-      return saved.toFile ();
-   }
-
-   private static File timeZoneAreasCacheFile ()
-   {
-      final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
-      @SuppressLint("DefaultLocale")
-      final String fileName = String.format ("TZAreas_%d.cache", BuildConfig.VERSION_CODE);
-      final Path saved = Paths.get (outputDir.toString (), fileName);
-
-      return saved.toFile ();
-   }
 
 
    public static void reloadTimeEngine ()
    {
       timeZoneEngine = null;
-      loadTimeEngine ();
+      loadTimeZoneEngine ();
    }
 
    private static void loadTimeAreas ()
    {
-      File f = timeZoneAreasCacheFile ();
-      if (timeZoneAreas == null)
-         timeZoneAreas = TimeZoneAreas.deSerialize (f);
+      timeZoneAreas = CachedData.loadTimeAreas ();
 
       if (timeZoneAreas == null)
       {
          timeZoneAreas = TimeZoneAreas.initialize ();
-         timeZoneAreas.serialize (f);
+         CachedData.saveTimeAreas (timeZoneAreas);
       }
    }
 
-   private static void loadTimeEngine ()
+   private static void loadTimeZoneEngine ()
    {
-
-
       Thread background = new Thread (null, null, "loader", 20*1024)
       {
          @Override
          public void run ()
          {
+            if (planetaryRegions == null)
+               planetaryRegions = PlanetaryRegions.loadRegions ();
+
+            if (timeZoneAreas == null)
+               loadTimeAreas ();
+
             String regionName = Settings.getRegion ();
-
-            planetaryRegions = PlanetaryRegions.loadRegions ();
             var region = planetaryRegions.getRegion (regionName);
-
-            loadTimeAreas ();
             final BoundingBox boundingBox = regionName.equals ("ALL") ? null : region.getBigBoundingBox ();
-            if (boundingBox != null)
-               log.error ("Bounding Box is {}", boundingBox);
 
-            loadTimeAreas ();
-            File f = timeZoneEngineCacheFile ();
+//            File f = CachedData.timeZoneEngineCacheFile ();
 //            if (f.exists ()) f.delete ();
-
-            try
+            timeZoneEngine = CachedData.loadTimeZoneEngine ();
+            if (timeZoneEngine == null)
             {
-               timeZoneEngine = loadTimeEngineFromFile (f);
-               if (timeZoneEngine == null)
-               {
-                  long start = System.currentTimeMillis ();
+               long start = System.currentTimeMillis ();
 
-                  if (boundingBox == null)
-                     timeZoneEngine = TimeZoneEngine.initialize (false);
-                  else
-                     timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude ()-1, boundingBox.getMinLongitude ()-1,
-                           boundingBox.getMaxLatitude ()+1, boundingBox.getMaxLongitude ()+1, false);
+               if (boundingBox == null)
+                  timeZoneEngine = TimeZoneEngine.initialize (false);
+               else
+                  timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude ()-1, boundingBox.getMinLongitude ()-1,
+                        boundingBox.getMaxLatitude ()+1, boundingBox.getMaxLongitude ()+1, false);
 
-                  long delta = System.currentTimeMillis () - start;
-                  log.error ("TimeZoneEngine.initialize took {}ms", delta);
-                  if (! regionName.equals ("ALL"))
-                  {
-                     if (f.exists ())
-                     {
-                        //noinspection ResultOfMethodCallIgnored
-                        f.delete ();
-                     }
-                     timeZoneEngine.serialize (f);
-                  }
-               }
-               DisplayStatus.setLocation (DisplayStatus.getLocation ());
-               DisplayStatus.forceCalculation ();
+               long delta = System.currentTimeMillis () - start;
+               log.info ("TimeZoneEngine.initialize took {}ms", delta);
+               if (! regionName.equals ("ALL"))
+                  CachedData.saveTimeEngine (timeZoneEngine);
             }
-            catch (Exception ex)
-            {
-               log.error (ex.toString ());
-               if (f.exists ())
-               {
-                  //noinspection ResultOfMethodCallIgnored
-                  f.delete ();
-               }
-            }
+            DisplayStatus.setLocation (DisplayStatus.getLocation ());
+            DisplayStatus.forceCalculation ();
          }
       };
 
