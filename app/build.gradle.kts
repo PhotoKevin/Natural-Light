@@ -15,7 +15,7 @@ android {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 34
-        versionCode = 6
+        versionCode = 7
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -45,8 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
     implementation("com.github.tony19:logback-android:3.0.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
     val nav_version = "2.7.7"
@@ -60,7 +60,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 
     // Feature module Support
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    implementation("com.google.android.play:feature-delivery:2.1.0")
+    implementation("com.google.android.play:asset-delivery:2.2.2")
+    implementation("com.google.android.play:review:2.0.1")
+    implementation("com.google.android.play:app-update:2.1.0")
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
@@ -71,7 +74,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
 
     implementation ("androidx.preference:preference:1.2.1")
-    implementation("androidx.fragment:fragment:1.7.1")
+    implementation("androidx.fragment:fragment:1.8.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

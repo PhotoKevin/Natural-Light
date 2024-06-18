@@ -121,6 +121,7 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
       }
 
       // if not new moon?
+      if (DisplayStatus.getMoonPosition ().getElevation () > 0)
       {
          final Point point = calculatePointOnCircle ((float) center, (float) center, (float) (radius * (1 - DisplayStatus.getMoonPosition ().getElevation () / 90f)), (float) DisplayStatus.getMoonPosition ().getAzimuth ());
          canvas.drawCircle (point.x, point.y, (float) 9, moonPositionPaint);
