@@ -119,9 +119,9 @@ public class SolarPositionAlgorithmTest
 
 ////Incidence:     25.187000 degrees
 
-      final double[] riseTransitSet = SunRiseSet.SunRise (jd, SPA_LATITUDE, SPA_LONGITUDE);
-      Assert.assertEquals (SPA_SUNRISE, riseTransitSet[0]-7, 1.0/60);
-      Assert.assertEquals (SPA_SUNSET, riseTransitSet[2]+24-7, 1.0/60);
+      final RiseTransitSet riseTransitSet = SunRiseSet.SunRise (jd, SPA_LATITUDE, SPA_LONGITUDE);
+      Assert.assertEquals (SPA_SUNRISE, riseTransitSet.getRise ()-7, 1.0/60);
+      Assert.assertEquals (SPA_SUNSET, riseTransitSet.getSet ()+24-7, 1.0/60);
 //      double trans = 18 + 46/60.0 + 4.97/3600;
 //      Assert.assertEquals (transit, trans, 1.0/60, L"Transit error");
 

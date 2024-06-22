@@ -1,6 +1,7 @@
 package com.blackholeofphotography.naturallight;
 
 import com.blackholeofphotography.astrocalc.Julian;
+import com.blackholeofphotography.astrocalc.RiseTransitSet;
 import com.blackholeofphotography.astrocalc.Sun;
 import com.blackholeofphotography.astrocalc.SunRiseSet;
 import com.blackholeofphotography.astrocalc.Tools;
@@ -26,10 +27,10 @@ public class SunPositionTest
       double setAzimuth = 296;
       double one_minute = 1.0/60.0; // 0.01667
 
-      double riseSetTransit[] = SunRiseSet.SunRise (jd,homeLatitude, homeLongitude);
-      Assert.assertEquals (sunRise, riseSetTransit[0], one_minute);
-      Assert.assertEquals (transit, riseSetTransit[1], one_minute);
-      Assert.assertEquals (sunSet, riseSetTransit[2], one_minute);
+      RiseTransitSet riseTransitSet = SunRiseSet.SunRise (jd,homeLatitude, homeLongitude);
+      Assert.assertEquals (sunRise, riseTransitSet.getRise (), one_minute);
+      Assert.assertEquals (transit, riseTransitSet.getTransit (), one_minute);
+      Assert.assertEquals (sunSet, riseTransitSet.getSet (), one_minute);
 
       // 2000 Aug 01 12:00:00.0      8.7981391        + 17.864070       1.014915860
       TopocentricPosition position = Sun.SunTopocentricPosition (jd, homeLatitude, homeLongitude, homeAltitude);

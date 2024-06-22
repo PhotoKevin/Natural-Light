@@ -212,20 +212,20 @@ public class SunRiseTest
       double latitude = 39.742476;
       double longitude = -105.1786;
 
-      final double[] results = SunRiseSet.SunRise (jd, latitude, longitude);
+      final RiseTransitSet results = SunRiseSet.SunRise (jd, latitude, longitude);
 
 
 
-      double rise = results[0];
+      double rise = results.getRise ();
       double riseExpected = 13 + 12/60.0 + 43.46/3600;
       Assert.assertEquals (riseExpected, rise, 0.001);
 
 
-      double transit = results[1];
+      double transit = results.getTransit ();
       double transitExpected = 18 + 46/60.0 + 4.97/3600;
       Assert.assertEquals (transitExpected, transit, 0.001);
 
-      double set = results[2];
+      double set = results.getSet ();
       double setExpected = 0 + 20/60.0 + 19.19/3600;
       Assert.assertEquals (setExpected, set, 0.001);
 

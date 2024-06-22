@@ -34,6 +34,9 @@
     <string name="sun_elevation">Sun Elevation</string>
     <string name="sun_set">Sun Set</string>
     <string name="sun_rise">Sun Rise</string>
+    <string name="moon_set">Moon Set</string>
+    <string name="moon_rise">Moon Rise</string>
+
     <string name="latitude_of_location">Latitude of location</string>
     <string name="longitude_of_location">Longitude of location</string>
     <string name="hint_zoom_level">Zoom Level</string>

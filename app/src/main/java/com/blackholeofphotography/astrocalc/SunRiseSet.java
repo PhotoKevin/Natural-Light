@@ -2,11 +2,7 @@ package com.blackholeofphotography.astrocalc;
 
 public class SunRiseSet
 {
-   public static final int SUN_RISE = 0;
-   public static final int SUN_TRANSIT = 1;
-   public static final int SUN_SET = 2;
-
-   public static double[] SunRise (double jd, double latitude, double longitude) //, double *rise, double *transet, double *set)
+   public static RiseTransitSet SunRise (double jd, double latitude, double longitude) //, double *rise, double *transet, double *set)
    {
       double rise, transit, set;
 
@@ -38,11 +34,7 @@ public class SunRiseSet
       double H0 = Mathd.sind (hprime0) - Mathd.sind (phi) * Mathd.sind (delta[1]);
       H0 /= Mathd.cosd (phi) * Mathd.cosd (delta[1]);
       if (H0 < -1.0 || H0 > 1.0)
-      {
-         rise = -1;
-         set = -1;
-         return new double[] {rise, rise, rise};
-      }
+         return new RiseTransitSet (-1, -1, -1);
 
       H0 = Mathd.acosd (H0);
 
@@ -114,11 +106,6 @@ public class SunRiseSet
       transit = T * 24.0;
       set = S * 24.0;
 
-      double[] result = new double[3];
-      result[SUN_RISE] = rise;
-      result[SUN_TRANSIT] = transit;
-      result[SUN_SET] = set;
-
-      return result;
+      return new RiseTransitSet (rise, transit, set);
    }
 }

@@ -34,6 +34,9 @@ public class DetailFragment extends Fragment
    TextView textTimeZone;
    TextView textMoonAzimuth;
    TextView textMoonElevation;
+   TextView textMoonRise;
+   TextView textMoonSet;
+
 
    public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -56,6 +59,8 @@ public class DetailFragment extends Fragment
       textTimeZone = binding.textTimeZone;
       textMoonAzimuth = binding.textMoonAzimuth;
       textMoonElevation = binding.textMoonElevation;
+      textMoonRise = binding.textMoonRise;
+      textMoonSet = binding.textMoonSet;
 
       return root;
    }
@@ -69,11 +74,14 @@ public class DetailFragment extends Fragment
 
       textDateTime.setText (DisplayStatus.getTimeStamp ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd HH:mm")));
       textTimeZone.setText (DisplayStatus.getDisplayZoneId ().toString ());
-      textSunAzimuth.setText (String.format ("%f", DisplayStatus.getSunPosition ().getAzimuth ()));
-      textSunElevation.setText (String.format ("%f", DisplayStatus.getSunPosition ().getElevation ()));
+      textSunAzimuth.setText (String.format ("%.0f°", DisplayStatus.getSunPosition ().getAzimuth ()));
+      textSunElevation.setText (String.format ("%f°", DisplayStatus.getSunPosition ().getElevation ()));
 
       textSunRise.setText (DisplayStatus.getSunRise ().format (DateTimeFormatter.ofPattern ("HH:mm")));
       textSunSet.setText (DisplayStatus.getSunSet ().format (DateTimeFormatter.ofPattern ("HH:mm")));
+
+      textMoonRise.setText (DisplayStatus.getMoonRise ().format (DateTimeFormatter.ofPattern ("HH:mm")));
+      textMoonSet.setText (DisplayStatus.getMoonSet ().format (DateTimeFormatter.ofPattern ("HH:mm")));
 
       textMoonAzimuth.setText (String.format ("%f", DisplayStatus.getMoonPosition ().getAzimuth ()));
       textMoonElevation.setText (String.format ("%f", DisplayStatus.getMoonPosition ().getElevation ()));

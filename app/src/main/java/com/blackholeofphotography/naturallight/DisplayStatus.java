@@ -3,6 +3,8 @@ package com.blackholeofphotography.naturallight;
 import com.blackholeofphotography.astrocalc.Coordinates;
 import com.blackholeofphotography.astrocalc.Julian;
 import com.blackholeofphotography.astrocalc.Moon;
+import com.blackholeofphotography.astrocalc.MoonRise;
+import com.blackholeofphotography.astrocalc.RiseTransitSet;
 import com.blackholeofphotography.astrocalc.Sun;
 import com.blackholeofphotography.astrocalc.SunRiseSet;
 import com.blackholeofphotography.astrocalc.TopocentricPosition;
@@ -295,9 +297,9 @@ public class DisplayStatus
             final double jdNoon = Julian.JulianFromZonedDateTime (displayTime.withHour (12));
             mSunPosition = calculateSunPosition (displayTime, mLocation);
 
-            final double[] riseSet = SunRiseSet.SunRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude ());
-            mSunRise = setHour (mTimeStamp, riseSet[SunRiseSet.SUN_RISE]);
-            mSunSet = setHour (mTimeStamp, riseSet[SunRiseSet.SUN_SET]);
+            RiseTransitSet riseSet = SunRiseSet.SunRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude ());
+            mSunRise = setHour (mTimeStamp, riseSet.getRise ());
+            mSunSet = setHour (mTimeStamp, riseSet.getSet ());
 
             mSunRisePosition = calculateSunPosition (mSunRise, mLocation);
             mSunSetPosition = calculateSunPosition (mSunSet, mLocation);
@@ -305,8 +307,9 @@ public class DisplayStatus
             double jd = Julian.JulianFromZonedDateTime (displayTime);
             mMoonPosition = Moon.MoonTopocentricPosition (jd, mLocation.getLatitude (), mLocation.getLongitude (), 0);
 
-            //final double[] moonRiseSet = MoonRiseSet.MoonRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude ());
-            //mMoonPosition = calculateMoonPosition (displayTime, mLocation);
+            final RiseTransitSet moonRiseSet = MoonRise.MoonRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude (), 0);
+            mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
+            mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
 
             mIsDirty = false;
             running = false;

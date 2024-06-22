@@ -2,8 +2,6 @@ package com.blackholeofphotography.astrocalc;
 
 public class Nutation
 {
-   public static final int DELTA_PSI_DEGREES = 0;
-   public static final int DELTA_EPSILON_DEGREES = 1;
    // https://de.zxc.wiki/wiki/Nutation_(Astronomie)#Die_IAU_2000_Theory_of_Nutation
    ///
    ///<summary>
