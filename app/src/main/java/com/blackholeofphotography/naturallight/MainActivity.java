@@ -18,7 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.blackholeofphotography.astrocalc.Tools;
 import com.blackholeofphotography.naturallight.databinding.ActivityMainBinding;
-import com.blackholeofphotography.timeshape.TimeZoneEngine;
+import net.iakovlev.timeshape.TimeZoneEngine;
 import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IGeoPoint;
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity
       else
       {
          Settings.setEnableAdvancedFeatures (false);
-         Settings.showDebugData ();
       }
    }
 

@@ -1,7 +1,7 @@
 package com.blackholeofphotography.naturallight;
 import android.annotation.SuppressLint;
 
-import com.blackholeofphotography.timeshape.TimeZoneEngine;
+import net.iakovlev.timeshape.TimeZoneEngine;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 public class CachedData
 {
-   private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
+   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
 
    private static void removeFile (File f)
    {
@@ -121,7 +121,6 @@ public class CachedData
 
    public static TimeZoneAreas loadTimeAreas ()
    {
-      TimeZoneAreas timeZoneAreas;
       File f = CachedData.timeZoneAreasCacheFile ();
       return TimeZoneAreas.deSerialize (f);
    }
