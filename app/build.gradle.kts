@@ -45,8 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("com.github.tony19:logback-android:3.0.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
     val nav_version = "2.7.7"
@@ -74,20 +74,20 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
 
     implementation ("androidx.preference:preference:1.2.1")
-    implementation("androidx.fragment:fragment:1.8.0")
+    implementation("androidx.fragment:fragment:1.8.2")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation ("com.google.android.gms:play-services-maps:18.2.0")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation ("com.google.android.gms:play-services-maps:19.0.0")
     implementation ("org.osmdroid:osmdroid-android:6.1.18")
 
     // Time Shape
-    implementation ("net.iakovlev:timeshape:2023b.21") {
+    implementation ("net.iakovlev:timeshape:2024a.22") {
         // Exclude standard compression library
         exclude (group= "com.github.luben", module= "zstd-jni")
     }
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.6-3@aar")
+    implementation ("com.github.luben:zstd-jni:1.5.6-4@aar")
 }
 
 tasks {
