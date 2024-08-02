@@ -29,6 +29,7 @@ public class CachedData
    }
    private static File timeZoneEngineCacheFile ()
    {
+      // /data/user/0/com.blackholeofphotography.naturallight/cache
       final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
       @SuppressLint("DefaultLocale")
       final String fileName = String.format ("TZ_%s_%d.cache", Settings.getRegion (), BuildConfig.VERSION_CODE);
