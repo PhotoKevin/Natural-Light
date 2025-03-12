@@ -21,6 +21,7 @@ output.json
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
+.idea/other.xml
 .idea/assetWizardSettings.xml
 .idea/libraries
 # Android Studio 3 in .gitignore file.

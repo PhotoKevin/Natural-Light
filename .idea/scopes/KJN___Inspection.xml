@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="KJN - Inspection" pattern="!file[NaturalLight.app.main]:assets/NaturalLight.svg&amp;&amp;!file[NaturalLight]:PlayStore/NaturalLight.svg" />
+</component>
