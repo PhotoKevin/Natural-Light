@@ -16,7 +16,7 @@ public class Nutation
 
       double deltaPsiDegrees;
       double deltaEpsilonDegrees;
-      double x[] = new double[5];
+      double[] x = new double[5];
       x[0] = Moon.MoonMeanElongationDegrees (jd);
       x[1] = Earth.EarthMeanAnomaly (jd);
       x[2] = Moon.MoonMeanAnomaly (jd);

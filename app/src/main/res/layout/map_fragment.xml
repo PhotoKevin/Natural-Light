@@ -167,7 +167,7 @@
         app:layout_constraintBottom_toBottomOf="@id/guidelineZeroth"
         app:layout_constraintEnd_toStartOf="@id/lighting_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline"
+
         app:layout_constraintWidth_min="48dp" />
 
     <TextView
@@ -206,7 +206,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
-        android:gravity="center"
+        android:gravity="end"
 
         android:textAlignment="textEnd"
         android:textColor="@color/primaryTextColor"
@@ -222,7 +222,7 @@
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="New thing"
+        tools:text="New thing"
         app:layout_constraintBottom_toTopOf="@+id/guidelineSecond"
         app:layout_constraintEnd_toStartOf="@+id/text_sun_right"
         app:layout_constraintTop_toBottomOf="@+id/display_timezone" />

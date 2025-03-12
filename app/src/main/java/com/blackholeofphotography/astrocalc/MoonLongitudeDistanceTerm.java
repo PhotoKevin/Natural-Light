@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public class MoonLongitudeDistanceTerm
 {
-   int d;
-   int m;
-   int mprime;
-   int f;
-   double sigl;
-   double sigr;
+   final int d;
+   final int m;
+   final int mprime;
+   final int f;
+   final double sigl;
+   final double sigr;
 
    public MoonLongitudeDistanceTerm (int d, int m, int mprime, int f, double sigl, double sigr)
    {

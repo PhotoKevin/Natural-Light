@@ -5,10 +5,10 @@ package com.blackholeofphotography.astrocalc;
  */
 public class TopocentricPosition
 {
-   private double ra;
-   private double dec;
-   private double azimuth;
-   private double elevation;
+   final private double ra;
+   final private double dec;
+   final private double azimuth;
+   final private double elevation;
 
    /**
     * Create a new Topocentric position object

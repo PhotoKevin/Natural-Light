@@ -4,12 +4,6 @@ public class Sun
 {
 // Ignore Spelling: Meeus jce
 
-   double AberrationCorrection ()
-   {
-      return 0.0;
-   }
-
-
    /// <summary>
    /// Calculate the Right Ascension (alpha) of the Sun
    /// </summary>
@@ -84,17 +78,17 @@ public class Sun
 
 
    /// <summary>
-/// Calculate the Geocentric Longitude of the Sun ()
-/// </summary>
-/// <param name="jd">Julian date</param>
-/// <returns>Geocentric Longitude in degrees</returns>
-/// <remarks>
-/// SPA 3.3
-/// Meeus 25 - Solar Coordinates
-/// </remarks>
+   /// Calculate the Geocentric Longitude of the Sun ()
+   /// </summary>
+   /// <param name="jd">Julian date</param>
+   /// <returns>Geocentric Longitude in degrees</returns>
+   /// <remarks>
+   /// SPA 3.3
+   /// Meeus 25 - Solar Coordinates
+   /// </remarks>
    public static double SunGeocentricLongitude (double jd)
    {
-      double sigma = Earth.EarthHeliocentricElipticalLongitude (jd) + 180;
+      double sigma = Earth.EarthHeliocentricEllipticalLongitude (jd) + 180;
       sigma = Normalization.NormalizeZeroTo360Degrees (sigma);
       return sigma;
    }

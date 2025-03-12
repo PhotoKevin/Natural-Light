@@ -22,7 +22,6 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import com.blackholeofphotography.naturallight.MainActivity;
-import com.blackholeofphotography.naturallight.PlanetaryRegion;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 
@@ -34,6 +33,7 @@ import java.util.List;
 
 public class SettingsFragment extends PreferenceFragmentCompat
 {
+   /** @noinspection FieldCanBeLocal*/
    private final String LOG_TAG = "SettingsFragment";
    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
    private SharedPreferences mSharedPreferences;
@@ -54,6 +54,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
          setInputType (Settings.KEY_CROSSHAIR_LENGTH, InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
          setInputType (Settings.KEY_CROSSHAIR_THICKNESS, InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
          ListPreference regionPreference = findPreference (Settings.KEY_REGION);
+         assert regionPreference != null;
          setListPreferenceData (regionPreference, MainActivity.planetaryRegions.getRegionNames (), Settings.getRegion ());
 
          mSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener ()
@@ -83,7 +84,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
    protected static void setListPreferenceData (ListPreference lp, List<String> items, String selected)
    {
       Collections.sort (items);
-      CharSequence[] itemsArray = items.toArray(new CharSequence[items.size()]);
+      CharSequence[] itemsArray = items.toArray(new CharSequence[0]);
       lp.setEntries (itemsArray);
       lp.setDefaultValue (selected);
       lp.setEntryValues (itemsArray);
@@ -131,15 +132,18 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
    private void setInputType (String key, int inputType)
    {
-      EditTextPreference editTextPreference = getPreferenceManager ().findPreference ("nl_rise_set_needle_thickness");
-      editTextPreference.setOnBindEditTextListener (new androidx.preference.EditTextPreference.OnBindEditTextListener ()
+      EditTextPreference editTextPreference = getPreferenceManager ().findPreference (key); // ("nl_rise_set_needle_thickness");
+      if (editTextPreference != null)
       {
-         @Override
-         public void onBindEditText (@NonNull EditText editText)
+         editTextPreference.setOnBindEditTextListener (new androidx.preference.EditTextPreference.OnBindEditTextListener ()
          {
-            editText.setInputType (inputType);
+            @Override
+            public void onBindEditText (@NonNull EditText editText)
+            {
+               editText.setInputType (inputType);
 
-         }
-      });
+            }
+         });
+      }
    }
 }

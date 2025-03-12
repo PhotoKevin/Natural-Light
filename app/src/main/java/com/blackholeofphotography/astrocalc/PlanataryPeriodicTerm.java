@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class PlanataryPeriodicTerm
 {
-   double  a;
-   double  b, c;
+   final double  a;
+   final double  b, c;
 
    PlanataryPeriodicTerm (double a, double b, double c)
    {

@@ -43,7 +43,7 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider
    private boolean mOptionsMenuEnabled = true;
 
 
-   @SuppressWarnings("deprecation")
+   // @SuppressWarnings("deprecation")
    public CompassOverlay (Context context,
                            MapView mapView)
    {

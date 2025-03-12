@@ -65,7 +65,7 @@ public class TimeZoneAreas
                      }
 
                      final BoundingBox box = getBoundingBox (polygons);
-                     log.trace (entry.getName () + box);
+                     log.trace ("{}{}", entry.getName (), box);
                      zones.add (new TimeZoneArea (entry.getName (), box));
                   }
                }

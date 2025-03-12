@@ -5,8 +5,6 @@ import com.blackholeofphotography.astrocalc.PlanataryPeriodicTerm;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 public class PeriodicTermsTest
 {
    @Test

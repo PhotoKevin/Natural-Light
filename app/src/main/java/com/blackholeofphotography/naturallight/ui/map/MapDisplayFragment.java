@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +34,6 @@ import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 import com.blackholeofphotography.naturallight.databinding.MapFragmentBinding;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;

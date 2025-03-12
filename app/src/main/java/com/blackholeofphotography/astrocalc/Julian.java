@@ -40,7 +40,7 @@ public class Julian
 
       long jd = day + (153*m+2)/5 + y*365L + y/4 - y/100 + y/400 - 32045;
 
-      // The above get's the jd for noon, but we want it for 00:00:00 so remove 0.5
+      // The above gets the jd for noon, but we want it for 00:00:00 so remove 0.5
       return jd - 0.5;
    }
 

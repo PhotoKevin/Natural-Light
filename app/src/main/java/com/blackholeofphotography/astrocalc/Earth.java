@@ -85,7 +85,7 @@ EarthEphT EarthEphemeris =
       double e0;
 
       // Meeus 22.3 - Note: These terms are in seconds.
-      double terms[] = {-4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45};
+      double[] terms = {-4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45};
 
       e0 = 84381.448; // 23 degrees 26' 21.448" converted to seconds.
       // e0 = 23 + 26.0/60 + 21.448 / 3600;
@@ -126,7 +126,7 @@ EarthEphT EarthEphemeris =
    /// <param name="nterms">Number of coefficients</param>
    /// <returns>The series result</returns>
 
-   static double Polynomial (double x, double terms[])
+   static double Polynomial (double x, double[] terms)
    {
       double power = 1.0;
       double result = 0.0;
@@ -152,7 +152,7 @@ EarthEphT EarthEphemeris =
    /// Mean Dynamical Ecliptic. Meeus p. 219
    /// </remarks>
 
-   public static double EarthHeliocentricElipticalLongitude (double jd)
+   public static double EarthHeliocentricEllipticalLongitude (double jd)
    {
       LoadTerms ();
       double jme = Julian.JulianEphemerisMillennium (jd);
@@ -196,9 +196,6 @@ EarthEphT EarthEphemeris =
       return Mathd.Degrees ((Polynomial (jme, B) / 1e8));
    }
 
-   private static double previousJD = 0;
-   private static double previousRadius = 0;
-
    /// <summary>
    /// Calculate the radius vector of the Earth relative to the Sun aka R in AU
    /// </summary>
@@ -220,9 +217,6 @@ EarthEphT EarthEphemeris =
       R[3] = EarthPowerSeries (jme, EarthPeriodicTermsR3);
       R[4] = EarthPowerSeries (jme, EarthPeriodicTermsR4);
 
-      previousJD = jd;
-      previousRadius = Polynomial (jme, R) / 1e8;
-      return previousRadius;
+      return  Polynomial (jme, R) / 1e8;
    }
-
 }

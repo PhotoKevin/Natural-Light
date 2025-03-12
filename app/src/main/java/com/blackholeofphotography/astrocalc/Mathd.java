@@ -39,23 +39,18 @@ public class Mathd
       return Degrees (Math.acos (X));
    }
 
-   static double atand (double X)
-   {
-      return Degrees (Math.atan (X));
-   }
-
    static double atan2d (double Y, double X)
    {
       return Degrees (Math.atan2 (Y, X));
    }
 
-   public static double polynomial (double argument, double coeffients[])
+   public static double polynomial (double argument, double[] coefficients)
    {
       double result = 0.0;
-      for (int i = 4; i >= 0; i--)
+      for (int i = coefficients.length-1; i >= 0; i--)
       {
          result *= argument;
-         result += coeffients[i];
+         result += coefficients[i];
       }
 
       return result;

@@ -1,6 +1,5 @@
 package com.blackholeofphotography.naturallight;
 
-import com.blackholeofphotography.astrocalc.Coordinates;
 import com.blackholeofphotography.astrocalc.Julian;
 import com.blackholeofphotography.astrocalc.Moon;
 import com.blackholeofphotography.astrocalc.MoonRise;
@@ -31,9 +30,9 @@ public class DisplayStatus
    static AstroPosition mSunSetPosition = new AstroPosition (0, 0);
    static TopocentricPosition mMoonPosition = new TopocentricPosition (0, 0, 0, 0);
    static ZonedDateTime mMoonRise = ZonedDateTime.now ();
-   static AstroPosition mMoonRisePosition = new AstroPosition (0, 0);
+   final static AstroPosition mMoonRisePosition = new AstroPosition (0, 0);
    static ZonedDateTime mMoonSet = ZonedDateTime.now ();
-   static AstroPosition mMoonSetPosition = new AstroPosition (0, 0);
+   final static AstroPosition mMoonSetPosition = new AstroPosition (0, 0);
    private static double ZoomLevel;
    private static boolean mIsDirty = true;
    public  static int calculations = 0;
@@ -260,7 +259,7 @@ public class DisplayStatus
    }
    private static boolean running = false;
    protected static long mLastRender = 0;
-   private static int mLastRenderLag = 200;
+   final private static int mLastRenderLag = 200;
 
    private static long total_calc_time = 0;
    public static long averageCalcTime ()

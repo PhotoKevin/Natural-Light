@@ -10,18 +10,23 @@ import java.nio.charset.StandardCharsets;
 
 public class DataHelper
 {
+   @SuppressWarnings ("unused")
    public static String getResourceContents (String resourceName)
    {
       StringBuilder contents = new StringBuilder ();
       try
       {
          ClassLoader classloader = Thread.currentThread ().getContextClassLoader ();
-
-         URL u = classloader.getResource (resourceName);
-
-         BufferedReader in = new BufferedReader (new InputStreamReader (u.openStream (), StandardCharsets.UTF_8));
-         while (in.ready ())
-            contents.append (in.readLine ());
+         if (classloader != null)
+         {
+            URL u = classloader.getResource (resourceName);
+            if (u != null)
+            {
+               BufferedReader in = new BufferedReader (new InputStreamReader (u.openStream (), StandardCharsets.UTF_8));
+               while (in.ready ())
+                  contents.append (in.readLine ());
+            }
+         }
       }
       catch (IOException ex)
       {

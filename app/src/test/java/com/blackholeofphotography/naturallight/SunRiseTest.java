@@ -1,9 +1,15 @@
 package com.blackholeofphotography.naturallight;
 
-import com.blackholeofphotography.astrocalc.*;
-
-import com.blackholeofphotography.astrocalc.*;
+import com.blackholeofphotography.astrocalc.DeltaT;
+import com.blackholeofphotography.astrocalc.EarthEphemeris;
+import com.blackholeofphotography.astrocalc.Mathd;
 import com.blackholeofphotography.astrocalc.MoonEphemeris;
+import com.blackholeofphotography.astrocalc.Normalization;
+import com.blackholeofphotography.astrocalc.RiseTransitSet;
+import com.blackholeofphotography.astrocalc.Sidereal;
+import com.blackholeofphotography.astrocalc.Sun;
+import com.blackholeofphotography.astrocalc.SunRiseSet;
+import com.blackholeofphotography.astrocalc.Tools;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +43,7 @@ public class SunRiseTest
       double v = Sidereal.ApparentSiderealDegrees (jd);
 
       // A.2.2
-      double alpha[] = new double[3];
+      double[] alpha = new double[3];
       alpha[0] = Sun.SunGeocentricRightAscension (jd-1.0);
       alpha[1] = Sun.SunGeocentricRightAscension (jd);
       alpha[2] = Sun.SunGeocentricRightAscension (jd+1.0);
@@ -47,7 +53,7 @@ public class SunRiseTest
       Assert.assertEquals (202.40170355547738, alpha[2], 0.002);
 
 
-      double delta[] = new double[3];
+      double[] delta = new double[3];
       delta[0] = Sun.SunGeocentricDeclination (jd-1.0);
       delta[1] = Sun.SunGeocentricDeclination (jd);
       delta[2] = Sun.SunGeocentricDeclination (jd+1.0);
@@ -171,10 +177,6 @@ public class SunRiseTest
       double T = m0 - Hprime0 / 360;
 
       // A2.2.15
-//            return mRts[sun] + (hRts[sun] - h0Prime) /
-//                   (360.0 * Math.Cos(DegToRad(deltaPrime[sun])) * Math.Cos(DegToRad(latitude)) *
-//                    Math.Sin(DegToRad(hPrime[sun])));
-
       double R = m1 + ((h1 - hprime0) / (360 * Mathd.cosd (deltaprime1) * Mathd.cosd (phi) * Mathd.sind (Hprime1)));
       Assert.assertEquals (0.55050277538685921, R, 0.001);
 

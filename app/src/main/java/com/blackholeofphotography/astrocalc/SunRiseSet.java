@@ -90,7 +90,7 @@ public class SunRiseSet
       Hprime2 = Normalization.fix180degrees (Hprime2);
 
       // A2.2.12
-      double h0 = Mathd.asind (Mathd.sind (phi) * Mathd.sind (deltaprime0) + Mathd.cosd (phi) * Mathd.cosd (deltaprime0) * Mathd.cosd (Hprime0));
+      // double h0 = Mathd.asind (Mathd.sind (phi) * Mathd.sind (deltaprime0) + Mathd.cosd (phi) * Mathd.cosd (deltaprime0) * Mathd.cosd (Hprime0));
       double h1 = Mathd.asind (Mathd.sind (phi) * Mathd.sind (deltaprime1) + Mathd.cosd (phi) * Mathd.cosd (deltaprime1) * Mathd.cosd (Hprime1));
       double h2 = Mathd.asind (Mathd.sind (phi) * Mathd.sind (deltaprime2) + Mathd.cosd (phi) * Mathd.cosd (deltaprime2) * Mathd.cosd (Hprime2));
 

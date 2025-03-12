@@ -39,7 +39,7 @@ public class EarthTest
    {
       DeltaT.UnForceDeltaT ();
 
-      double L = Earth.EarthHeliocentricElipticalLongitude (SPA_JD);
+      double L = Earth.EarthHeliocentricEllipticalLongitude (SPA_JD);
       Assert.assertEquals (24.0182616917, L, 0.0001);
    }
 

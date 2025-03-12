@@ -5,9 +5,9 @@ package com.blackholeofphotography.astrocalc;
  */
 public class GeoCentricLatitudeLongitude
 {
-   private double latitude; // aka beta
-   private double longitude; // aka lambda
-   private double distance;
+   private final double latitude; // aka beta
+   private final double longitude; // aka lambda
+   private final double distance;
 
    /**
     * Get the Latitude of the object

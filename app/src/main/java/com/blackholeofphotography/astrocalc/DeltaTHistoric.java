@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public class DeltaTHistoric
 {
-   int year;
-   int month;
-   int day;
-   double deltat;
+   final int year;
+   final int month;
+   final int day;
+   final double deltat;
 
-   private static ArrayList<DeltaTHistoric> Historical = new ArrayList<> ();
+   private static final ArrayList<DeltaTHistoric> Historical = new ArrayList<> ();
 
    public static ArrayList<DeltaTHistoric> getHistorical ()
    {

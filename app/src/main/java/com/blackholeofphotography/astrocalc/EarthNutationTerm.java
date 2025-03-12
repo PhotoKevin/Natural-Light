@@ -12,14 +12,13 @@ import java.util.ArrayList;
 
 public class EarthNutationTerm
 {
-   public int[] y;
-   public double a, b, c, d;
+   final public int[] y;
+   final public double a, b, c, d;
 
    public EarthNutationTerm (int[] y, double a, double b, double c, double d)
    {
       this.y = new int[5];
-      for (int i=0; i<y.length; i++)
-         this.y[i] = y[i];
+      System.arraycopy (y, 0, this.y, 0, y.length);
       this.a = a;
       this.b = b;
       this.c = c;
@@ -29,7 +28,7 @@ public class EarthNutationTerm
 
    private static EarthNutationTerm parseNutationTerm (String inpline)
    {
-      int y[] = new int[5];
+      int[] y = new int[5];
       int a;
       double b;
       double c;

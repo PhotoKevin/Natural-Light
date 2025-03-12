@@ -1,7 +1,6 @@
 package com.blackholeofphotography.naturallight;
 
 import com.blackholeofphotography.astrocalc.*;
-import com.blackholeofphotography.astrocalc.MoonEphemeris;
 
 import org.junit.Assert;
 import org.junit.Test;

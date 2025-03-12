@@ -2,7 +2,6 @@ package com.blackholeofphotography.astrocalc;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 
 import com.blackholeofphotography.naturallight.MainActivity;
 
@@ -13,16 +12,15 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DeltaTPredicted
 {
-   double mjd; // MJD = JD - 2400000.5.
-   double year;
-   double deltat;
-   double ut1_minus_utc;
+   final double mjd; // MJD = JD - 2400000.5.
+   final double year;
+   final double deltat;
+   final double ut1_minus_utc;
 
-   private static ArrayList<DeltaTPredicted> Predicted = new ArrayList<> ();
+   private static final ArrayList<DeltaTPredicted> Predicted = new ArrayList<> ();
 
    public static ArrayList<DeltaTPredicted> getPredicted ()
    {

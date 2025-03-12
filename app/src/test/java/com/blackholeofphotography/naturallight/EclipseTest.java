@@ -3,7 +3,6 @@ package com.blackholeofphotography.naturallight;
 import com.blackholeofphotography.astrocalc.Julian;
 import com.blackholeofphotography.astrocalc.Sun;
 import com.blackholeofphotography.astrocalc.Moon;
-import com.blackholeofphotography.astrocalc.Tools;
 
 import org.junit.Assert;
 import org.junit.Test;

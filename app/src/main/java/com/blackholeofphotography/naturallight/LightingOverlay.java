@@ -11,8 +11,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Log;
-import android.view.Display;
-import android.view.WindowManager;
 
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
@@ -24,10 +22,11 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
    private static final String LOG_TAG = "LightingOverlay";
    private Paint sSmoothPaint = new Paint (Paint.FILTER_BITMAP_FLAG);
    protected MapView mMapView;
-   private final Display mDisplay;
+
    protected Bitmap mSunMoonBitmap;
    protected long mLastRender = 0;
-   private int mLastRenderLag = 200;
+   /** @noinspection FieldCanBeLocal*/
+   final private int mLastRenderLag = 200;
 
    private final Matrix mSunMoonMatrix = new Matrix ();
 
@@ -48,9 +47,9 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
       mScale = context.getResources ().getDisplayMetrics ().density * 12;
 
       mMapView = mapView;
-      final WindowManager windowManager = (WindowManager) context
-              .getSystemService (Context.WINDOW_SERVICE);
-      mDisplay = windowManager.getDefaultDisplay ();
+      //final WindowManager windowManager = (WindowManager) context
+      //        .getSystemService (Context.WINDOW_SERVICE);
+      // final Display mDisplay = windowManager.getDefaultDisplay ();
       // Requires a higher API 34 than I want
       //mDisplay = context.getDisplay ();
    }

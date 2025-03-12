@@ -2,7 +2,6 @@ package com.blackholeofphotography.naturallight;
 
 
 import com.blackholeofphotography.astrocalc.*;
-import com.blackholeofphotography.astrocalc.MoonEphemeris;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -102,7 +101,7 @@ public class SolarPositionAlgorithmTest
       Assert.assertEquals (SPA_SUN_AZIMUTH, capPhi, 0.005);
 
 
-      double l = Earth.EarthHeliocentricElipticalLongitude (jd);
+      double l = Earth.EarthHeliocentricEllipticalLongitude (jd);
       Assert.assertEquals (SPA_EARTH_HELIOCENTRIC_LONGITUDE, l, 0.001);
 
       double b = Earth.EarthHeliocentricLatitude (jd);

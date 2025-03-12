@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 public class MoonLatitudeSineTerm
 {
-   int d;
-   int m;
-   int mprime;
-   int f;
-   int sigl;
+   final int d;
+   final int m;
+   final int mprime;
+   final int f;
+   final int sigl;
    public MoonLatitudeSineTerm (int d, int m, int mprime, int f, int sigl)
    {
       this.d = d;
