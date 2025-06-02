@@ -5,6 +5,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundGravity="left"
     android:orientation="vertical"
     tools:context=".ui.map.MapDisplayFragment">
 
@@ -100,7 +101,7 @@
         android:id="@+id/display_timezone"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:textAlignment="textEnd"
         android:textColor="@color/primaryTextColor"
 
@@ -109,6 +110,7 @@
         app:layout_constraintStart_toEndOf="@+id/lighting_date"
         app:layout_constraintTop_toTopOf="@+id/lighting_date"
         app:layout_constraintWidth_min="20dp"
+        tools:ignore="RtlCompat"
         tools:text="America/Detroit" />
 
     <ProgressBar
@@ -118,7 +120,6 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/display_timezone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/display_timezone"
         app:layout_constraintTop_toTopOf="@+id/display_timezone" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -134,10 +135,11 @@
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
+        android:contentDescription="@string/sun_rise"
         android:gravity="center"
         android:textColor="@color/primaryTextColor"
 
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineSecond"
         tools:text="Rise:\n07:00" />
@@ -155,7 +157,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/lighting_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineFirst"
         app:layout_constraintWidth_min="48dp" />
 
     <TextView
@@ -178,12 +180,12 @@
         android:id="@+id/buttonSetDateTime"
         android:layout_width="48dp"
         android:layout_height="48dp"
-
         android:contentDescription="@string/date_time_selector"
+
+        android:foregroundGravity="left"
         android:src="@android:drawable/ic_lock_idle_alarm"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/lighting_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineFirst" />
 
@@ -193,24 +195,22 @@
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
-        android:gravity="center"
-
-        android:textAlignment="textEnd"
+        android:contentDescription="@string/sun_set"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
-
-
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineSecond"
+        tools:ignore="RtlCompat"
         tools:text="Set:\n19:20" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="New thing"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        tools:text="New thing"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
         app:layout_constraintEnd_toStartOf="@+id/text_sun_right"
         app:layout_constraintTop_toBottomOf="@+id/display_timezone" />
 

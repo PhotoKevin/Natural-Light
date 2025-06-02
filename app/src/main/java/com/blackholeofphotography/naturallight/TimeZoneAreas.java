@@ -49,7 +49,9 @@ public class TimeZoneAreas
                   if (entry.isFile ())
                   {
                      byte[] content = new byte[(int) entry.getSize ()];
-                     shapeInputStream.read (content);
+                     final int read = shapeInputStream.read (content);
+                     if (read != entry.getSize ())
+                        log.error ("{} != {}", read, entry.getSize ());
                      final Geojson.Feature f = Geojson.Feature.parseFrom (content);
                      final Geojson.Geometry geometry = f.getGeometry ();
                      List<Geojson.Polygon> polygons;

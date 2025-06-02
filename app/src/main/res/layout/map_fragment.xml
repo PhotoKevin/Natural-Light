@@ -149,7 +149,7 @@
         android:gravity="center"
         android:textColor="@color/primaryTextColor"
 
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineSecond"
         tools:text="Rise:\n07:00" />
@@ -206,11 +206,9 @@
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
-        android:gravity="end"
-
-        android:textAlignment="textEnd"
         android:textColor="@color/primaryTextColor"
-
+        android:gravity="center"
+        android:textAlignment="center"
 
         app:layout_constraintBottom_toTopOf="@+id/guidelineFirst"
 
