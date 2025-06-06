@@ -104,12 +104,11 @@ public class MainActivity extends AppCompatActivity
 
       //AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_YES);
 
+      //noinspection RedundantIfStatement
       if (BuildConfig.DEBUG)
          Settings.setEnableAdvancedFeatures (true);
       else
-      {
          Settings.setEnableAdvancedFeatures (false);
-      }
    }
 
 
@@ -150,8 +149,6 @@ public class MainActivity extends AppCompatActivity
             var region = planetaryRegions.getRegion (regionName);
             final BoundingBox boundingBox = regionName.equals ("ALL") ? null : region.getBigBoundingBox ();
 
-//            File f = CachedData.timeZoneEngineCacheFile ();
-//            if (f.exists ()) f.delete ();
             timeZoneEngine = CachedData.loadTimeZoneEngine ();
             if (timeZoneEngine == null)
             {

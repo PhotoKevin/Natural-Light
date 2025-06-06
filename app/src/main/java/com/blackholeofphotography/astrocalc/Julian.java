@@ -160,7 +160,7 @@ public class Julian
    public static double JulianEphemerisDay (double jd)
    {
       double year = 100.0 * JulianCentury (jd) + 2000;
-      return jd + DeltaT.DeltaT ((int) year) / 86400;
+      return jd + DeltaT.deltaT ((int) year) / 86400;
    }
 
 

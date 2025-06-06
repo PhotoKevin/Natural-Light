@@ -84,6 +84,7 @@ public class DisplayStatus
       return mZoneId;
    }
 
+   @SuppressWarnings ("unused")
    public static ZonedDateTime getRawTimeStamp ()
    {
       return mTimeStamp.withSecond (0);
@@ -146,6 +147,7 @@ public class DisplayStatus
       return mMoonRise;
    }
 
+   @SuppressWarnings ("unused")
    public static AstroPosition getMoonRisePosition ()
    {
       calculatePositions ();
@@ -158,6 +160,7 @@ public class DisplayStatus
       return mMoonSet;
    }
 
+   @SuppressWarnings ("unused")
    public static AstroPosition getMoonSetPosition ()
    {
       calculatePositions ();
@@ -181,6 +184,7 @@ public class DisplayStatus
       return new AstroPosition ((float) position.getAzimuth (), (float) position.getElevation ());
    }
 
+   @SuppressWarnings ("unused")
    private static AstroPosition calculateMoonPosition (ZonedDateTime when, IGeoPoint where)
    {
       double jd = Julian.JulianFromZonedDateTime (when);
@@ -306,7 +310,7 @@ public class DisplayStatus
             double jd = Julian.JulianFromZonedDateTime (displayTime);
             mMoonPosition = Moon.MoonTopocentricPosition (jd, mLocation.getLatitude (), mLocation.getLongitude (), 0);
 
-            final RiseTransitSet moonRiseSet = MoonRise.MoonRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude (), 0);
+            final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude (), 0);
             mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
             mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
 

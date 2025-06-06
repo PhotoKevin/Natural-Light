@@ -11,11 +11,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
-import android.view.WindowManager;
 
 import org.osmdroid.library.R;
 import org.osmdroid.views.MapView;
@@ -30,9 +27,7 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider
    private static final String LOG_TAG = "CompassOverlay";
    private Paint sSmoothPaint = new Paint (Paint.FILTER_BITMAP_FLAG);
    protected MapView mMapView;
-   private final Display mDisplay;
    protected Bitmap mCompassFrameBitmap;
-   protected Bitmap mCompassRoseBitmap;
    private final Matrix mCompassMatrix = new Matrix ();
    private boolean mIsCompassEnabled;
    private boolean wasEnabledOnPause = false;
@@ -49,10 +44,10 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider
    {
       super ();
       mMapView = mapView;
-      final WindowManager windowManager = (WindowManager) context
-            .getSystemService (Context.WINDOW_SERVICE);
+      //final WindowManager windowManager = (WindowManager) context
+      //      .getSystemService (Context.WINDOW_SERVICE);
 
-      mDisplay = windowManager.getDefaultDisplay ();
+      //mDisplay = windowManager.getDefaultDisplay ();
       // Requires a higher API (30) than I want
       //mDisplay = context.getDisplay ();
 
@@ -86,8 +81,6 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider
       sSmoothPaint = null;
       this.disableCompass ();
       mCompassFrameBitmap.recycle ();
-      if (mCompassRoseBitmap != null)
-         mCompassRoseBitmap.recycle ();
       super.onDetach (mapView);
    }
 
@@ -259,23 +252,6 @@ public class CompassOverlay extends Overlay implements IOverlayMenuProvider
       final int intY = (int) (radius * Math.sin (dblRadians));
 
       return new Point ((int) centerX + intX, (int) centerY - intY);
-   }
-
-
-   private int getDisplayOrientation ()
-   {
-      switch (mDisplay.getRotation ())
-      {
-      case Surface.ROTATION_90:
-         return 90;
-      case Surface.ROTATION_180:
-         return 180;
-      case Surface.ROTATION_270:
-         return 270;
-      case Surface.ROTATION_0:
-      default:
-         return 0;
-      }
    }
 
    // Called from constructor

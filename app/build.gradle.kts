@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 import org.apache.tools.ant.util.JavaEnvUtils.VERSION_11
 import org.jetbrains.kotlin.com.intellij.psi.compiled.ClassFileDecompilers.Full
 
@@ -15,8 +16,8 @@ android {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.0"
+        versionCode = 8
+        versionName = "1.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -24,7 +25,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             ndk {
                 debugSymbolLevel = "FULL"
             }
@@ -38,8 +42,13 @@ android {
         viewBinding = true
         buildConfig = true
     }
-}
 
+    packaging {
+        resources {
+            excludes += "data.tar.zstdX"
+        }
+    }
+}
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.7.0")

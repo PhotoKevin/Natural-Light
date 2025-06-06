@@ -10,7 +10,7 @@ public class DeltaT
 
    private static double forced_deltat = 0.0;
    private static boolean force_deltat = false;
-   private static org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger (DeltaT.class);
+   // private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger (DeltaT.class);
 
    public static void ForceDeltaT (double value)
    {
@@ -127,7 +127,7 @@ public class DeltaT
          return 71.25; // Last known prediction.
    }
 
-   public static double DeltaT (int year)
+   public static double deltaT (int year)
    {
       if (force_deltat)
          return forced_deltat;

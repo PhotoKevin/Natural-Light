@@ -15,7 +15,7 @@ public class MoonRise
       return (jd1 - jd0) * fractional + jd0;
    }
 
-   public static RiseTransitSet MoonRise (double jd, double latitude, double longitude, double elevation)
+   public static RiseTransitSet moonRise (double jd, double latitude, double longitude, double elevation)
    {
       RiseTransitSet rts = new RiseTransitSet (-1, -1, -1);
 
@@ -36,12 +36,12 @@ public class MoonRise
          int s1 = (tc1.getElevation () + moon_h0 < 0) ? -1 : 1;
          if (s0 != s1)
          {
-            boolean isrise = s0 < 0;
+            boolean isRise = s0 < 0;
             double jdc = 0;
             for (int i = 0; i < 40; i++)
             {
                tc0 = MoonTopocentricPosition (jd0, latitude, longitude, elevation);
-               tc1 = MoonTopocentricPosition (jd1, latitude, longitude, elevation);
+               // Why did this put tc1 as MoonTopocentricPosition (jd1, latitude, longitude, elevation);
 
                jdc = interpolate (jd0, jd1, moon_h0, latitude, longitude, elevation);
                TopocentricPosition tc = MoonTopocentricPosition (jdc, latitude, longitude, elevation);
@@ -55,7 +55,7 @@ public class MoonRise
             }
 
             double hour2 = (jdc - jd) * 24;
-            if (isrise)
+            if (isRise)
                rts.rise = hour2;
             else
                rts.set = hour2;
@@ -65,8 +65,8 @@ public class MoonRise
             double jdc = 0;
             for (int i = 0; i < 40; i++)
             {
-               tc0 = MoonTopocentricPosition (jd0, latitude, longitude, elevation);
-               tc1 = MoonTopocentricPosition (jd1, latitude, longitude, elevation);
+//               Possible tc0 as MoonTopocentricPosition (jd0, latitude, longitude, elevation);
+//               Possible tc1 as MoonTopocentricPosition (jd1, latitude, longitude, elevation);
 
                jdc = jd0 + (jd1 - jd0) / 2;
                TopocentricPosition tc = MoonTopocentricPosition (jdc, latitude, longitude, elevation);
@@ -79,9 +79,7 @@ public class MoonRise
                   break;
             }
 
-
-            double hour2 = (jdc - jd) * 24;
-            rts.transit = hour2;
+            rts.transit = (jdc - jd) * 24;
          }
       }
 

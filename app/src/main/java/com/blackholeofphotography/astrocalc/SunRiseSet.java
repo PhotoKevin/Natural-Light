@@ -2,9 +2,16 @@ package com.blackholeofphotography.astrocalc;
 
 public class SunRiseSet
 {
-   public static RiseTransitSet SunRise (double jd, double latitude, double longitude) //, double *rise, double *transet, double *set)
+   public static RiseTransitSet SunRise (double jd, double latitude, double longitude) //, double *rise, double *transit, double *set)
    {
       double rise, transit, set;
+
+      // Transition from normal nomenclature to that used by Meeus.
+      //noinspection UnnecessaryLocalVariable
+      double sigma = longitude; // Longitude of observer in degrees
+      //noinspection UnnecessaryLocalVariable
+      double phi = latitude; // Latitude of observer in degrees
+
 
       // Move to 0 hour UTC
       jd = Math.floor (jd - 0.5) + 0.5;
@@ -25,12 +32,10 @@ public class SunRiseSet
 
       // A.2.3
       // Calculate the approximate sun transit time, m0 , in fraction of day
-      double sigma = longitude; // Longitude of observer in degrees
       double m0 = (alpha[1] - sigma - v) / 360.0;
 
       // A.2.4
       double hprime0 = -0.8333;
-      double phi = latitude; // Latitude of observer in degrees
       double H0 = Mathd.sind (hprime0) - Mathd.sind (phi) * Mathd.sind (delta[1]);
       H0 /= Mathd.cosd (phi) * Mathd.cosd (delta[1]);
       if (H0 < -1.0 || H0 > 1.0)
@@ -58,9 +63,9 @@ public class SunRiseSet
 
       // A.2.9
       int year = (int) (100.0 * Julian.JulianCentury (jd) + 2000);
-      double n0 = m0 + DeltaT.DeltaT (year) / 86400;
-      double n1 = m1 + DeltaT.DeltaT (year) / 86400;
-      double n2 = m2 + DeltaT.DeltaT (year) / 86400;
+      double n0 = m0 + DeltaT.deltaT (year) / 86400;
+      double n1 = m1 + DeltaT.deltaT (year) / 86400;
+      double n2 = m2 + DeltaT.deltaT (year) / 86400;
 
       // A.2.10
       double a = Normalization.NormalizeZeroToOne (alpha[1] - alpha[0]);
@@ -76,7 +81,7 @@ public class SunRiseSet
       double alphaprime1 = alpha[1] + n1 * (a + b + c * n1) / 2.0;
       double alphaprime2 = alpha[1] + n2 * (a + b + c * n2) / 2.0;
 
-      double deltaprime0 = delta[1] + n0 * (aprime + bprime + cprime * n0) / 2.0;
+      //double deltaprime0 = delta[1] + n0 * (aprime + bprime + cprime * n0) / 2.0;
       double deltaprime1 = delta[1] + n1 * (aprime + bprime + cprime * n1) / 2.0;
       double deltaprime2 = delta[1] + n2 * (aprime + bprime + cprime * n2) / 2.0;
 

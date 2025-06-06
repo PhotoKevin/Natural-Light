@@ -197,6 +197,7 @@ public class Moon
             385000.56 + (summation_r/1000));
    }
 
+   @SuppressWarnings ("unused")
    public GeocentricPosition MoonGeocentricEquatorialPosition (double jd)
    {
       LoadTerms ();
@@ -211,10 +212,10 @@ public class Moon
       // MPA 3.5.2
       double epsilon = EclipticTrueObliquityDegrees (jd);
 
-      double deltaPsi, deltaEpsilon;
+
       var nutationalLongitude = Nutation.NutationLongitude (jd); //, &deltaPsi, &deltaEpsilon);
-      deltaPsi = nutationalLongitude.getDeltaPsi ();
-      deltaEpsilon = nutationalLongitude.getDeltaEpsilon ();
+      double deltaPsi = nutationalLongitude.getDeltaPsi ();
+      //double deltaEpsilon = nutationalLongitude.getDeltaEpsilon ();
       lambda += deltaPsi;
 
 
@@ -224,7 +225,7 @@ public class Moon
 
       // 3.9 Moon Geocentric declination
       double low_delta = Mathd.asind (Mathd.sind(beta) * Mathd.cosd(epsilon) + Mathd.cosd(beta) * Mathd.sind(epsilon) * Mathd.sind(lambda));
-      return new GeocentricPosition (alpha, low_delta);
+      return new GeocentricPosition (alpha, low_delta, capdelta);
    }
 
    public static TopocentricPosition MoonTopocentricPosition (double jd, double latitude, double longitude, double elevation) //, double *ra, double *dec)
@@ -241,10 +242,9 @@ public class Moon
       // MPA 3.5.2
       double epsilon = EclipticTrueObliquityDegrees (jd);
 
-      double deltaPsi, deltaEpsilon;
       var nutationalLongitude = Nutation.NutationLongitude (jd); //, &deltaPsi, &deltaEpsilon);
-      deltaPsi = nutationalLongitude.getDeltaPsi ();
-      deltaEpsilon = nutationalLongitude.getDeltaEpsilon ();
+      double deltaPsi = nutationalLongitude.getDeltaPsi ();
+      // double deltaEpsilon = nutationalLongitude.getDeltaEpsilon ();
 
       lambda += deltaPsi;
 

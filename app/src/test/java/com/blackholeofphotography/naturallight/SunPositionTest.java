@@ -23,8 +23,6 @@ public class SunPositionTest
       double sunRise = Tools.fractionalDegrees (10, 28, 0);
       double transit = Tools.fractionalDegrees (17, 41, 0);
       double sunSet = Tools.fractionalDegrees (0, 55, 0);
-      double riseAzimuth = 65;
-      double setAzimuth = 296;
       double one_minute = 1.0/60.0; // 0.01667
 
       RiseTransitSet riseTransitSet = SunRiseSet.SunRise (jd,homeLatitude, homeLongitude);
@@ -34,11 +32,8 @@ public class SunPositionTest
 
       // 2000 Aug 01 12:00:00.0      8.7981391        + 17.864070       1.014915860
       TopocentricPosition position = Sun.SunTopocentricPosition (jd, homeLatitude, homeLongitude, homeAltitude);
-      double alphaPrime = position.getRa ();;
+      double alphaPrime = position.getRa ();
       double deltaPrime = position.getDec ();
-//      double hPrime = position[2];
-      double e = position.getElevation ();
-      double capPhi = position.getAzimuth ();
 
       Assert.assertEquals (8.7981391 * 15, alphaPrime, 0.001);
       Assert.assertEquals (17.864070 , deltaPrime, 0.001);

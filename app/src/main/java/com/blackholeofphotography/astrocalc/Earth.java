@@ -2,51 +2,39 @@ package com.blackholeofphotography.astrocalc;
 
 public class Earth
 {
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL0 = null;
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL1 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL2 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL3 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL4 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsL5 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsR0 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsR1 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsR2 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsR3 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsR4 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsB0 = new PlanataryPeriodicTerm[2];
-   static PlanataryPeriodicTerm[] EarthPeriodicTermsB1 = new PlanataryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL0 = null;
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL1 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL2 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL3 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL4 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsL5 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsR0 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsR1 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsR2 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsR3 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsR4 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsB0 = new PlanetaryPeriodicTerm[2];
+   static PlanetaryPeriodicTerm[] EarthPeriodicTermsB1 = new PlanetaryPeriodicTerm[2];
 
-   /*
-
-
-
-
-EarthEphT EarthEphemeris =
-{
-   EarthMeanAnomalyMeeus47
-};
-
-
-*/
    private static void LoadTerms ()
    {
       if (EarthPeriodicTermsL0 == null)
       {
-         EarthPeriodicTermsL0 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL0.txt");
-         EarthPeriodicTermsL1 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL1.txt");
-         EarthPeriodicTermsL2 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL2.txt");
-         EarthPeriodicTermsL3 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL3.txt");
-         EarthPeriodicTermsL4 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL4.txt");
-         EarthPeriodicTermsL5 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsL5.txt");
+         EarthPeriodicTermsL0 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL0.txt");
+         EarthPeriodicTermsL1 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL1.txt");
+         EarthPeriodicTermsL2 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL2.txt");
+         EarthPeriodicTermsL3 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL3.txt");
+         EarthPeriodicTermsL4 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL4.txt");
+         EarthPeriodicTermsL5 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsL5.txt");
 
-         EarthPeriodicTermsR0 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsR0.txt");
-         EarthPeriodicTermsR1 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsR1.txt");
-         EarthPeriodicTermsR2 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsR2.txt");
-         EarthPeriodicTermsR3 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsR3.txt");
-         EarthPeriodicTermsR4 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsR4.txt");
+         EarthPeriodicTermsR0 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsR0.txt");
+         EarthPeriodicTermsR1 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsR1.txt");
+         EarthPeriodicTermsR2 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsR2.txt");
+         EarthPeriodicTermsR3 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsR3.txt");
+         EarthPeriodicTermsR4 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsR4.txt");
 
-         EarthPeriodicTermsB0 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsB0.txt");
-         EarthPeriodicTermsB1 = PlanataryPeriodicTerm.loadPlanataryTerms ("EarthPeriodicTermsB1.txt");
+         EarthPeriodicTermsB0 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsB0.txt");
+         EarthPeriodicTermsB1 = PlanetaryPeriodicTerm.loadPlanetaryTerms ("EarthPeriodicTermsB1.txt");
       }
    }
 
@@ -88,8 +76,8 @@ EarthEphT EarthEphemeris =
       double[] terms = {-4680.93, -1.55, 1999.25, -51.38, -249.67, -39.05, 7.12, 27.87, 5.79, 2.45};
 
       e0 = 84381.448; // 23 degrees 26' 21.448" converted to seconds.
-      // e0 = 23 + 26.0/60 + 21.448 / 3600;
-      // e0 *= 3600;
+      // let e0 = 23 + 26.0/60 + 21.448 / 3600;
+      // let e0 *= 3600;
       for (int i = 0; i < terms.length; i++)
       {
          e0 += terms[i] * pow;
@@ -105,7 +93,7 @@ EarthEphT EarthEphemeris =
       return epsilon;
    }
 
-   static double EarthPowerSeries (double jme, PlanataryPeriodicTerm[] terms)
+   static double EarthPowerSeries (double jme, PlanetaryPeriodicTerm[] terms)
    {
       double summation = 0.0;
       for (int i = 0; i < terms.length; i++)

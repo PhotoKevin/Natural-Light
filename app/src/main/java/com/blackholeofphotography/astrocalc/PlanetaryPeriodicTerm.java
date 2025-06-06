@@ -10,12 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-public class PlanataryPeriodicTerm
+public class PlanetaryPeriodicTerm
 {
    final double  a;
    final double  b, c;
 
-   PlanataryPeriodicTerm (double a, double b, double c)
+   PlanetaryPeriodicTerm (double a, double b, double c)
    {
       this.a = a;
       this.b = b;
@@ -23,7 +23,7 @@ public class PlanataryPeriodicTerm
    }
 
 
-   private static PlanataryPeriodicTerm parsePeriodicTerm (String inpline)
+   private static PlanetaryPeriodicTerm parsePeriodicTerm (String inpline)
    {
       double a;
       double b;
@@ -48,14 +48,14 @@ public class PlanataryPeriodicTerm
          c = 0;
       }
 
-      return new PlanataryPeriodicTerm (a, b, c);
+      return new PlanetaryPeriodicTerm (a, b, c);
    }
 
    public static final String  ASSET_BASE_PATH = "../app/src/main/assets/";
 
-   public static PlanataryPeriodicTerm[]  loadPlanataryTerms (String FileName)
+   public static PlanetaryPeriodicTerm[] loadPlanetaryTerms (String FileName)
    {
-      ArrayList<PlanataryPeriodicTerm> PeriodicTerms = new ArrayList<> ();
+      ArrayList<PlanetaryPeriodicTerm> PeriodicTerms = new ArrayList<> ();
       try
       {
          BufferedReader br;
@@ -81,6 +81,6 @@ public class PlanataryPeriodicTerm
          throw new RuntimeException (e);
       }
 
-      return PeriodicTerms.toArray (new PlanataryPeriodicTerm[0]);
+      return PeriodicTerms.toArray (new PlanetaryPeriodicTerm[0]);
    }
 }

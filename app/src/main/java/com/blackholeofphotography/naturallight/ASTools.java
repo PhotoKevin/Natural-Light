@@ -20,6 +20,7 @@ import java.util.Locale;
 
 public class ASTools
 {
+   @SuppressWarnings ("unused")
    public static boolean isEmulator()
    {
       return (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
@@ -40,6 +41,7 @@ public class ASTools
               || Build.PRODUCT.contains("simulator");
    }
 
+   @SuppressWarnings ("unused")
    public static void sleep (int milliseconds)
    {
       try

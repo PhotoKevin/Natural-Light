@@ -13,6 +13,7 @@ public class NutationDeltas
       this.deltaEpsilon = deltaEpsilon;
    }
 
+   @SuppressWarnings ("unused")
    public double getJd ()
    {
       return jd;

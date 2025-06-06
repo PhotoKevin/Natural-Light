@@ -32,13 +32,10 @@ public class EclipseTest
       double longitude = -104.1;
       double elevation = 115;
       double jd = Julian.JulianFromYMDHMS (2024, 4, 8, 18, 18, 29);
-      double sunRA, sunDeclenation;
-      double moonRA, moonDeclenation;
 
-//      var sunPostion = Sun.SunTopocentricPosition (jd, latitude, longitude, elevation);
-      var sunPostion = Sun.SunTopocentricPosition (jd, latitude, longitude, elevation);
-      var moonPostion = Moon.MoonTopocentricPosition (jd, latitude, longitude, elevation);
-      Assert.assertEquals (sunPostion.getRa (), moonPostion.getRa (), 0.01);  // 17.908969524947626
-      Assert.assertEquals (sunPostion.getDec (), moonPostion.getDec (), 0.01); // 7.5962499348548311
+      var sunPosition = Sun.SunTopocentricPosition (jd, latitude, longitude, elevation);
+      var moonPosition = Moon.MoonTopocentricPosition (jd, latitude, longitude, elevation);
+      Assert.assertEquals (sunPosition.getRa (), moonPosition.getRa (), 0.01);  // 17.908969524947626
+      Assert.assertEquals (sunPosition.getDec (), moonPosition.getDec (), 0.01); // 7.5962499348548311
    }
 }

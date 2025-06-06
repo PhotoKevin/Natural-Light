@@ -42,13 +42,6 @@
         <item>19</item>
         <item>20</item>
     </string-array>
-    <string-array name="quadrants">
-        <item>ALL</item>
-        <item>NE</item>
-        <item>NW</item>
-        <item>SE</item>
-        <item>SW</item>
-    </string-array>
     <string-array name="countries">
         <item>All Countries</item>
         <item>Aruba</item>

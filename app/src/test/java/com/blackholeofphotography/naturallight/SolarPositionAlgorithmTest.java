@@ -22,8 +22,6 @@ public class SolarPositionAlgorithmTest
    private static final double SPA_TRUE_OBLIQUITY_ECLIPTIC = 23.440465; // aka epsilon
    private static final double SPA_SUN_APPARENT_LONGITUDE = 204.0085519281; // aka lambda
 
-   private static final double SPA_OBSERVER_LOCAL_HOUR_ANGLE = 11.105900; //
-   private static final double SPA_TOPOCENTRIC_LOCAL_HOUR_ANGLE = 11.10629; //
    private static final double SPA_SUN_TOPOCENTRIC_RA = 202.22704;
    private static final double SPA_SUN_TOPOCENTRIC_DEC = -9.316179;
 
@@ -56,12 +54,6 @@ public class SolarPositionAlgorithmTest
       MoonEphemeris.MoonMeanLongitudeCoefficients = MoonEphemeris.MoonMeanLongitudeMeeus47;
 
       EarthEphemeris.EarthMeanAnomalyCoefficients = EarthEphemeris.EarthMeanAnomalyMeeus25;
-
-//      spa.Pressure = 820;
-//      spa.Temperature = 11;
-//      spa.Slope = 30;
-//      spa.AzmRotation = -10;
-//      spa.AtmosRefract = 0.5667;
 
       double jd = Julian.JulianFromYMDHMS (2003, 10, 17, 12 + 7, 30, 30);
       Assert.assertEquals (SPA_JD, jd, 0.000001);
@@ -110,19 +102,8 @@ public class SolarPositionAlgorithmTest
       double r = Earth.EarthHeliocentricRadiusAU (jd);
       Assert.assertEquals (SPA_EARTH_HELIOCENTRIC_RADIUS, r, 0.00001);
 
-//      double eta = spadata.eta;
-//      Assert.assertEquals (spadata.eta, eta, 0.00001);
-
-//      double deltaTau = Sun.SunAberrationCorrection (jd);
-//      Assert.assertEquals (-0.005711359293251811, deltaTau, 0.00000001);
-
-////Incidence:     25.187000 degrees
-
       final RiseTransitSet riseTransitSet = SunRiseSet.SunRise (jd, SPA_LATITUDE, SPA_LONGITUDE);
       Assert.assertEquals (SPA_SUNRISE, riseTransitSet.getRise ()-7, 1.0/60);
       Assert.assertEquals (SPA_SUNSET, riseTransitSet.getSet ()+24-7, 1.0/60);
-//      double trans = 18 + 46/60.0 + 4.97/3600;
-//      Assert.assertEquals (transit, trans, 1.0/60, L"Transit error");
-
    }
 }

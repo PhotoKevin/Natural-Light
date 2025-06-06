@@ -17,6 +17,7 @@
         android:textAlignment="center"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -75,6 +76,7 @@
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
+        android:contentDescription="@string/date_time_selector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/useCurrentTime" />
 
@@ -83,6 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
+        android:contentDescription="@string/date_time_selector"
         android:timePickerMode="spinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/datePicker1" />
@@ -101,12 +104,12 @@
         android:id="@+id/timeZone"
         android:layout_width="0dp"
         android:layout_height="48dp"
+        android:contentDescription="@string/timezone"
         android:textColor="@color/primaryTextColor"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/useCurrentTime"
 
         app:layout_constraintEnd_toEndOf="parent"
-
         app:layout_constraintStart_toEndOf="@+id/useCurrentTime"
         app:layout_constraintTop_toBottomOf="@+id/textLongitude"
         app:layout_constraintVertical_bias="0.0" />

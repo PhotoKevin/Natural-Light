@@ -13,7 +13,7 @@ public class Sun
    /// Right Ascension is the East/West angle
    /// Is this the True, or Mean RA?
    /// SPA 3.9
-   /// </remoarks>
+   /// </remarks>
    public static double SunGeocentricRightAscension (double jd)
    {
       double lambda = Sun.SunApparentLongitude (jd);
@@ -110,8 +110,9 @@ public class Sun
    /// </summary>
    /// <param name="jd">Julian Date</param>
    /// <param name="longitude">Longitude of observer (aka sigma σ)</param>
-   /// <param name="rightAscention">The Right Ascension of the body (aka alpha α)</param>
+   /// <param name="rightAscension">The Right Ascension of the body (aka alpha α)</param>
    /// <returns>The hour angle in degrees</returns>
+
    public static double ObserverLocalHourAngleDegrees (double jd, double longitude, double rightAscension)
    {
       double nu = Sidereal.ApparentSiderealDegrees (jd);

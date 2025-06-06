@@ -307,6 +307,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       }
    }
 
+   /** @noinspection unused*/
    public void onClick (View v)
    {
       final Location newLocation = new Location ("", "", mMapView.getMapCenter (), DisplayStatus.getTimeStamp (), DisplayStatus.useCurrentTime (), DisplayStatus.getZoomLevel ());

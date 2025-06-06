@@ -16,13 +16,13 @@ If you want details, hop over to the Details screen to get the exact elevation a
 
 ## Issues
 
-My decision to avoid Google maps due to my distrust of their privacy polices led me to Roman Iakovlev's Timehape library. This works entirely offline but has a substantial initialization cost of more than 10 seconds on my phone. In computer time that's an eternity. The application is usable during that time, but works in UTC. Once initialization has completed, the display automatically updates to local time. 
+My decision to avoid Google maps due to my distrust of their privacy polices led me to Roman Iakovlev's TimeShape library. This works entirely offline but has a substantial initialization cost of more than 10 seconds on my phone. In computer time that's an eternity. The application is usable during that time, but works in UTC. Once initialization has completed, the display automatically updates to local time. 
 
 ## Credits
 
-As mentioned earlier, the maps come from the amazing [Open Steet Map](https://www.openstreetmap.org) project.
+As mentioned earlier, the maps come from the amazing [Open Street Map](https://www.openstreetmap.org) project.
 
-Timezone data is from Roman Iakovlev's [Timeshape](https://github.com/RomanIakovlev/timeshape) library.
+Timezone data is from Roman Iakovlev's [TimeShape](https://github.com/RomanIakovlev/timeshape) library.
 
 Astronomical calculations are based on Jean Meeus' Astronomical Algorithms 2nd edition ISBN 978-0943396613. 
 

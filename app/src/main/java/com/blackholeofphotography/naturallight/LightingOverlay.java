@@ -27,24 +27,19 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
    protected long mLastRender = 0;
    /** @noinspection FieldCanBeLocal*/
    final private int mLastRenderLag = 200;
-
    private final Matrix mSunMoonMatrix = new Matrix ();
-
-
-   protected final float mScale;
-
 
 
    // ===========================================================
    // Constructors
    // ===========================================================
 
+   /** @noinspection unused*/
    @SuppressWarnings({"unchecked", "deprecation", "RedundantSuppression"})
-   public LightingOverlay (Context context,
+   public LightingOverlay (Context ignoredContext,
                            MapView mapView)
    {
       super ();
-      mScale = context.getResources ().getDisplayMetrics ().density * 12;
 
       mMapView = mapView;
       //final WindowManager windowManager = (WindowManager) context

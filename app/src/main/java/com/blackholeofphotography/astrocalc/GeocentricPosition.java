@@ -8,6 +8,7 @@ public class GeocentricPosition
 {
    private final double ra;
    private final double dec;
+   private final double distance;
 
    /**
     * Construct a new GeocentricPosition object
@@ -18,6 +19,14 @@ public class GeocentricPosition
    {
       this.ra = ra;
       this.dec = dec;
+      this.distance = -1;
+   }
+
+   public GeocentricPosition (double ra, double dec, double distance)
+   {
+      this.ra = ra;
+      this.dec = dec;
+      this.distance = distance;
    }
 
    /**
@@ -36,5 +45,11 @@ public class GeocentricPosition
    public double getDec ()
    {
       return dec;
+   }
+
+   @SuppressWarnings ("unused")
+   public double getDistance ()
+   {
+      return distance;
    }
 }

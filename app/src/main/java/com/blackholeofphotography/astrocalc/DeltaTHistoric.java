@@ -33,13 +33,13 @@ public class DeltaTHistoric
    }
 
 
-   private static void parseDeltaTHistoric (String inpline)
+   private static void parseDeltaTHistoric (String inline)
    {
 
 //      MJD	          Year	TT-UT	UT1-UTC	Error
 //      59762.000	2022.50	69.29	-0.104	0.031
 
-      String[] s = inpline.split (" +");
+      String[] s = inline.split (" +");
       int year = Integer.parseInt (s[1]);
       int month = Integer.parseInt (s[2]);
       int day = Integer.parseInt (s[3]);
@@ -49,7 +49,7 @@ public class DeltaTHistoric
    }
 
    public static final String  ASSET_BASE_PATH = "../app/src/main/assets/";
-   private static final String DELTAT_PRED = "deltat.data";
+   private static final String DELTAT_PREDICTED = "deltat.data";
    public static void load ()
    {
       if (getHistorical ().size () > 0)
@@ -59,20 +59,20 @@ public class DeltaTHistoric
       {
          BufferedReader br;
 
-         Path p = Paths.get (ASSET_BASE_PATH, DELTAT_PRED);
+         Path p = Paths.get (ASSET_BASE_PATH, DELTAT_PREDICTED);
          if (p.toFile ().exists ())
             br = new BufferedReader (new InputStreamReader (new FileInputStream (p.toFile ())));
          else
          {
             AssetManager assetManager = com.blackholeofphotography.naturallight.MainActivity.getContext ().getAssets ();
-            br = new BufferedReader (new InputStreamReader (assetManager.open (DELTAT_PRED)));
+            br = new BufferedReader (new InputStreamReader (assetManager.open (DELTAT_PREDICTED)));
          }
 
          while (br.ready ())
          {
-            String inpline = br.readLine ();
-//            if (inpline.length () > 0 && Character.isDigit (inpline.toCharArray ()[0]))
-               parseDeltaTHistoric (inpline);
+            String line = br.readLine ();
+//            if (line.length () > 0 && Character.isDigit (line.toCharArray ()[0]))
+               parseDeltaTHistoric (line);
          }
       }
       catch (IOException e)

@@ -50,4 +50,5 @@
     <string name="title_select_date_time">Select Date/Time</string>
     <string name="moon_elevation">Moon Elevation</string>
     <string name="moon_azimuth">Moon Azimuth</string>
+    <string name="timezone">TimeZone</string>
 </resources>

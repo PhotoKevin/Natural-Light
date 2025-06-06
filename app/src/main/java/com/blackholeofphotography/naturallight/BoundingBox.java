@@ -66,8 +66,10 @@ public class BoundingBox implements Serializable
       return String.format (Locale.getDefault (),"%f,%f:%f,%f", mMinLatitude, mMinLongitude, mMaxLatitude, mMaxLongitude);
    }
 
+   @SuppressWarnings ("unused")
    public boolean intersects (BoundingBox box)
    {
+      //noinspection RedundantIfStatement
       if (this.getMinLongitude () < box.getMaxLongitude () && this.getMaxLongitude () > box.getMinLongitude () &&
          this.getMaxLatitude () > box.getMinLatitude () && this.getMinLatitude () < box.getMaxLatitude ())
          return true;

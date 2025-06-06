@@ -1,0 +1,4 @@
+The timeshape data is built into the jar file downloaded from Maven. It lives in
+(User)\.gradle\caches\modules-2\files-2.1\net.iakovlev\timeshape\2024a.25\(some cache ID)\timeshape-2024a.25.jar
+
+data.tar.zstd

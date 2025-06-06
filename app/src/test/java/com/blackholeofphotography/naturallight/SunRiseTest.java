@@ -32,7 +32,14 @@ public class SunRiseTest
 
       double jd = 2452930.3128472222;
       double latitude = 39.742476;
+      //noinspection UnnecessaryLocalVariable
       double longitude = -105.1786;
+
+      // Transition from normal nomenclature to that used by Meeus.
+      //noinspection UnnecessaryLocalVariable
+      double sigma = longitude; // Longitude of observer in degrees
+      //noinspection UnnecessaryLocalVariable
+      double phi = latitude; // Latitude of observer in degrees
 
       // Move to 0 hour UTC
       jd = Math.floor (jd-0.5) + 0.5;
@@ -64,14 +71,12 @@ public class SunRiseTest
 
       // A.2.3
       // Calculate the approximate sun transit time, m0 , in fraction of day
-      double sigma = longitude; // Longitude of observer in degrees
       double m0 = (alpha[1] - sigma - v) / 360.0;
 
       Assert.assertEquals (0.782112340255676, m0, 0.0001);
 
       // A.2.4
       double hprime0 = -0.8333;
-      double phi = latitude; // Latitude of observer in degrees
       double H0 = Mathd.sind (hprime0) - Mathd.sind (phi) * Mathd.sind (delta[1]);
       H0 /= Mathd.cosd (phi) * Mathd.cosd (delta[1]);
       H0 = Mathd.acosd (H0);

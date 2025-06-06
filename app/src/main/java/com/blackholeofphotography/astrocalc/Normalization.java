@@ -38,30 +38,6 @@ public class Normalization
    }
 
    /// <summary>
-   /// Normalize an angle into the range of 0..360
-   /// </summary>
-   /// <param name="angle">Angle in degrees</param>
-   /// <returns>The normalized angle</returns>
-   /// <remarks>
-   /// SPA 3.2.6
-   /// Limit L to the range from 0 to 360. That can be accomplished by dividing L by
-   /// 360 and recording the decimal fraction of the division as F. If L is positive, then
-   /// the limited L = 360 * F. If L is negative, then the limited L = 360 - 360 * F.
-   /// </remarks>
-
-   public static double NormalizeZeroTo360DegreesX (double angle)
-   {
-      double frac = Tools.fraction (angle / 360.0);
-      if (angle >= 0.0)
-         angle = 360.0 * frac;
-      else
-         angle = 360.0 - (360.0 * frac);
-
-      return angle;
-   }
-
-
-   /// <summary>
    /// Normalize the value into the range zero .. one,
    /// but only if the absolute value was > 2.0
    /// </summary>

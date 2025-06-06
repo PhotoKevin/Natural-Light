@@ -94,14 +94,14 @@ public class SunTest
       double lambda = Sun.SunApparentLongitude (jd); // Uses SunGeocentricLongitude, NutationLongitude, SunAberrationCorrection
       Assert.assertEquals (expected, lambda, 0.02);
    }
-
-   @Test
-   public void MeanSunAnomalyTest()
-   {
-      // I don't have  a test, but if Nutation passes, this is ok.
-//			double ma = SunMeanAnomaly (SPA_JD);
-//			Assert.assertEquals (spadata.lambda, ma, 0.02, L"ma error");
-   }
+//
+//   @Test
+//   public void MeanSunAnomalyTest()
+//   {
+//      // I don't have  a test, but if Nutation passes, this is ok.
+////			double ma = SunMeanAnomaly (SPA_JD);
+////			Assert.assertEquals (spadata.lambda, ma, 0.02, L"ma error");
+//   }
 
    @Test
    public void SunGeocentricLongitudeTest ()
@@ -174,8 +174,8 @@ public class SunTest
       // 1990 Jan 01 00:00:00.0     18.7471348        - 23.043740       0.983349966
       double jd = Julian.JulianFromYMDHMS (1990, 1, 1, 0, 0, 0);
 
-      double lat = Tools.fractionalDegrees (-83, 47, 5.7);
-      double lon = Tools.fractionalDegrees (42, 17, 19.6);
+      double lon = -Tools.fractionalDegrees (83, 47, 5.7);
+      double lat = Tools.fractionalDegrees (42, 17, 19.6);
 
       TopocentricPosition radec = Sun.SunTopocentricPosition (jd, lat, lon, 263);
       double ra = radec.getRa ();
@@ -184,11 +184,10 @@ public class SunTest
       ra /= 15.0;  // MICA uses Hour Angle, not Degrees
       Assert.assertEquals ( 18.7471348, ra, 0.005);
       Assert.assertEquals ( - 23.043740, dec, 0.005);
-
    }
 
    @Test
-   public void SunTopocentricPositionTest2 ()
+   public void ApparentTopocentricTest ()
    {
 
       //Computation path of the sun for:
@@ -216,12 +215,14 @@ public class SunTest
       //TZ: America/Detroit  EST
 
       double lat = Tools.fractionalDegrees (42, 16, 55.56);
-      double lon = Tools.fractionalDegrees (-83, 44, 54.49);
+      double lon = -Tools.fractionalDegrees (83, 44, 54.49);
 
 
-      double ra, dec;
+      // double ra, dec;
       double jd = Julian.JulianFromYMDHMS (2024, 2, 23, 10+5, 18, 0);
-      TopocentricPosition postion = Sun.SunTopocentricPosition (jd, lat, lon, 263);
+      TopocentricPosition position = Sun.SunTopocentricPosition (jd, lat, lon, 263);
+      Assert.assertEquals (336.36, position.getRa (), 0.01);
+      Assert.assertEquals (-9.863, position.getDec (), 0.001);
 
       // ra -> 336.36
       // dec -> -9.863
@@ -232,8 +233,5 @@ public class SunTest
 
       // MICA Local Hour Angle  -2.508484
       //    15 * -2.5 => 37.5
-
    }
-
-
 }
