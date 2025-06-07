@@ -2,6 +2,8 @@ package com.blackholeofphotography.naturallight;
 
 import com.blackholeofphotography.astrocalc.Julian;
 
+import org.junit.Assert;
+
 public class MicaTools
 {
    public static int extractNumber (String s, int beginIndex, int length)
@@ -15,6 +17,7 @@ public class MicaTools
       }
       catch (Exception e)
       {
+         Assert.fail (e.toString ());
          System.out.println (e);
          return 0;
       }

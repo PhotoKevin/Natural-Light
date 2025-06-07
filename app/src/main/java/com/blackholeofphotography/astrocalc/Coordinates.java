@@ -51,5 +51,24 @@ public class Coordinates
 
       return topocentricPosition;
    }
+
+
+   /// <summary>
+   /// Compute the Observer's Local Hour Angle in Degrees to the body
+   /// </summary>
+   /// <param name="jd">Julian Date</param>
+   /// <param name="longitude">Longitude of observer (aka sigma σ)</param>
+   /// <param name="rightAscension">The Right Ascension of the body (aka alpha α)</param>
+   /// <returns>The hour angle in degrees</returns>
+
+   public static double ObserverLocalHourAngleDegrees (double jd, double longitude, double rightAscension)
+   {
+      double nu = Sidereal.ApparentSiderealDegrees (jd);
+
+      double H = nu + longitude - rightAscension;
+
+      H = Normalization.NormalizeZeroTo360Degrees (H);
+      return H;
+   }
 }
 

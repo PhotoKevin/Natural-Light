@@ -1,9 +1,9 @@
 package com.blackholeofphotography.naturallight;
 
+import com.blackholeofphotography.astrocalc.Coordinates;
 import com.blackholeofphotography.astrocalc.GeocentricPosition;
 import com.blackholeofphotography.astrocalc.Julian;
 import com.blackholeofphotography.astrocalc.Sidereal;
-import com.blackholeofphotography.astrocalc.Sun;
 import com.blackholeofphotography.astrocalc.Tools;
 
 import org.junit.Assert;
@@ -12,7 +12,7 @@ import org.junit.Test;
 public class CoordinatesTest
 {
    @Test
-   public void Geo2TopoTest ()
+   public void Geocentric2TopocentricTest ()
    {
       // Meeus 13.b
       double lon = -Tools.fractionalDegrees (77, 3, 56);
@@ -25,7 +25,7 @@ public class CoordinatesTest
       double expectedNu = Tools.fractionalDegrees (8, 34, 56.853) * 15;
       Assert.assertEquals (expectedNu, nu, 0.00001);
 
-      double H = Sun.ObserverLocalHourAngleDegrees (jd, lon, geocentric.getRa ());
+      double H = Coordinates.ObserverLocalHourAngleDegrees (jd, lon, geocentric.getRa ());
       double expectedH = 64.352133;
       Assert.assertEquals (expectedH, H, 0.01);
 

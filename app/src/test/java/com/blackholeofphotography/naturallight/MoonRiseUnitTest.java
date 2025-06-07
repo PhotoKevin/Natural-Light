@@ -5,8 +5,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.blackholeofphotography.astrocalc.Julian;
+import com.blackholeofphotography.astrocalc.Moon;
 import com.blackholeofphotography.astrocalc.MoonRise;
 import com.blackholeofphotography.astrocalc.RiseTransitSet;
+import com.blackholeofphotography.astrocalc.TopocentricPosition;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -53,7 +56,20 @@ public class MoonRiseUnitTest
          Assert.assertEquals (mrs.Transit, riseTransitSet.getTransit (), allowedError);
          Assert.assertEquals (mrs.dataLine, mrs.Set, riseTransitSet.getSet (), allowedError);
 
-      }
 
+         if (riseTransitSet.getRise () >= 0)
+         {
+            double riseJD = mrs.jd + mrs.RiseHH/24.0 + mrs.RiseMM/(60.0*24);
+            final TopocentricPosition topocentricPosition = Moon.MoonTopocentricPosition (riseJD, mrs.position.latitude, mrs.position.longitude, mrs.position.altitude);
+            Assert.assertEquals (mrs.dataLine, mrs.RiseAz, topocentricPosition.getAzimuth (), 1);
+         }
+
+         if (riseTransitSet.getTransit () >= 0)
+         {
+            double transitJD = mrs.jd + mrs.TransHH/24.0 + mrs.TransMM/(60.0*24);
+            final TopocentricPosition topocentricPosition = Moon.MoonTopocentricPosition (transitJD, mrs.position.latitude, mrs.position.longitude, mrs.position.altitude);
+            Assert.assertEquals (mrs.dataLine, mrs.TransAlt, topocentricPosition.getElevation (), 1);
+         }
+      }
    }
 }

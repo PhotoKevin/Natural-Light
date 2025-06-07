@@ -5,6 +5,7 @@ import com.blackholeofphotography.astrocalc.Tools;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/** @noinspection SpellCheckingInspection*/
 public class MicaPosition
 {
    public double jd;

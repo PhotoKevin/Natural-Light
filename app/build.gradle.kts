@@ -58,7 +58,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
     implementation("com.github.tony19:logback-android:3.0.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
-    val nav_version = "2.7.7"
 
     // Java language implementation
     implementation("androidx.navigation:navigation-fragment:2.9.0")

@@ -56,6 +56,10 @@ class MicaRiseSet
             }
             else if (line.length () > 0 && line.substring (0, 1).matches ("[0-9]"))
             {
+               //          1         2         3         4         5         6         7
+               //01234567890123456789012345678901234567890123456789012345678901234567890123456789
+               //2024 Apr 09 (Tue)        11:26  73        18:27 62S        00:24 283
+
                MicaRiseSet rs = new MicaRiseSet ();
                rs.dataLine = line;
                final double v = MicaTools.parseDate (line);
@@ -105,11 +109,6 @@ class MicaRiseSet
 }
 /*
             
-
-
-                     //          1         2         3         4         5         6         7
-                     //01234567890123456789012345678901234567890123456789012345678901234567890123456789
-                     //2024 Apr 09 (Tue)        11:26  73        18:27 62S        00:24 283
 
 
 
