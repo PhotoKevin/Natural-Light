@@ -6,10 +6,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity
    @Override
    protected void onCreate (Bundle savedInstanceState)
    {
+      EdgeToEdge.enable(this);
       _ApplicationContext = getApplicationContext ();
       Settings.loadFromBackingStore ();
       DisplayStatus.setLocation (Settings.getMapCenter (), Settings.getZoneId ());
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity
       NavController navController = Navigation.findNavController (this, R.id.nav_host_fragment_content_main);
       NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
       NavigationUI.setupWithNavController (navigationView, navController);
+
 
       // https://developers.google.com/maps/documentation/android-sdk/overview
       //https://osmdroid.github.io/osmdroid/How-to-use-the-osmdroid-library.html

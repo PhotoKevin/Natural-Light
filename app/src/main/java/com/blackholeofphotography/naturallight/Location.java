@@ -99,16 +99,6 @@ public class Location extends OverlayItem
       for (Location item : items)
          ja.put (item.toJson ());
 
-      try
-      {
-         JSONArray jo = new JSONArray (ja.toString ());
-         Log.i ("", jo.toString ());
-      }
-      catch (JSONException e)
-      {
-         throw new RuntimeException (e);
-      }
-
       return ja.toString ();
    }
 
