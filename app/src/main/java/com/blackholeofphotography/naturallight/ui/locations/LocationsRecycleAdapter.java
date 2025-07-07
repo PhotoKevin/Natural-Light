@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,11 +23,13 @@ import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class LocationsRecycleAdapter
       extends RecyclerView.Adapter<LocationsRecycleAdapter.RecycleViewHolder>
 
 {
+   private static final String LOG_TAG = "LocationsRecycleAdapter";
    //private static final String LOG_TAG = "LocationsRecycleAdapter";
    private ArrayList<Location> dataProviders = new ArrayList<> ();
    private final LayoutInflater mInflater;
@@ -59,6 +62,10 @@ public class LocationsRecycleAdapter
       Location dataProvider = dataProviders.get (position);
       holder.locationTitle.setText (dataProvider.getTitle ());
       holder.latitudeLongitude.setText (ASTools.formatGeoPoint (dataProvider.getPoint ()));
+      if (dataProvider.getUseCurrentTime ())
+         holder.dateTime.setText ("");
+      else
+         holder.dateTime.setText (ASTools.formatDateTime (dataProvider.getDateTime ()));
    }
 
    @Override
@@ -74,12 +81,14 @@ public class LocationsRecycleAdapter
    {
       final TextView locationTitle;
       final TextView latitudeLongitude;
+      final TextView dateTime;
 
       public RecycleViewHolder (View itemView)
       {
          super (itemView);
          locationTitle = itemView.findViewById (R.id.locationName);
          latitudeLongitude = itemView.findViewById (R.id.latitudeLongitude);
+         dateTime = itemView.findViewById (R.id.datetime);
 
          final View deleteButton = itemView.findViewById (R.id.buttonDelete);
 
@@ -142,6 +151,7 @@ public class LocationsRecycleAdapter
             @Override
             public void onClick (View view)
             {
+               Log.d (LOG_TAG, "OnClick");
                final Location location = dataProviders.get (getAdapterPosition ());
                NavController navController = Navigation.findNavController (itemView);
 

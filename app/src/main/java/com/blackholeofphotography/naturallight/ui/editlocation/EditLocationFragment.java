@@ -199,13 +199,14 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
 
          Location newItem = new Location (mLocation.getUid (), mTitle.getText ().toString (), mLocation.getSnippet (), pt, mTimeStamp, mUseCurrentTime.isChecked (), zoomLevel);
 
-         DisplayStatus.setLocation (pt);
+         DisplayStatus.setGeoPoint (pt);
          DisplayStatus.setZoomLevel (newItem.getZoomLevel ());
          DisplayStatus.setTimeStamp (newItem.getDateTime ());
          DisplayStatus.setUseCurrentTime (newItem.getUseCurrentTime ());
 
          Settings.updateLocation (newItem);
          Settings.setUseCurrentTime (mUseCurrentTime.isChecked ());
+         Settings.saveToBackingStore ();
       }
       catch (NumberFormatException ex)
       {

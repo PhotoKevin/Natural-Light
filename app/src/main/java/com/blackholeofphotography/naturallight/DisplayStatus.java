@@ -19,7 +19,7 @@ public class DisplayStatus
 {
    @SuppressWarnings ("unused")
    private static final String LOG_TAG = "DisplayStatus";
-   static IGeoPoint mLocation = new GeoPoint (0.0, 0.0);
+   static IGeoPoint mGeoPoint = new GeoPoint (0.0, 0.0);
    static ZoneId mZoneId;
    static ZonedDateTime mTimeStamp = ZonedDateTime.now ();
    static boolean mUseCurrentTime;
@@ -47,24 +47,24 @@ public class DisplayStatus
       calculatePositions ();
    }
 
-   public static IGeoPoint getLocation ()
+   public static IGeoPoint getGeoPoint ()
    {
-      if (mLocation == null)
-         mLocation = new GeoPoint (0.0, 0.0);
-      return mLocation;
+      if (mGeoPoint == null)
+         mGeoPoint = new GeoPoint (0.0, 0.0);
+      return mGeoPoint;
    }
 
-   public static void setLocation (IGeoPoint aLocation)
+   public static void setGeoPoint (IGeoPoint aPoint)
    {
       mIsDirty = true;
-      mLocation = aLocation;
+      mGeoPoint = aPoint;
       mZoneId = null;
    }
 
-   public static void setLocation (IGeoPoint aLocation, ZoneId aZoneId)
+   public static void setGeoPoint (IGeoPoint aPoint, ZoneId aZoneId)
    {
       mIsDirty = true;
-      mLocation = aLocation;
+      mGeoPoint = aPoint;
       mZoneId = aZoneId;
    }
 
@@ -79,7 +79,7 @@ public class DisplayStatus
    public static ZoneId getDisplayZoneId ()
    {
       if (mZoneId == null)
-         mZoneId = MainActivity.getZoneId (getLocation ().getLatitude (), getLocation ().getLongitude ());
+         mZoneId = MainActivity.getZoneId (getGeoPoint ().getLatitude (), getGeoPoint ().getLongitude ());
 
       return mZoneId;
    }
@@ -298,19 +298,19 @@ public class DisplayStatus
             ZonedDateTime displayTime = mTimeStamp;
 
             final double jdNoon = Julian.JulianFromZonedDateTime (displayTime.withHour (12));
-            mSunPosition = calculateSunPosition (displayTime, mLocation);
+            mSunPosition = calculateSunPosition (displayTime, mGeoPoint);
 
-            RiseTransitSet riseSet = SunRiseSet.SunRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude ());
+            RiseTransitSet riseSet = SunRiseSet.SunRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude ());
             mSunRise = setHour (mTimeStamp, riseSet.getRise ());
             mSunSet = setHour (mTimeStamp, riseSet.getSet ());
 
-            mSunRisePosition = calculateSunPosition (mSunRise, mLocation);
-            mSunSetPosition = calculateSunPosition (mSunSet, mLocation);
+            mSunRisePosition = calculateSunPosition (mSunRise, mGeoPoint);
+            mSunSetPosition = calculateSunPosition (mSunSet, mGeoPoint);
 
             double jd = Julian.JulianFromZonedDateTime (displayTime);
-            mMoonPosition = Moon.MoonTopocentricPosition (jd, mLocation.getLatitude (), mLocation.getLongitude (), 0);
+            mMoonPosition = Moon.MoonTopocentricPosition (jd, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
 
-            final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mLocation.getLatitude (), mLocation.getLongitude (), 0);
+            final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
             mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
             mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
 

@@ -59,8 +59,8 @@ public class DetailFragment extends Fragment
    public void onResume ()
    {
       super.onResume ();
-      textLatitude.setText (ASTools.formatGeoPoint (DisplayStatus.getLocation ().getLatitude ()));
-      textLongitude.setText (ASTools.formatGeoPoint (DisplayStatus.getLocation ().getLongitude ()));
+      textLatitude.setText (ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ().getLatitude ()));
+      textLongitude.setText (ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ().getLongitude ()));
 
       textDateTime.setText (DisplayStatus.getTimeStamp ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd HH:mm")));
       textTimeZone.setText (DisplayStatus.getDisplayZoneId ().toString ());

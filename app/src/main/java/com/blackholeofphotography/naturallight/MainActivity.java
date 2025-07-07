@@ -6,15 +6,11 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -57,7 +53,7 @@ public class MainActivity extends AppCompatActivity
       EdgeToEdge.enable(this);
       _ApplicationContext = getApplicationContext ();
       Settings.loadFromBackingStore ();
-      DisplayStatus.setLocation (Settings.getMapCenter (), Settings.getZoneId ());
+      DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
       if (Settings.useCurrentTime ())
          DisplayStatus.setTimeStamp (ZonedDateTime.now ());
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                if (! regionName.equals ("ALL"))
                   CachedData.saveTimeEngine (timeZoneEngine);
             }
-            DisplayStatus.setLocation (DisplayStatus.getLocation ());
+            DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint ());
             DisplayStatus.forceCalculation ();
          }
       };
@@ -233,7 +229,7 @@ public class MainActivity extends AppCompatActivity
    {
       super.onResume();
       Tools.setReducedAccuracy (Settings.isLowAccuracy ());
-      DisplayStatus.setLocation (Settings.getMapCenter (), Settings.getZoneId ());
+      DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
       DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
       DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
@@ -247,7 +243,7 @@ public class MainActivity extends AppCompatActivity
       DisplayStatus.removeAllListeners ();
       log.trace ("onPause");
 
-      Settings.setMapCenter (DisplayStatus.getLocation (), DisplayStatus.getDisplayZoneId ());
+      Settings.setMapCenter (DisplayStatus.getGeoPoint (), DisplayStatus.getDisplayZoneId ());
       Settings.setZoomLevel (DisplayStatus.getZoomLevel ());
       Settings.setDisplayTime (DisplayStatus.getTimeStamp ());
       Settings.setUseCurrentTime (DisplayStatus.useCurrentTime ());

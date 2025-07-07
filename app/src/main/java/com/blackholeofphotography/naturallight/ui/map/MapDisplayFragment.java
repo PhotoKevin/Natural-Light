@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -153,7 +154,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          @Override
          public boolean onScroll (ScrollEvent event)
          {
-            DisplayStatus.setLocation (mMapView.getMapCenter ());
+            DisplayStatus.setGeoPoint (mMapView.getMapCenter ());
             return true;
          }
 
@@ -211,12 +212,24 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
    void moveTo (Location location)
    {
-      DisplayStatus.setLocation (location.getPoint ());
+      Log.d (LOG_TAG, String.format ("moveTo: %f, %f Current: %s", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime () ? "true" : "false"));
+      DisplayStatus.setGeoPoint (location.getPoint ());
       DisplayStatus.setZoomLevel (location.getZoomLevel ());
       mMapView.removeMapListener (null);
 
       mMapView.getController ().setCenter (location.getPoint ());
       mMapView.getController ().setZoom (location.getZoomLevel ());
+
+      if (location.getUseCurrentTime ())
+      {
+         DisplayStatus.setUseCurrentTime (true);
+      }
+      else
+      {
+         Log.d (LOG_TAG, String.format ("set time: %s", ASTools.formatDateTime (location.getDateTime ())));
+         DisplayStatus.setUseCurrentTime (false);
+         DisplayStatus.setTimeStamp (location.getDateTime ());
+      }
       DisplayStatus.calculatePositions ();
    }
 
@@ -297,7 +310,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       // 3 decimal - Specific cul-de-sac
       // 4 decimal - Particular corner of a house
 
-      mTextLocation.setText (String.format ("%s %.2f", ASTools.formatGeoPoint (DisplayStatus.getLocation ()), DisplayStatus.getZoomLevel ()));
+      mTextLocation.setText (String.format ("%s %.2f", ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ()), DisplayStatus.getZoomLevel ()));
       mTextDebug.setText (String.format ("Astro run(skip) %d(%d), Light %d(%d) %d",
             DisplayStatus.calculations, DisplayStatus.astro_skipped, DisplayStatus.lighting_bitmap_created, DisplayStatus.lighting_bitmap_skipped, DisplayStatus.averageCalcTime ()));
       String zone = DisplayStatus.getDisplayZoneId ().toString ();
@@ -348,7 +361,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       Settings.setTileProvider (mMapView.getTileProvider ().getTileSource ().name ());
       Settings.setMapOrientation (mMapView.getMapOrientation ());
 
-      Settings.setMapCenter (DisplayStatus.getLocation (), DisplayStatus.getDisplayZoneId ());
+      Settings.setMapCenter (DisplayStatus.getGeoPoint (), DisplayStatus.getDisplayZoneId ());
       Settings.setZoomLevel (DisplayStatus.getZoomLevel ());
 
       Settings.saveToBackingStore ();
@@ -368,12 +381,12 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       mMapView.setTileSource (TileSourceFactory.MAPNIK);
 
       mMapView.getController ().setZoom (DisplayStatus.getZoomLevel ());
-      mMapView.getController ().setCenter (DisplayStatus.getLocation ());
+      mMapView.getController ().setCenter (DisplayStatus.getGeoPoint ());
       mMapView.onResume ();
 
       // Setting the map location triggers scroll events and kills
       // the ZoneId. Put it back to the correct value
-      DisplayStatus.setLocation (DisplayStatus.getLocation (), Settings.getZoneId ());
+      DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint (), Settings.getZoneId ());
 
       DisplayStatus.addListener (this);
       DisplayStatus.forceCalculation ();

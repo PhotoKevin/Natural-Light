@@ -32,6 +32,18 @@
         app:layout_constraintTop_toBottomOf="@+id/locationName"
         tools:text="45.0, -88.0" />
 
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="16dp"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintStart_toEndOf="@+id/latitudeLongitude"
+        app:layout_constraintTop_toBottomOf="@+id/locationName"
+        tools:text="2025-08-01 23:45" />
+
+
     <Space
         android:id="@+id/space"
         android:layout_width="wrap_content"
