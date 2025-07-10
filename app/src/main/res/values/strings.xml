@@ -51,4 +51,13 @@
     <string name="moon_elevation">Moon Elevation</string>
     <string name="moon_azimuth">Moon Azimuth</string>
     <string name="timezone">TimeZone</string>
+    <string name="appTitle">Natural Light</string>
+    <string name="version">Version %d</string>
+    <string name="sqlVersion">SQL Version</string>
+    <string name="url">https://github.com/PhotoKevin/NaturalLight</string>
+    <string name="appDescription">A tool for outdoor photographers</string>
+    <string name="appCopyRight">© 2024–2025 Kevin Nickerson</string>
+    <string name="source_code">Source code and issue reporting</string>
+    <string name="app_source_url">https://github.com/PhotoKevin/Natural-Light</string>
+    <string name="about_libraries">Third-Party Libraries</string>
 </resources>

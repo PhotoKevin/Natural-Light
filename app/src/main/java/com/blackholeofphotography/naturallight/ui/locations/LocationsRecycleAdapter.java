@@ -30,7 +30,6 @@ public class LocationsRecycleAdapter
 
 {
    private static final String LOG_TAG = "LocationsRecycleAdapter";
-   //private static final String LOG_TAG = "LocationsRecycleAdapter";
    private ArrayList<Location> dataProviders = new ArrayList<> ();
    private final LayoutInflater mInflater;
 
@@ -39,7 +38,6 @@ public class LocationsRecycleAdapter
       mInflater = LayoutInflater.from (context);
    }
 
-   //@SuppressLint("NotifyDataSetChanged")
    @SuppressLint("NotifyDataSetChanged")
    public void setDataProviders (ArrayList<Location> dataProviders)
    {
