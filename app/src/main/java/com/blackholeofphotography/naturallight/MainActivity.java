@@ -109,9 +109,9 @@ public class MainActivity extends AppCompatActivity
 
       //noinspection RedundantIfStatement
       if (BuildConfig.DEBUG)
-         Settings.setEnableAdvancedFeatures (true);
+         Settings.setEnableAdvancedSettings (true);
       else
-         Settings.setEnableAdvancedFeatures (false);
+         Settings.setEnableAdvancedSettings (false);
    }
 
 

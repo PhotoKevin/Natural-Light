@@ -18,7 +18,6 @@ public class MicaTools
       catch (Exception e)
       {
          Assert.fail (e.toString ());
-         System.out.println (e);
          return 0;
       }
    }
@@ -27,17 +26,17 @@ public class MicaTools
    {
       int month = 0;
       if (monthStr.equals ("Jan"))  month = 0;
-      if (monthStr.equals ("Feb"))  month = 1;
-      if (monthStr.equals ("Mar"))  month = 2;
-      if (monthStr.equals ("Apr"))  month = 3;
-      if (monthStr.equals ("May"))  month = 4;
-      if (monthStr.equals ("Jun"))  month = 5;
-      if (monthStr.equals ("Jul"))  month = 6;
-      if (monthStr.equals ("Aug"))  month = 7;
-      if (monthStr.equals ("Sep"))  month = 8;
-      if (monthStr.equals ("Oct"))  month = 9;
-      if (monthStr.equals ("Nov"))  month = 10;
-      if (monthStr.equals ("Dec"))  month = 11;
+      else if (monthStr.equals ("Feb"))  month = 1;
+      else if (monthStr.equals ("Mar"))  month = 2;
+      else if (monthStr.equals ("Apr"))  month = 3;
+      else if (monthStr.equals ("May"))  month = 4;
+      else if (monthStr.equals ("Jun"))  month = 5;
+      else if (monthStr.equals ("Jul"))  month = 6;
+      else if (monthStr.equals ("Aug"))  month = 7;
+      else if (monthStr.equals ("Sep"))  month = 8;
+      else if (monthStr.equals ("Oct"))  month = 9;
+      else if (monthStr.equals ("Nov"))  month = 10;
+      else if (monthStr.equals ("Dec"))  month = 11;
 
       return month +1;
    }

@@ -3,7 +3,6 @@ package com.blackholeofphotography.naturallight;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -12,25 +11,15 @@ import java.util.List;
 class MicaRiseSet
 {
    public MicaPosition position;
-   public int year;
-   public int month;
-   public int day;
 
    //public time_t datetime;
    public double jd;
-   public double latitude;
-   public double longitude;
-   public int altitude;
 
-   //public time_t BeginTwilight;
-   //public time_t Rise;
-   //public time_t Set;
-   //public time_t EndTwilight;
    double Rise;
    double Set;
    double Transit;
 
-   public int BegTwiHH, BegTwiMM, EndTwiHH, EndTwiMM;
+   //public int BegTwiHH, BegTwiMM, EndTwiHH, EndTwiMM;
    public int RiseAz, TransHH, TransMM, TransAlt;
    public int SetAz;
    public int RiseHH, RiseMM;
@@ -95,10 +84,6 @@ class MicaRiseSet
             }
          }
       }
-      catch (FileNotFoundException e)
-      {
-         throw new RuntimeException (e);
-      }
       catch (IOException e)
       {
          throw new RuntimeException (e);
@@ -107,11 +92,3 @@ class MicaRiseSet
    }
 
 }
-/*
-            
-
-
-
-   }
-}
-*/

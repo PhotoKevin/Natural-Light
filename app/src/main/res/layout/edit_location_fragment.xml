@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="50sp"
         android:hint="@string/hint_zoom_level"
-        app:layout_constraintBottom_toTopOf="@+id/timeZone"
+        app:layout_constraintBottom_toBottomOf="@id/textLongitude"
         android:importantForAutofill="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
@@ -88,7 +88,7 @@
         android:contentDescription="@string/date_time_selector"
         android:timePickerMode="spinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker1" />
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
 
     <CheckBox
         android:id="@+id/useCurrentTime"
@@ -99,20 +99,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLatitude" />
-
-    <TextView
-        android:id="@+id/timeZone"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/timezone"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/useCurrentTime"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/useCurrentTime"
-        app:layout_constraintTop_toBottomOf="@+id/textLongitude"
-        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/btnDelete"

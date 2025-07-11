@@ -21,7 +21,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class DateTimeFragment extends Fragment implements DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener,
-      CompoundButton.OnCheckedChangeListener // , View.OnClickListener
+      CompoundButton.OnCheckedChangeListener
 
 {
    private final static String LOG_TAG = "DateTimeFragment";

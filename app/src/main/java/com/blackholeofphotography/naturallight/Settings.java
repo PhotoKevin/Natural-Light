@@ -301,16 +301,30 @@ public final class Settings
       return mLowAccuracy;
    }
 
+   /**
+    * Determine if additional debug data should be shown on the main display
+    * Note: The only way to turn this on is by stepping through in the debugger and
+    * manually changing the variable.
+    * @return True if the debug data should be shown.
+    */
    public static boolean showDebugData ()
    {
       return mShowDebugData;
    }
 
-   public static void setEnableAdvancedFeatures (boolean value)
+   /**
+    * Enable/Disable the advanced settings.
+    * @param value true to enable, false to disable.
+    */
+   public static void setEnableAdvancedSettings (boolean value)
    {
       Settings.mEnableAdvancedSettings = value;
    }
 
+   /**
+    * Determine if the advanced settings should be shown.
+    * @return True if the advanced settings should be shown.
+    */
    public static boolean getShowAdvancedSettings ()
    {
       return mShowAdvancedSettings;

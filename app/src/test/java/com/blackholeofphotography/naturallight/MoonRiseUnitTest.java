@@ -29,18 +29,11 @@ public class MoonRiseUnitTest
 
    private static File getFileFromPath (Object obj, String fileName)
    {
-      try
-      {
-         ClassLoader classLoader = obj.getClass ().getClassLoader ();
-         URL resource = classLoader.getResource (fileName);
-         final String externalForm = resource.getFile ().substring (1);
-         String name = java.net.URLDecoder.decode (externalForm, StandardCharsets.UTF_8.name());
-         return new File (name);
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         return null;
-      }
+      ClassLoader classLoader = obj.getClass ().getClassLoader ();
+      URL resource = classLoader.getResource (fileName);
+      final String externalForm = resource.getFile ().substring (1);
+      String name = java.net.URLDecoder.decode (externalForm, StandardCharsets.UTF_8);
+      return new File (name);
    }
 
    @Test

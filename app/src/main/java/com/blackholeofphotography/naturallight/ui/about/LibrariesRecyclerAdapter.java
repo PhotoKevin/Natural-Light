@@ -3,7 +3,6 @@ package com.blackholeofphotography.naturallight.ui.about;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,9 +72,7 @@ public class LibrariesRecyclerAdapter
       public RecycleViewHolder (View itemView)
       {
          super (itemView);
-         Log.v (LOG_TAG, "new item");
          locationTitle = itemView.findViewById (R.id.libraryText);
-         locationTitle.setText ("Huh");
       }
    }
 

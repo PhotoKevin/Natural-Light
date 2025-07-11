@@ -2,9 +2,9 @@ package com.blackholeofphotography.astrocalc;
 
 public class RiseTransitSet
 {
-   double rise;
-   double transit;
-   double set;
+   final double rise;
+   final double transit;
+   final double set;
 
    public RiseTransitSet (double rise, double transit, double set)
    {

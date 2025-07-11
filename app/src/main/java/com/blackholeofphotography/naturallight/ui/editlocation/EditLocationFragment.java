@@ -49,7 +49,6 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
    DatePicker mDatePicker;
    TimePicker mTimePicker;
    CheckBox mUseCurrentTime;
-   TextView mTimeZone;
    ImageButton mDeleteButton;
    Spinner mZoomSpinner;
 
@@ -68,7 +67,6 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       mUseCurrentTime = binding.useCurrentTime;
       mDatePicker = binding.datePicker1;
       mTimePicker = binding.timePicker1;
-      mTimeZone = binding.timeZone;
       mDeleteButton = binding.btnDelete;
       mZoomSpinner = binding.spinZoomLevel;
 
@@ -177,13 +175,11 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
          mTimePicker.setHour (mTimeStamp.getHour ());
          mTimePicker.setMinute (mTimeStamp.getMinute ());
 
-
          mTimeStamp = mLocation.getDateTime ();
 
-      if (mLocation.getUseCurrentTime ())
-      {
-      mTimeStamp = ZonedDateTime.now (mLocation.getDateTime ().getZone ());
-      }}
+         if (mLocation.getUseCurrentTime ())
+            mTimeStamp = ZonedDateTime.now (mLocation.getDateTime ().getZone ());
+      }
    }
 
    @Override
