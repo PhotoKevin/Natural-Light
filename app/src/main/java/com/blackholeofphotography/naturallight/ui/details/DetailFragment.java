@@ -64,17 +64,33 @@ public class DetailFragment extends Fragment
 
       textDateTime.setText (DisplayStatus.getTimeStamp ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd HH:mm")));
       textTimeZone.setText (DisplayStatus.getDisplayZoneId ().toString ());
-      textSunAzimuth.setText (String.format ("%.0f°", DisplayStatus.getSunPosition ().getAzimuth ()));
-      textSunElevation.setText (String.format ("%f°", DisplayStatus.getSunPosition ().getElevation ()));
 
-      textSunRise.setText (DisplayStatus.getSunRise ().format (DateTimeFormatter.ofPattern ("HH:mm")));
-      textSunSet.setText (DisplayStatus.getSunSet ().format (DateTimeFormatter.ofPattern ("HH:mm")));
+      if (DisplayStatus.getSunPosition ().getElevation () > 0)
+      {
+         textSunAzimuth.setText (String.format ("%.0f°", DisplayStatus.getSunPosition ().getAzimuth ()));
+         textSunElevation.setText (String.format ("%.0f°", DisplayStatus.getSunPosition ().getElevation ()));
+      }
+      else
+      {
+         textSunAzimuth.setText ("--");
+         textSunElevation.setText ("--");
+      }
+      textSunRise.setText (String.format ("%s  %.0f°", DisplayStatus.getSunRise ().format (DateTimeFormatter.ofPattern ("HH:mm")), DisplayStatus.getSunRisePosition ().getAzimuth ()));
+      textSunSet.setText (String.format ("%s  %.0f°", DisplayStatus.getSunSet ().format (DateTimeFormatter.ofPattern ("HH:mm")), DisplayStatus.getSunSetPosition ().getAzimuth ()));
 
-      textMoonRise.setText (DisplayStatus.getMoonRise ().format (DateTimeFormatter.ofPattern ("HH:mm")));
-      textMoonSet.setText (DisplayStatus.getMoonSet ().format (DateTimeFormatter.ofPattern ("HH:mm")));
+      textMoonRise.setText (String.format ("%s  %.0f°", DisplayStatus.getMoonRise ().format (DateTimeFormatter.ofPattern ("HH:mm")), DisplayStatus.getMoonRisePosition ().getAzimuth ()));
+      textMoonSet.setText (String.format ("%s  %.0f°", DisplayStatus.getMoonSet ().format (DateTimeFormatter.ofPattern ("HH:mm")), DisplayStatus.getMoonSetPosition ().getAzimuth ()));
 
-      textMoonAzimuth.setText (String.format ("%f", DisplayStatus.getMoonPosition ().getAzimuth ()));
-      textMoonElevation.setText (String.format ("%f", DisplayStatus.getMoonPosition ().getElevation ()));
+      if (DisplayStatus.getMoonPosition ().getElevation () > 0)
+      {
+         textMoonAzimuth.setText (String.format ("%.0f°", DisplayStatus.getMoonPosition ().getAzimuth ()));
+         textMoonElevation.setText (String.format ("%.0f°", DisplayStatus.getMoonPosition ().getElevation ()));
+      }
+      else
+      {
+         textMoonAzimuth.setText ("--");
+         textMoonElevation.setText ("--");
+      }
    }
 
    @Override

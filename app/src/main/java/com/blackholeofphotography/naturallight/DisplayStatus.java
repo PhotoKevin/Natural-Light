@@ -30,9 +30,9 @@ public class DisplayStatus
    static AstroPosition mSunSetPosition = new AstroPosition (0, 0);
    static TopocentricPosition mMoonPosition = new TopocentricPosition (0, 0, 0, 0);
    static ZonedDateTime mMoonRise = ZonedDateTime.now ();
-   final static AstroPosition mMoonRisePosition = new AstroPosition (0, 0);
+   static AstroPosition mMoonRisePosition = new AstroPosition (0, 0);
    static ZonedDateTime mMoonSet = ZonedDateTime.now ();
-   final static AstroPosition mMoonSetPosition = new AstroPosition (0, 0);
+   static AstroPosition mMoonSetPosition = new AstroPosition (0, 0);
    private static double ZoomLevel;
    private static boolean mIsDirty = true;
    public  static int calculations = 0;
@@ -313,6 +313,9 @@ public class DisplayStatus
             final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
             mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
             mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
+
+            mMoonRisePosition = calculateMoonPosition (mMoonRise, mGeoPoint);
+            mMoonSetPosition = calculateMoonPosition (mMoonSet, mGeoPoint);
 
             mIsDirty = false;
             running = false;
