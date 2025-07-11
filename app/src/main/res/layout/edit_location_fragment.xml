@@ -88,7 +88,7 @@
         android:contentDescription="@string/date_time_selector"
         android:timePickerMode="spinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+        app:layout_constraintTop_toBottomOf="@+id/datePicker1" />
 
     <CheckBox
         android:id="@+id/useCurrentTime"
