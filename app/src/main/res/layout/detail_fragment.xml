@@ -66,12 +66,13 @@
         android:id="@+id/textTimeZone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:textColor="@color/primaryTextColor"
+
         android:textSize="20sp"
 
-        app:layout_constraintBottom_toTopOf="@+id/textSunRise"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textLongitude"
+        app:layout_constraintTop_toTopOf="@+id/textDateTime"
         tools:text="UTC" />
 
     <TextView
@@ -79,32 +80,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:textSize="20sp"
-
         android:text="@string/sun_rise"
+
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
 
-        app:layout_constraintTop_toBottomOf="@+id/textDateTime" />
+        app:layout_constraintTop_toBottomOf="@+id/textMoonElevationTitle" />
 
     <TextView
         android:id="@+id/textSunRise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-
         android:textColor="@color/primaryTextColor"
+
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textDateTime"
+        app:layout_constraintTop_toTopOf="@+id/textSunRiseTitle"
         tools:text="08:00" />
+
     <TextView
         android:id="@+id/textSunSetTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-
         android:text="@string/sun_set"
+
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
 
         app:layout_constraintTop_toBottomOf="@+id/textSunRiseTitle" />
@@ -117,19 +119,20 @@
         android:textSize="20sp"
 
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textSunRise"
+        app:layout_constraintTop_toTopOf="@+id/textSunSetTitle"
         tools:text="08:00" />
 
     <TextView
         android:id="@+id/textSunAzimuthTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="@string/sun_azimuth"
-        android:textSize="20sp"
 
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textSunSetTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textDateTime" />
 
     <TextView
         android:id="@+id/textSunAzimuth"
@@ -139,7 +142,7 @@
         android:textSize="20sp"
 
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textSunSet"
+        app:layout_constraintTop_toTopOf="@+id/textSunAzimuthTitle"
         tools:text="5" />
 
 
@@ -149,12 +152,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:text="@string/sun_elevation"
-        android:textSize="20sp"
-
         android:textColor="@color/primaryTextColor"
+
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textSunAzimuthTitle" />
-
 
     <TextView
         android:id="@+id/textSunElevation"
@@ -163,7 +165,6 @@
         android:layout_marginTop="2dp"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/textSunAzimuth"
         tools:text="22" />
@@ -176,7 +177,7 @@
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textSunElevationTitle"
+        app:layout_constraintTop_toTopOf="@+id/textMoonRiseTitle"
         tools:text="08:00" />
 
 
@@ -185,24 +186,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:textSize="20sp"
-
         android:text="@string/moon_rise"
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-
-        app:layout_constraintTop_toBottomOf="@+id/textSunElevationTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textSunSetTitle" />
 
     <TextView
         android:id="@+id/textMoonSetTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-
         android:text="@string/moon_set"
         android:textColor="@color/primaryTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-
         app:layout_constraintTop_toBottomOf="@+id/textMoonRiseTitle" />
 
     <TextView
@@ -211,7 +208,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
         android:textSize="20sp"
-
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/textMoonRise"
         tools:text="08:00" />
@@ -221,23 +217,23 @@
         android:id="@+id/textMoonAzimuthTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+
 
         android:text="@string/moon_azimuth"
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textMoonSetTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textSunElevationTitle" />
 
     <TextView
         android:id="@+id/textMoonAzimuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-
         android:textColor="@color/primaryTextColor"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textMoonSet"
-        tools:text="TextView" />
+        app:layout_constraintTop_toTopOf="@+id/textMoonAzimuthTitle"
+        tools:text="--" />
 
 
     <TextView
@@ -246,7 +242,6 @@
         android:layout_height="wrap_content"
         android:text="@string/moon_elevation"
         android:textSize="20sp"
-
         android:textColor="@color/primaryTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textMoonAzimuthTitle" />
@@ -256,11 +251,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/primaryTextColor"
-        android:textSize="20sp"
 
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textMoonAzimuth"
-        tools:text="TextView" />
+        app:layout_constraintTop_toBottomOf="@+id/textMoonAzimuthTitle"
+        tools:text="--" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
