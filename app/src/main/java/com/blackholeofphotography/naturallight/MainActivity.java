@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity
                if (boundingBox == null)
                   timeZoneEngine = TimeZoneEngine.initialize (false);
                else
-                  timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude ()-1, boundingBox.getMinLongitude ()-1,
-                        boundingBox.getMaxLatitude ()+1, boundingBox.getMaxLongitude ()+1, false);
+                  timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude (), boundingBox.getMinLongitude (),
+                        boundingBox.getMaxLatitude (), boundingBox.getMaxLongitude (), false);
 
                long delta = System.currentTimeMillis () - start;
                log.info ("TimeZoneEngine.initialize took {}ms", delta);
