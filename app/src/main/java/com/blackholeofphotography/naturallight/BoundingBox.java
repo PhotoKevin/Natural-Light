@@ -39,6 +39,12 @@ public class BoundingBox implements Serializable
       return mMaxLongitude;
    }
 
+   /**
+    * Create a new bounding box that includes the new coordinate.
+    * @param latitude Latitude of new coordinate
+    * @param longitude Longitude of of new coordinate
+    * @return New BoundingBox that includes the coordinate
+    */
    public BoundingBox include (double latitude, double longitude)
    {
       return new BoundingBox (
@@ -49,10 +55,15 @@ public class BoundingBox implements Serializable
       );
    }
 
+   /**
+    * Create a new bounding box that includes the supplied box.
+    * @param box Extra box to include in the result
+    * @return New BoundingBox that includes the supplied box
+    */
    public BoundingBox include (BoundingBox box)
    {
       return new BoundingBox (
-            Math.min (mMinLatitude,  box.getMaxLatitude ()),
+            Math.min (mMinLatitude,  box.getMinLatitude ()),
             Math.min (mMinLongitude, box.getMinLongitude ()),
             Math.max (mMaxLatitude,  box.getMaxLatitude ()),
             Math.max (mMaxLongitude, box.getMaxLongitude ())
