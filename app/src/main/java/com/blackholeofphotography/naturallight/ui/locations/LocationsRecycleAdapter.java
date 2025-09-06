@@ -108,7 +108,7 @@ public class LocationsRecycleAdapter
                         @SuppressLint("NotifyDataSetChanged")
                         public void onClick (DialogInterface dialog, int id)
                         {
-                           int position = getAdapterPosition ();
+                           int position = getBindingAdapterPosition ();
                            final Location location = dataProviders.get (position);
                            Settings.removeLocation (location.getUid ());
                            // Note: The dataProviders is the same list as Settings. Removing it
@@ -142,7 +142,7 @@ public class LocationsRecycleAdapter
             @Override
             public boolean onLongClick (View view)
             {
-               final Location location = dataProviders.get (getAdapterPosition ());
+               final Location location = dataProviders.get (getBindingAdapterPosition ());
                NavController navController = Navigation.findNavController (itemView);
                LocationsFragmentDirections.ActionNavLocationsToEditLocationFragment action =
                   LocationsFragmentDirections.actionNavLocationsToEditLocationFragment (location.getUid ());
@@ -156,8 +156,7 @@ public class LocationsRecycleAdapter
             @Override
             public void onClick (View view)
             {
-               Log.d (LOG_TAG, "OnClick");
-               final Location location = dataProviders.get (getAdapterPosition ());
+               final Location location = dataProviders.get (getBindingAdapterPosition ());
                NavController navController = Navigation.findNavController (itemView);
 
                final LocationsFragmentDirections.ActionNavLocationsToNavMap action = LocationsFragmentDirections.actionNavLocationsToNavMap ();

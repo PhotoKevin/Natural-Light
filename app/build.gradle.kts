@@ -52,20 +52,20 @@ android {
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.3")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3")
     implementation("com.github.tony19:logback-android:3.0.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
 
     // Java language implementation
-    implementation("androidx.navigation:navigation-fragment:2.9.1")
-    implementation("androidx.navigation:navigation-ui:2.9.1")
+    implementation("androidx.navigation:navigation-fragment:2.9.3")
+    implementation("androidx.navigation:navigation-ui:2.9.3")
 
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.3")
 
     // Feature module Support
     implementation("com.google.android.play:feature-delivery:2.1.0")
@@ -74,18 +74,18 @@ dependencies {
     implementation("com.google.android.play:app-update:2.1.0")
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.9.1")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.3")
 
     // Jetpack Compose Integration
-    implementation("androidx.navigation:navigation-compose:2.9.1")
-    implementation("androidx.navigation:navigation-fragment:2.9.1")
-    implementation("androidx.navigation:navigation-ui:2.9.1")
+    implementation("androidx.navigation:navigation-compose:2.9.3")
+    implementation("androidx.navigation:navigation-fragment:2.9.3")
+    implementation("androidx.navigation:navigation-ui:2.9.3")
 
     implementation ("androidx.preference:preference:1.2.1")
-    implementation("androidx.fragment:fragment:1.8.8")
+    implementation("androidx.fragment:fragment:1.8.9")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     implementation ("com.google.android.gms:play-services-maps:19.2.0")
     implementation ("org.osmdroid:osmdroid-android:6.1.20")
 
@@ -97,7 +97,7 @@ dependencies {
     }
     // Import aar for native component compilation
     implementation ("com.github.luben:zstd-jni:1.5.7-4@aar")
-    implementation ("com.github.erosb:json-sKema:0.20.0")
+    implementation ("com.github.erosb:json-sKema:0.25.0")
 }
 
 tasks {
