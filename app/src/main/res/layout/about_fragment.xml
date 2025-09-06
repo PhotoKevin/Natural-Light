@@ -37,6 +37,7 @@ android:weightSum="100">
 
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/appTitle"
                 style="@style/ExLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,6 +45,7 @@ android:weightSum="100">
                 android:text="@string/appTitle" />
 
             <TextView
+                android:id="@+id/appDescription"
                 style="@android:style/TextAppearance.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,6 +54,7 @@ android:weightSum="100">
 
 
             <TextView
+                android:id="@+id/appCopyright"
                 style="@android:style/TextAppearance.DeviceDefault"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,6 +63,7 @@ android:weightSum="100">
 
 
             <LinearLayout
+                android:id="@+id/versionLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -89,6 +93,7 @@ android:weightSum="100">
                     >
 
                     <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/version_number"
                         style="@android:style/TextAppearance.DeviceDefault"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,6 +111,7 @@ android:weightSum="100">
 
 
             <LinearLayout
+                android:id="@+id/sourceCodeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
