@@ -269,6 +269,11 @@ public class MainActivity extends AppCompatActivity
             setOptionMenuVisibility (false);
             navController.navigate (R.id.nav_settings, null);
          }
+         else if (itemId == R.id.action_import_export)
+         {
+            setOptionMenuVisibility (false);
+            navController.navigate (R.id.nav_import_export);
+         }
          else if (itemId == R.id.action_about)
          {
             setOptionMenuVisibility (false);

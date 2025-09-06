@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_map">
 
     <fragment
@@ -61,6 +60,12 @@
         android:name="com.blackholeofphotography.naturallight.ui.about.AboutFragment"
         android:label="@string/header_about"
         tools:layout="@layout/about_activity" />
+
+    <fragment
+        android:id="@+id/nav_import_export"
+        android:name="com.blackholeofphotography.naturallight.ui.importexport.ImportExportFragment"
+        android:label="@string/header_import_export"
+        tools:layout="@layout/import_export_fragment" />
 
     <fragment
         android:id="@+id/nav_edit_location"

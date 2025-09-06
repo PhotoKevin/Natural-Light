@@ -11,14 +11,26 @@ import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Location extends OverlayItem
 {
    private static final String LOG_TAG = "Location";
+   public static final String UID = "uid";
+   public static final String TITLE = "title";
+   public static final String SNIPPET = "snippet";
+   public static final String LATITUDE = "latitude";
+   public static final String LONGITUDE = "longitude";
+   public static final String TIMESTAMP = "timestamp";
+   public static final String USE_CURRENT_TIME = "useCurrentTime";
+   public static final String ZOOM = "zoom";
    private final boolean mUseCurrentTime;
    private final ZonedDateTime mDateTime;
    private final double ZoomLevel;
@@ -57,16 +69,14 @@ public class Location extends OverlayItem
       try
       {
          JSONObject jo = new JSONObject ();
-         jo.put ("uid", getUid ());
-         jo.put ("title", getTitle ());
-         jo.put ("snippet", getSnippet ());
-         jo.put ("latitude", getPoint ().getLatitude ());
-         jo.put ("longitude", getPoint ().getLongitude ());
-         jo.put ("timestamp", getDateTime ());
-         jo.put ("useCurrentTime", getUseCurrentTime ());
-         jo.put ("zoom", getZoomLevel ());
-         if (mDateTime != null)
-            jo.put ("timestamp", mDateTime.toString ());
+         jo.put (UID, getUid ());
+         jo.put (TITLE, getTitle ());
+         jo.put (SNIPPET, getSnippet ());
+         jo.put (LATITUDE, getPoint ().getLatitude ());
+         jo.put (LONGITUDE, getPoint ().getLongitude ());
+         jo.put (USE_CURRENT_TIME, getUseCurrentTime ());
+         jo.put (ZOOM, getZoomLevel ());
+         jo.put (TIMESTAMP, mDateTime.toString ());
          return jo;
       }
       catch (JSONException ex)
@@ -81,11 +91,14 @@ public class Location extends OverlayItem
    {
       try
       {
-         GeoPoint point = new GeoPoint (jo.getDouble ("latitude"), jo.getDouble ("longitude"));
-         ZonedDateTime timestamp = ZonedDateTime.parse (jo.getString ("timestamp"));
-         boolean useCurrentTime = jo.getBoolean ("useCurrentTime");
-         double zoomLevel = jo.getDouble ("zoom");
-         return new Location (jo.getString ("uid"), jo.getString ("title"), jo.getString ("snippet"), point, timestamp, useCurrentTime, zoomLevel);
+         GeoPoint point = new GeoPoint (jo.getDouble (LATITUDE), jo.getDouble (LONGITUDE));
+         ZonedDateTime timestamp = ZonedDateTime.parse (jo.getString (TIMESTAMP));
+         boolean useCurrentTime = jo.getBoolean (USE_CURRENT_TIME);
+         double zoomLevel = jo.getDouble (ZOOM);
+         if (jo.has (UID))
+            return new Location (jo.getString (UID), jo.getString (TITLE), jo.getString (SNIPPET), point, timestamp, useCurrentTime, zoomLevel);
+         else
+            return new Location (jo.getString (TITLE), jo.getString (SNIPPET), point, timestamp, useCurrentTime, zoomLevel);
       }
       catch (JSONException ex)
       {
@@ -135,10 +148,27 @@ public class Location extends OverlayItem
       return items;
    }
 
+   public static String formatGeoPoint (double latLon)
+   {
+      return String.format (Locale.getDefault (), "%.4f", latLon);
+   }
+
+   public static String formatGeoPoint (IGeoPoint pt)
+   {
+      Locale l = Locale.getDefault ();
+      DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(l);
+      DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
+      char groupingChar = symbols.getGroupingSeparator();
+      final char listSeparator = (groupingChar == ',')  ? ';' : ',';
+
+      return String.format (l, "%.4f%c %.4f", pt.getLatitude (), listSeparator, pt.getLongitude ());
+   }
+
+
    @NonNull
    @Override
    public String toString ()
    {
-      return ASTools.formatGeoPoint (getPoint ());
+      return formatGeoPoint (getPoint ());
    }
 }

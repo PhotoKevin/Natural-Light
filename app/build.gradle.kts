@@ -97,6 +97,7 @@ dependencies {
     }
     // Import aar for native component compilation
     implementation ("com.github.luben:zstd-jni:1.5.7-4@aar")
+    implementation ("com.github.erosb:json-sKema:0.20.0")
 }
 
 tasks {

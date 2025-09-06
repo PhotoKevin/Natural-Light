@@ -46,3 +46,4 @@ google-services.json
 
 # Secrets Gradle plugin
 secrets.properties
+.idea/deviceManager.xml

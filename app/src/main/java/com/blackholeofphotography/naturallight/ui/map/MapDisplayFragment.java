@@ -27,7 +27,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.blackholeofphotography.astrocalc.Tools;
-import com.blackholeofphotography.naturallight.ASTools;
+import com.blackholeofphotography.bhtools.ASTools;
 import com.blackholeofphotography.naturallight.CompassOverlay;
 import com.blackholeofphotography.naturallight.DisplayStatus;
 import com.blackholeofphotography.naturallight.DisplayStatusListener;
@@ -310,13 +310,13 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       // 3 decimal - Specific cul-de-sac
       // 4 decimal - Particular corner of a house
 
-      mTextLocation.setText (String.format ("%s %.2f", ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ()), DisplayStatus.getZoomLevel ()));
+      mTextLocation.setText (String.format ("%s %.2f", Location.formatGeoPoint (DisplayStatus.getGeoPoint ()), DisplayStatus.getZoomLevel ()));
       mTextDebug.setText (String.format ("Astro run(skip) %d(%d), Light %d(%d) %d",
             DisplayStatus.calculations, DisplayStatus.astro_skipped, DisplayStatus.lighting_bitmap_created, DisplayStatus.lighting_bitmap_skipped, DisplayStatus.averageCalcTime ()));
       String zone = DisplayStatus.getDisplayZoneId ().toString ();
-      final int maxZoneLength = 16;
-      if (zone.length () > maxZoneLength)
-         zone = zone.substring (0, maxZoneLength);
+//      final int maxZoneLength = 16;
+//      if (zone.length () > maxZoneLength)
+//         zone = zone.substring (0, maxZoneLength);
       mTimeZone.setText (zone);
       mSunRise.setText (String.format ("Rise: %s", ASTools.formatTime (DisplayStatus.getSunRise ())));
       mSunSet.setText (String.format ("Set: %s", ASTools.formatTime (DisplayStatus.getSunSet ())));

@@ -3,18 +3,12 @@ package com.blackholeofphotography.naturallight;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-import com.blackholeofphotography.astrocalc.Julian;
 import com.blackholeofphotography.astrocalc.Moon;
 import com.blackholeofphotography.astrocalc.MoonRise;
 import com.blackholeofphotography.astrocalc.RiseTransitSet;
 import com.blackholeofphotography.astrocalc.TopocentricPosition;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

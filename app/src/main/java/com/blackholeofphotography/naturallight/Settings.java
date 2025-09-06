@@ -251,6 +251,7 @@ public final class Settings
    }
    public static void addLocation (Location item)
    {
+      removeLocation (item.getUid ());
       mLocations.add (item);
    }
 

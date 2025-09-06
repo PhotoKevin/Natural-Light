@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.blackholeofphotography.naturallight.ASTools;
 import com.blackholeofphotography.naturallight.DisplayStatus;
 import com.blackholeofphotography.naturallight.Location;
 import com.blackholeofphotography.naturallight.MainActivity;
@@ -164,8 +163,8 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       if (mLocation != null)
       {
          mTitle.setText (mLocation.getTitle ());
-         mLatitude.setText (ASTools.formatGeoPoint (mLocation.getPoint ().getLatitude ()));
-         mLongitude.setText (ASTools.formatGeoPoint (mLocation.getPoint ().getLongitude ()));
+         mLatitude.setText (Location.formatGeoPoint (mLocation.getPoint ().getLatitude ()));
+         mLongitude.setText (Location.formatGeoPoint (mLocation.getPoint ().getLongitude ()));
 
          mUseCurrentTime.setChecked (mLocation.getUseCurrentTime ());
          mDatePicker.setEnabled (!mLocation.getUseCurrentTime ());

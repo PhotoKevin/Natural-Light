@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.blackholeofphotography.naturallight.ASTools;
 import com.blackholeofphotography.naturallight.DisplayStatus;
+import com.blackholeofphotography.naturallight.Location;
 import com.blackholeofphotography.naturallight.databinding.DetailFragmentBinding;
 
 import java.time.format.DateTimeFormatter;
@@ -59,8 +59,8 @@ public class DetailFragment extends Fragment
    public void onResume ()
    {
       super.onResume ();
-      textLatitude.setText (ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ().getLatitude ()));
-      textLongitude.setText (ASTools.formatGeoPoint (DisplayStatus.getGeoPoint ().getLongitude ()));
+      textLatitude.setText (Location.formatGeoPoint (DisplayStatus.getGeoPoint ().getLatitude ()));
+      textLongitude.setText (Location.formatGeoPoint (DisplayStatus.getGeoPoint ().getLongitude ()));
 
       textDateTime.setText (DisplayStatus.getTimeStamp ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd HH:mm")));
       textTimeZone.setText (DisplayStatus.getDisplayZoneId ().toString ());

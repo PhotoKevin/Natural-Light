@@ -7,7 +7,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
-    <string name="action_help">Help</string>
 
     <string name="menu_map">Map</string>
     <string name="menu_details">Detail</string>
@@ -50,14 +49,16 @@
     <string name="title_select_date_time">Select Date/Time</string>
     <string name="moon_elevation">Moon Elevation</string>
     <string name="moon_azimuth">Moon Azimuth</string>
-    <string name="timezone">TimeZone</string>
     <string name="appTitle">Natural Light</string>
     <string name="version">Version %d</string>
-    <string name="sqlVersion">SQL Version</string>
-    <string name="url">https://github.com/PhotoKevin/NaturalLight</string>
     <string name="appDescription">A tool for outdoor photographers</string>
     <string name="appCopyRight">© 2024–2025 Kevin Nickerson</string>
     <string name="source_code">Source code and issue reporting</string>
     <string name="app_source_url">https://github.com/PhotoKevin/Natural-Light</string>
     <string name="about_libraries">Third-Party Libraries</string>
+    <string name="action_import_export">Export/Import</string>
+    <string name="header_import_export">Import/Export</string>
+    <string name="export_locations">Export Locations</string>
+    <string name="import_locations">Import Locations</string>
+    <string name="invalid_import">Invalid import file</string>
 </resources>

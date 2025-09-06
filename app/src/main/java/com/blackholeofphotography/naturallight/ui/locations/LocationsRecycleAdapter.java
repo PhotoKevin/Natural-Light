@@ -17,7 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.blackholeofphotography.naturallight.ASTools;
+import com.blackholeofphotography.bhtools.ASTools;
 import com.blackholeofphotography.naturallight.Location;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
@@ -58,7 +58,7 @@ public class LocationsRecycleAdapter
    {
       Location dataProvider = dataProviders.get (position);
       holder.locationTitle.setText (dataProvider.getTitle ());
-      holder.latitudeLongitude.setText (ASTools.formatGeoPoint (dataProvider.getPoint ()));
+      holder.latitudeLongitude.setText (Location.formatGeoPoint (dataProvider.getPoint ()));
       if (dataProvider.getUseCurrentTime ())
          holder.dateTime.setText ("");
       else
@@ -105,6 +105,7 @@ public class LocationsRecycleAdapter
                builder.setMessage (dialogMessage)
                      .setPositiveButton (dialogPositive, new DialogInterface.OnClickListener ()
                      {
+                        @SuppressLint("NotifyDataSetChanged")
                         public void onClick (DialogInterface dialog, int id)
                         {
                            int position = getAdapterPosition ();
@@ -112,7 +113,14 @@ public class LocationsRecycleAdapter
                            Settings.removeLocation (location.getUid ());
                            // Note: The dataProviders is the same list as Settings. Removing it
                            // from Settings removes it from the dataProviders.
-                           notifyItemChanged (position);
+                           try
+                           {
+                              notifyDataSetChanged ();
+                           }
+                           catch (Exception ex)
+                           {
+                              Log.e (LOG_TAG, ex.toString ());
+                           }
 
                            dialog.dismiss ();
                         }

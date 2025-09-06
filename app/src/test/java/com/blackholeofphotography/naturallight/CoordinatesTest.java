@@ -28,7 +28,5 @@ public class CoordinatesTest
       double H = Coordinates.ObserverLocalHourAngleDegrees (jd, lon, geocentric.getRa ());
       double expectedH = 64.352133;
       Assert.assertEquals (expectedH, H, 0.01);
-
-      //Topocentric_t topopos = geocentric2Topocentric (geocentric, 1, lat, lon, 0, jd);
    }
 }

@@ -40,7 +40,6 @@
     </PreferenceCategory>
 
     <SwitchPreferenceCompat
-        android:id="@+id/showAdvanced"
         android:defaultValue="false"
         android:key="nl_show_advanced_preferences"
         android:title="@string/title_show_advanced_options"
