@@ -179,7 +179,6 @@ public class DisplayStatus
    private static AstroPosition calculateSunPosition (ZonedDateTime when, IGeoPoint where)
    {
       double jd = Julian.JulianFromZonedDateTime (when);
-      //double[] position = Sun.SunTopocentricPosition (jd, where.getLatitude (), where.getLongitude (), 0);
       TopocentricPosition position = Sun.SunTopocentricPosition (jd, where.getLatitude (), where.getLongitude (), 0);
       return new AstroPosition ((float) position.getAzimuth (), (float) position.getElevation ());
    }

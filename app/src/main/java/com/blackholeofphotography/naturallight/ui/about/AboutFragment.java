@@ -47,7 +47,6 @@ public class AboutFragment extends Fragment
          RecyclerView recyclerView = root.findViewById (R.id.librariesList);
 
          adapter = new LibrariesRecyclerAdapter (this.getContext (), getActivity ());
-         recyclerView.setHasFixedSize (true);
          RecyclerView.LayoutManager manager = new LinearLayoutManager (this.getContext ());
          recyclerView.setLayoutManager (manager);
          recyclerView.setAdapter (adapter);

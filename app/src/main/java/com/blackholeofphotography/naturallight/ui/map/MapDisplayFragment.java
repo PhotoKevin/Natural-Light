@@ -50,6 +50,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+// May need to move to MapsForge
 public class MapDisplayFragment extends Fragment implements DisplayStatusListener
 {
    @SuppressWarnings ("unused")
@@ -67,6 +68,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    private Location currentLocation;
    Runnable repeatativeTaskRunnable;
    private ProgressBar mProgressBar;
+   private boolean mIgnoreNextOnScroll = false;
 
 
    private final Handler taskHandler = new android.os.Handler (Looper.getMainLooper ());
@@ -105,7 +107,6 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
       setupMap (MainActivity.getContext ());
 
-      currentLocation = null;
       final Bundle arguments = getArguments ();
       MapDisplayFragmentArgs args = MapDisplayFragmentArgs.fromBundle (arguments);
       if (args.getAUid () != null)
@@ -113,7 +114,11 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
       if (currentLocation != null)
          moveTo (currentLocation);
-
+      else
+      {
+         mIgnoreNextOnScroll = true;
+         mMapView.getController ().setCenter (DisplayStatus.getGeoPoint ());
+      }
 
       ViewCompat.setOnApplyWindowInsetsListener(binding.addLocation, (v, windowInsets) -> {
          Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -154,7 +159,10 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          @Override
          public boolean onScroll (ScrollEvent event)
          {
-            DisplayStatus.setGeoPoint (mMapView.getMapCenter ());
+            if (!mIgnoreNextOnScroll)
+               DisplayStatus.setGeoPoint (mMapView.getMapCenter ());
+
+            mIgnoreNextOnScroll = false;
             return true;
          }
 
@@ -213,6 +221,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    void moveTo (Location location)
    {
       Log.d (LOG_TAG, String.format ("moveTo: %f, %f Current: %s", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime () ? "true" : "false"));
+      mIgnoreNextOnScroll = true;
       DisplayStatus.setGeoPoint (location.getPoint ());
       DisplayStatus.setZoomLevel (location.getZoomLevel ());
       mMapView.removeMapListener (null);
@@ -231,6 +240,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          DisplayStatus.setTimeStamp (location.getDateTime ());
       }
       DisplayStatus.calculatePositions ();
+      //mDisableUserScroll = false;
    }
 
    void setupLocationOverlay ()

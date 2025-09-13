@@ -233,8 +233,6 @@ public class MainActivity extends AppCompatActivity
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
       DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
       DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
-
-      //DisplayStatus.forceCalculation ();
    }
 
    public void onPause()
