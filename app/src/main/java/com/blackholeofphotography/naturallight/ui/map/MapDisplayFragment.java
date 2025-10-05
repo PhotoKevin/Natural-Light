@@ -1,8 +1,10 @@
 package com.blackholeofphotography.naturallight.ui.map;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,8 +17,12 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,11 +43,15 @@ import com.blackholeofphotography.naturallight.MainActivity;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 import com.blackholeofphotography.naturallight.databinding.MapFragmentBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 
@@ -69,6 +79,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    Runnable repeatativeTaskRunnable;
    private ProgressBar mProgressBar;
    private boolean mIgnoreNextOnScroll = false;
+   private FusedLocationProviderClient fusedLocationClient;
 
 
    private final Handler taskHandler = new android.os.Handler (Looper.getMainLooper ());
@@ -93,6 +104,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       mProgressBar = binding.progressBar;
       mProgressBar.setIndeterminate (true);
       binding.addLocation.setOnClickListener (this::onClick);
+      binding.jumpToLocation.setOnClickListener (this::toCurrentLocation);
 
       if (!Settings.showDebugData ())
       {
@@ -137,6 +149,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          return WindowInsetsCompat.CONSUMED;
       });
 
+      fusedLocationClient = LocationServices.getFusedLocationProviderClient (MainActivity.getContext ());
       return root;
    }
 
@@ -240,8 +253,24 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          DisplayStatus.setTimeStamp (location.getDateTime ());
       }
       DisplayStatus.calculatePositions ();
-      //mDisableUserScroll = false;
    }
+
+
+   void moveTo (android.location.Location location)
+   {
+      Log.d (LOG_TAG, String.format ("moveTo: %f, %f", location.getLatitude (), location.getLongitude ()));
+      mIgnoreNextOnScroll = true;
+      GeoPoint point = new GeoPoint (location.getLatitude (), location.getLongitude ());
+      DisplayStatus.setGeoPoint (point);
+      DisplayStatus.setZoomLevel (Settings.getDefaultZoomLevel ());
+      mMapView.removeMapListener (null);
+
+      mMapView.getController ().setCenter (point);
+      mMapView.getController ().setZoom (Settings.getDefaultZoomLevel ());
+
+      DisplayStatus.calculatePositions ();
+   }
+
 
    void setupLocationOverlay ()
    {
@@ -324,9 +353,6 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       mTextDebug.setText (String.format ("Astro run(skip) %d(%d), Light %d(%d) %d",
             DisplayStatus.calculations, DisplayStatus.astro_skipped, DisplayStatus.lighting_bitmap_created, DisplayStatus.lighting_bitmap_skipped, DisplayStatus.averageCalcTime ()));
       String zone = DisplayStatus.getDisplayZoneId ().toString ();
-//      final int maxZoneLength = 16;
-//      if (zone.length () > maxZoneLength)
-//         zone = zone.substring (0, maxZoneLength);
       mTimeZone.setText (zone);
       mSunRise.setText (String.format ("Rise: %s", ASTools.formatTime (DisplayStatus.getSunRise ())));
       mSunSet.setText (String.format ("Set: %s", ASTools.formatTime (DisplayStatus.getSunSet ())));
@@ -351,7 +377,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       }
    }
 
-   /** @noinspection unused*/
+
    public void onClick (View v)
    {
       final Location newLocation = new Location ("", "", mMapView.getMapCenter (), DisplayStatus.getTimeStamp (), DisplayStatus.useCurrentTime (), DisplayStatus.getZoomLevel ());
@@ -362,6 +388,42 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       MapDisplayFragmentDirections.ActionNavMapToEditLocationFragment action =
             MapDisplayFragmentDirections.actionNavMapToEditLocationFragment (newLocation.getUid ());
       navController.navigate (action);
+   }
+
+   private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
+         new ActivityResultContracts.RequestPermission(),
+         new ActivityResultCallback<> ()
+         {
+            @Override
+            public void onActivityResult(Boolean result)
+            {
+               if (result)
+                  toCurrentLocation (null);
+            }
+         }
+   );
+
+   public void toCurrentLocation (View v)
+   {
+
+      if (ActivityCompat.checkSelfPermission (MainActivity.getContext (), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission (MainActivity.getContext (), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+      {
+         requestPermissionLauncher.launch (Manifest.permission.ACCESS_FINE_LOCATION);
+         return;
+      }
+
+      fusedLocationClient.getLastLocation ()
+            .addOnSuccessListener (new OnSuccessListener<> ()
+            {
+               @Override
+               public void onSuccess (android.location.Location location)
+               {
+                  if (location != null)
+                     moveTo (location);
+               }
+            });
+
    }
 
    @Override

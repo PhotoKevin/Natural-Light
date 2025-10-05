@@ -1,5 +1,7 @@
 package com.blackholeofphotography.naturallight;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -11,6 +13,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -20,6 +23,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.blackholeofphotography.astrocalc.Tools;
 import com.blackholeofphotography.naturallight.databinding.ActivityMainBinding;
 import net.iakovlev.timeshape.TimeZoneEngine;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IGeoPoint;
@@ -34,7 +41,6 @@ public class MainActivity extends AppCompatActivity
 {
    //private static final String LOG_TAG = "MainActivity";
    private AppBarConfiguration mAppBarConfiguration;
-
    private static Context _ApplicationContext;
 
 
@@ -113,10 +119,6 @@ public class MainActivity extends AppCompatActivity
       else
          Settings.setEnableAdvancedSettings (false);
    }
-
-
-
-
 
    public static void reloadTimeEngine ()
    {

@@ -61,4 +61,6 @@
     <string name="export_locations">Export Locations</string>
     <string name="import_locations">Import Locations</string>
     <string name="invalid_import">Invalid import file</string>
+    <string name="jump_to_current_location">Jump to current location</string>
+    <string name="zoom_level">Zoom level</string>
 </resources>

@@ -51,6 +51,9 @@ public final class Settings
    private static ZoneId mZoneId;
    public static final String KEY_ZOOM_LEVEL = "nl_zoom_level";
    private static double mZoomLevel;
+   public static final String KEY_DEFAULT_ZOOM_LEVEL = "nl_default_zoom_level";
+   private static double mDefaultZoomLevel;
+
    public static final String KEY_DISPLAY_TIME = "nl_display_time";
    private static ZonedDateTime mDisplayTime;
    public static final String KEY_USE_CURRENT_TIME = "nl_use_current_time";
@@ -108,6 +111,7 @@ public final class Settings
          String zoneName = sharedPreferences.getString (KEY_ZONE_ID, "UTC");
          mZoneId = ZoneId.of (zoneName);
          mZoomLevel = sharedPreferences.getFloat (KEY_ZOOM_LEVEL, 5.0F);
+         mDefaultZoomLevel = sharedPreferences.getFloat (KEY_DEFAULT_ZOOM_LEVEL, 17);
 
          if (!BuildConfig.DEBUG)
             mShowDebugData = false;
@@ -165,6 +169,7 @@ public final class Settings
       ed.putString (KEY_USE_CURRENT_TIME, String.valueOf (mUseCurrentTime));
       ed.putString (KEY_ZONE_ID, mZoneId.toString ());
       ed.putString (KEY_ZOOM_LEVEL, String.valueOf (getZoomLevel ()));
+      ed.putString (KEY_DEFAULT_ZOOM_LEVEL, String.valueOf ((int) getDefaultZoomLevel ()));
 
       ed.apply ();
    }   
@@ -384,5 +389,15 @@ public final class Settings
    public static void setZoomLevel (double aZoomLevel)
    {
       mZoomLevel = aZoomLevel;
+   }
+
+   public static double getDefaultZoomLevel ()
+   {
+      return mDefaultZoomLevel;
+   }
+
+   public static void setDefaultZoomLevel (double aZoomLevel)
+   {
+      mDefaultZoomLevel = aZoomLevel;
    }
 }

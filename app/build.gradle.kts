@@ -72,6 +72,7 @@ dependencies {
     implementation("com.google.android.play:asset-delivery:2.3.0")
     implementation("com.google.android.play:review:2.0.2")
     implementation("com.google.android.play:app-update:2.1.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:2.9.4")

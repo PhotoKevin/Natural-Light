@@ -37,6 +37,14 @@
             android:key="nl_region"
             android:summary="@string/regions_summary"
             android:title="@string/regions_title" />
+        <ListPreference
+            android:defaultValue="15"
+            android:entries="@array/zoom_entries"
+            android:entryValues="@array/zoom_entries"
+            android:key="nl_default_zoom_level"
+            android:summary="@string/zoom_level"
+            android:title="@string/zoom_level" />
+        />
     </PreferenceCategory>
 
     <SwitchPreferenceCompat

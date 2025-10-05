@@ -22,6 +22,19 @@
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent" />
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/jumpToLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:icon="@android:drawable/ic_menu_search"
+        android:contentDescription="@string/jump_to_current_location"
+        android:src="@drawable/ic_menu_mylocation"
+        app:layout_constraintBottom_toTopOf="@+id/addLocation"
+        app:layout_constraintEnd_toEndOf="parent" />
     <org.osmdroid.views.MapView
         android:id="@+id/map"
         android:layout_width="wrap_content"
