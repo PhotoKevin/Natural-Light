@@ -1,6 +1,6 @@
 import com.android.build.api.dsl.Packaging
 import org.apache.tools.ant.util.JavaEnvUtils.VERSION_11
-import org.jetbrains.kotlin.com.intellij.psi.compiled.ClassFileDecompilers.Full
+//import org.jetbrains.kotlin.com.intellij.psi.compiled.ClassFileDecompilers.Full
 
 plugins {
     id("com.android.application")
@@ -10,14 +10,14 @@ plugins {
 
 android {
     namespace = "com.blackholeofphotography.naturallight"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 36
-        versionCode = 13
-        versionName = "1.13"
+        versionCode = 14
+        versionName = "1.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -54,18 +54,18 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.3")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     implementation("com.github.tony19:logback-android:3.0.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
 
     // Java language implementation
-    implementation("androidx.navigation:navigation-fragment:2.9.4")
-    implementation("androidx.navigation:navigation-ui:2.9.4")
+    implementation("androidx.navigation:navigation-fragment:2.9.5")
+    implementation("androidx.navigation:navigation-ui:2.9.5")
 
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
 
     // Feature module Support
     implementation("com.google.android.play:feature-delivery:2.1.0")
@@ -75,12 +75,12 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.9.4")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.5")
 
     // Jetpack Compose Integration
-    implementation("androidx.navigation:navigation-compose:2.9.4")
-    implementation("androidx.navigation:navigation-fragment:2.9.4")
-    implementation("androidx.navigation:navigation-ui:2.9.4")
+    implementation("androidx.navigation:navigation-compose:2.9.5")
+    implementation("androidx.navigation:navigation-fragment:2.9.5")
+    implementation("androidx.navigation:navigation-ui:2.9.5")
 
     implementation ("androidx.preference:preference:1.2.1")
     implementation("androidx.fragment:fragment:1.8.9")
@@ -97,8 +97,8 @@ dependencies {
         exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
     }
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-4@aar")
-    implementation ("com.github.erosb:json-sKema:0.25.0")
+    implementation ("com.github.luben:zstd-jni:1.5.7-5@aar")
+    implementation ("com.github.erosb:json-sKema:0.27.0")
 }
 
 tasks {
