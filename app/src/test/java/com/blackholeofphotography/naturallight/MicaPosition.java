@@ -2,6 +2,7 @@ package com.blackholeofphotography.naturallight;
 
 import com.blackholeofphotography.astrocalc.Tools;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,18 +27,20 @@ public class MicaPosition
       if (matches)
       {
          String nschar = matcher.group ("nschar");
-         int londeg = Integer.parseInt (matcher.group ("londeg"));
-         int lonmin = Integer.parseInt (matcher.group ("lonmin"));
-         double lonsec = Float.parseFloat (matcher.group ("lonsec"));
+         int londeg = Integer.parseInt (Objects.requireNonNull (matcher.group ("londeg")));
+         int lonmin = Integer.parseInt (Objects.requireNonNull (matcher.group ("lonmin")));
+         double lonsec = Float.parseFloat (Objects.requireNonNull (matcher.group ("lonsec")));
 
          String ewchar = matcher.group ("ewchar");
-         int latdeg = Integer.parseInt (matcher.group ("latdeg"));
-         int latmin = Integer.parseInt (matcher.group ("latmin"));
-         double latsec = Float.parseFloat (matcher.group ("latsec"));
+         int latdeg = Integer.parseInt (Objects.requireNonNull (matcher.group ("latdeg")));
+         int latmin = Integer.parseInt (Objects.requireNonNull (matcher.group ("latmin")));
+         double latsec = Float.parseFloat (Objects.requireNonNull (matcher.group ("latsec")));
 
          int alt = Integer.parseInt (matcher.group ("elevation"));
 
+         assert ewchar != null;
          int ewSign = ewchar.equals ("E") ? 1 : -1;
+         assert nschar != null;
          int nsSign = nschar.equals ("N") ? 1 : -1;
          position.latitude = Tools.fractionalDegrees (latdeg, latmin, latsec) * nsSign;
          position.longitude = Tools.fractionalDegrees (londeg, lonmin, lonsec) * ewSign;

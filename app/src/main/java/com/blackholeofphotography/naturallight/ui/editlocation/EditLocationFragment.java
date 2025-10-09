@@ -98,7 +98,7 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
    }
 
    @Override
-   public void onCheckedChanged (CompoundButton buttonView, boolean isChecked)
+   public void onCheckedChanged (@NonNull CompoundButton buttonView, boolean isChecked)
    {
       mDatePicker.setEnabled (!isChecked);
       mTimePicker.setEnabled (!isChecked);
