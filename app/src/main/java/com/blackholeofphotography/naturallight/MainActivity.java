@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity
          }
          else
          {
+            setOptionMenuVisibility (true);
             return super.onOptionsItemSelected (item);
          }
 
