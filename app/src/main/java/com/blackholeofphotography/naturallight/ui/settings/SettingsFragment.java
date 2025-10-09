@@ -5,7 +5,7 @@
  * or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
  */
 
-package com.blackholeofphotography.naturallight.settings;
+package com.blackholeofphotography.naturallight.ui.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
