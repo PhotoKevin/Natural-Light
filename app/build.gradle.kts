@@ -60,12 +60,12 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
 
     // Java language implementation
-    implementation("androidx.navigation:navigation-fragment:2.9.5")
-    implementation("androidx.navigation:navigation-ui:2.9.5")
+    implementation("androidx.navigation:navigation-fragment:2.9.6")
+    implementation("androidx.navigation:navigation-ui:2.9.6")
 
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 
     // Feature module Support
     implementation("com.google.android.play:feature-delivery:2.1.0")
@@ -75,12 +75,12 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.9.5")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.6")
 
     // Jetpack Compose Integration
-    implementation("androidx.navigation:navigation-compose:2.9.5")
-    implementation("androidx.navigation:navigation-fragment:2.9.5")
-    implementation("androidx.navigation:navigation-ui:2.9.5")
+    implementation("androidx.navigation:navigation-compose:2.9.6")
+    implementation("androidx.navigation:navigation-fragment:2.9.6")
+    implementation("androidx.navigation:navigation-ui:2.9.6")
 
     implementation ("androidx.preference:preference:1.2.1")
     implementation("androidx.fragment:fragment:1.8.9")
@@ -91,14 +91,14 @@ dependencies {
     implementation ("org.osmdroid:osmdroid-android:6.1.20")
 
     // Time Shape
-    implementation ("net.iakovlev:timeshape:2024a.25") {
+    implementation ("net.iakovlev:timeshape:2025b.28") {
         // Exclude standard compression library
         exclude (group= "com.github.luben", module= "zstd-jni")
         exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
     }
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-5@aar")
-    implementation ("com.github.erosb:json-sKema:0.27.0")
+    implementation ("com.github.luben:zstd-jni:1.5.7-6@aar")
+    implementation ("com.github.erosb:json-sKema:0.28.0")
 }
 
 tasks {
