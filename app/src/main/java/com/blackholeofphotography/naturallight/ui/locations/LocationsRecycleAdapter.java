@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +21,15 @@ import com.blackholeofphotography.naturallight.Location;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 public class LocationsRecycleAdapter
       extends RecyclerView.Adapter<LocationsRecycleAdapter.RecycleViewHolder>
 
 {
-   private static final String LOG_TAG = "LocationsRecycleAdapter";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (LocationsRecycleAdapter.class);
    private ArrayList<Location> dataProviders = new ArrayList<> ();
    private final LayoutInflater mInflater;
 
@@ -119,7 +120,7 @@ public class LocationsRecycleAdapter
                            }
                            catch (Exception ex)
                            {
-                              Log.e (LOG_TAG, ex.toString ());
+                              logger.error ("LocationsRecycleAdapter", ex);
                            }
 
                            dialog.dismiss ();

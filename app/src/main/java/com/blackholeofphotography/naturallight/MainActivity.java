@@ -25,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
@@ -33,10 +34,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-   //private static final String LOG_TAG = "MainActivity";
+   private static final Logger logger = LoggerFactory.getLogger (MainActivity.class);
    private AppBarConfiguration mAppBarConfiguration;
    private static Context _ApplicationContext;
-
 
    public static Context getContext ()
    {
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
    public static TimeZoneEngine timeZoneEngine;
    static TimeZoneAreas timeZoneAreas;
    public static PlanetaryRegions planetaryRegions;
-   private static org.slf4j.Logger log;
+
    @Override
    protected void onCreate (Bundle savedInstanceState)
    {
@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity
       DisplayStatus.setUseCurrentTime (Settings.useCurrentTime ());
       super.onCreate (savedInstanceState);
 
-      log = LoggerFactory.getLogger (MainActivity.class);
-      log.info ("{}", "hello world");
-
       //int apiKey = BuildConfig.apiKey;
 
       String apiKey;
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity
          String me = getPackageName ();
          ApplicationInfo applicationInfo = packageManager.getApplicationInfo (me, PackageManager.GET_META_DATA);
          apiKey = applicationInfo.metaData.getString ("com.facebook.sdk.API_KEY");
-         log.info (apiKey);
+         logger.info (apiKey);
       }
       catch (PackageManager.NameNotFoundException e)
       {
@@ -160,7 +157,7 @@ public class MainActivity extends AppCompatActivity
                         boundingBox.getMaxLatitude (), boundingBox.getMaxLongitude (), false);
 
                long delta = System.currentTimeMillis () - start;
-               log.info ("TimeZoneEngine.initialize took {}ms", delta);
+               logger.info ("TimeZoneEngine.initialize took {}ms", delta);
                if (! regionName.equals ("ALL"))
                   CachedData.saveTimeEngine (timeZoneEngine);
             }
@@ -235,7 +232,7 @@ public class MainActivity extends AppCompatActivity
    {
       super.onPause();
       DisplayStatus.removeAllListeners ();
-      log.trace ("onPause");
+      logger.trace ("onPause");
 
       Settings.setMapCenter (DisplayStatus.getGeoPoint (), DisplayStatus.getDisplayZoneId ());
       Settings.setZoomLevel (DisplayStatus.getZoomLevel ());

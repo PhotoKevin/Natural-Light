@@ -4,7 +4,6 @@ package com.blackholeofphotography.naturallight.ui.about;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,13 @@ import com.blackholeofphotography.naturallight.BuildConfig;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.databinding.AboutFragmentBinding;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 
 public class AboutFragment extends Fragment
 {
-   private static final String LOG_TAG = "AboutFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (AboutFragment.class);
    private LibrariesRecyclerAdapter adapter = null;
 
    AboutFragmentBinding binding;
@@ -57,7 +58,7 @@ public class AboutFragment extends Fragment
       }
       catch (Exception e)
       {
-         Log.e (LOG_TAG, e.toString ());
+         logger.error ("AboutFragment.onCreateView", e);
       }
       return null;
    }

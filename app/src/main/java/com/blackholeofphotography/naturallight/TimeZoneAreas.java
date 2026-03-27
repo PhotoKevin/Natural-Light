@@ -9,6 +9,7 @@ import net.iakovlev.timeshape.proto.Geojson;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
@@ -31,7 +32,7 @@ public class TimeZoneAreas
    {
       mTimeZoneAreas = aTimeZoneAreas;
    }
-   final private static org.slf4j.Logger log = LoggerFactory.getLogger (TimeZoneAreas.class);
+   final private static Logger log = LoggerFactory.getLogger (TimeZoneAreas.class);
 
    public static TimeZoneAreas initialize ()
    {

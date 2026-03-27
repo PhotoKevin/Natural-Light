@@ -3,7 +3,6 @@ package com.blackholeofphotography.naturallight.ui.editlocation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.blackholeofphotography.naturallight.Settings;
 import com.blackholeofphotography.naturallight.databinding.EditLocationFragmentBinding;
 
 import org.osmdroid.util.GeoPoint;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -37,7 +37,7 @@ import java.time.ZonedDateTime;
 public class EditLocationFragment extends Fragment implements TimePicker.OnTimeChangedListener, DatePicker.OnDateChangedListener
    , CompoundButton.OnCheckedChangeListener, View.OnClickListener
 {
-   private final static String LOG_TAG = "EditLocationFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (EditLocationFragment.class);
    private EditLocationFragmentBinding binding;
    private Location mLocation;
    TextView mTitle;
@@ -81,7 +81,7 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       }
       catch (Exception ex)
       {
-         Log.e (LOG_TAG, ex.toString ());
+         logger.error ("EditLocationFragment.onCreateView ", ex);
       }
 
       mTimeStamp = mLocation.getDateTime ();
@@ -205,7 +205,7 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       }
       catch (NumberFormatException ex)
       {
-         Log.e (LOG_TAG, ex.toString ());
+         logger.error ("EditLocationFragment.onSteop ", ex);
       }
    }
 

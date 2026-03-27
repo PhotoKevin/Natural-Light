@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blackholeofphotography.naturallight.R;
+
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class LibrariesRecyclerAdapter
       extends RecyclerView.Adapter<LibrariesRecyclerAdapter.RecycleViewHolder>
 {
-   private static final String LOG_TAG = "LibrariesRecyclerAdapter";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (LibrariesRecyclerAdapter.class);
    private ArrayList<ThirdPartyLibrary> dataProviders = new ArrayList<> ();
    private final LayoutInflater mInflater;
 
@@ -34,7 +35,7 @@ public class LibrariesRecyclerAdapter
    public void setDataProviders (ArrayList<ThirdPartyLibrary> dataProviders)
    {
       this.dataProviders = dataProviders;
-      Log.v (LOG_TAG, String.format ("%d entries", dataProviders.size ()));
+      logger.info ("{} entries", dataProviders.size ());
       notifyDataSetChanged ();
    }
 
@@ -53,7 +54,7 @@ public class LibrariesRecyclerAdapter
       ThirdPartyLibrary dataProvider = dataProviders.get (position);
       holder.locationTitle.setText (dataProvider.getText ());
       Linkify.addLinks (holder.locationTitle, Linkify.WEB_URLS);
-      Log.v (LOG_TAG, String.format ("Set text at %d to %s", position, dataProvider.getText ()));
+      logger.info ("Set text at {} to {}", position, dataProvider.getText ());
    }
 
    @Override
@@ -64,7 +65,7 @@ public class LibrariesRecyclerAdapter
       return dataProviders.size ();
    }
 
-   // stores and recycles views as they are scrolled off screen
+   // stores and recycles views as they are scrolled off-screen
    public static class RecycleViewHolder extends RecyclerView.ViewHolder
    {
       final TextView locationTitle;

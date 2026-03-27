@@ -1,11 +1,12 @@
 package com.blackholeofphotography.naturallight.ui.importexport;
 
-import org.json.JSONArray;
 import com.github.erosb.jsonsKema.*;
 
+@SuppressWarnings("unused")
 public class ImportExport
 {
-   public boolean validate(String jsonData, String jsonSchema) throws Exception
+   @SuppressWarnings("SameReturnValue")
+   public boolean validate(String jsonData, String jsonSchema)
    {
       Schema schema = new SchemaLoader(jsonSchema).load();
 

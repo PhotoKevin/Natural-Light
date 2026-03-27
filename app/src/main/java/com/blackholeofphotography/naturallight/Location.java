@@ -1,7 +1,5 @@
 package com.blackholeofphotography.naturallight;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -10,6 +8,8 @@ import org.json.JSONObject;
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class Location extends OverlayItem
 {
-   private static final String LOG_TAG = "Location";
+   private static final Logger logger = LoggerFactory.getLogger (Location.class);
    public static final String UID = "uid";
    public static final String TITLE = "title";
    public static final String SNIPPET = "snippet";
@@ -81,7 +81,7 @@ public class Location extends OverlayItem
       }
       catch (JSONException ex)
       {
-         Log.d (LOG_TAG, ex.toString ());
+         logger.error ("Location.toJSON ", ex);
       }
       return null;
    }

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +27,8 @@ import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 import com.blackholeofphotography.naturallight.databinding.ImportExportFragmentBinding;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 public class ImportExportFragment extends Fragment
 {
-   private static final String LOG_TAG = "ImportExportFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (ImportExportFragment.class);
 
    ImportExportFragmentBinding binding;
    ActivityResultLauncher<Intent> mExportLocationsResult;
@@ -76,7 +77,7 @@ public class ImportExportFragment extends Fragment
       }
       catch (Exception ex)
       {
-         Log.e (LOG_TAG, ex.toString ());
+         logger.error ("ImportExportFragment.onCreateView ", ex);
       }
       return null;
    }

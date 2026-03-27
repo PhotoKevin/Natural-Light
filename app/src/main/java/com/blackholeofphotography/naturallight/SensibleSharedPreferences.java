@@ -2,9 +2,11 @@ package com.blackholeofphotography.naturallight;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.preference.PreferenceManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
@@ -15,7 +17,7 @@ import java.time.format.DateTimeParseException;
  */
 public class SensibleSharedPreferences
 {
-   private final static String LOG_TAG = "SensibleSharedPreferences";
+   private static final Logger logger = LoggerFactory.getLogger (SensibleSharedPreferences.class);
    private final SharedPreferences mSharedPreferences;
    public SensibleSharedPreferences (Context context)
    {
@@ -37,7 +39,7 @@ public class SensibleSharedPreferences
          }
          catch (Exception e)
          {
-            Log.d (LOG_TAG, e.toString ());
+            logger.debug ("Boolean {} is invalid", key);
          }
          return defaultValue;
       }

@@ -8,10 +8,11 @@
 package com.blackholeofphotography.naturallight;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -24,7 +25,7 @@ import java.util.Optional;
  */
 public final class Settings
 {
-   private static final String LOG_TAG = "Settings";
+   private static final Logger logger = LoggerFactory.getLogger (Settings.class);
 
    // Keys start with "nl" so I can add code later to reset to default values
    public static final String KEY_LOCATIONS = "nl_locations";
@@ -123,7 +124,7 @@ public final class Settings
          }
          catch (Exception ex)
          {
-            Log.e (LOG_TAG, ex.toString ());
+            logger.error ("loadFromBackingStore", ex);
             mLocations = new ArrayList<> ();
          }
 
@@ -135,9 +136,9 @@ public final class Settings
             firstTime = false;
          }
       }
-      catch (Exception e)
+      catch (Exception ex)
       {
-         Log.e (LOG_TAG, e.toString ());
+         logger.error ("loadFromBackingStore 2nd", ex);
       }
    }
    
@@ -394,10 +395,5 @@ public final class Settings
    public static double getDefaultZoomLevel ()
    {
       return mDefaultZoomLevel;
-   }
-
-   public static void setDefaultZoomLevel (double aZoomLevel)
-   {
-      mDefaultZoomLevel = aZoomLevel;
    }
 }

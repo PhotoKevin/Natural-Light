@@ -10,16 +10,17 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.util.Log;
 
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.Overlay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LightingOverlay extends Overlay implements DisplayStatusListener
 {
-   private static final String LOG_TAG = "LightingOverlay";
+   private static final Logger logger = LoggerFactory.getLogger (LightingOverlay.class);
    private Paint sSmoothPaint = new Paint (Paint.FILTER_BITMAP_FLAG);
    protected MapView mMapView;
 
@@ -135,7 +136,7 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
    protected void drawOverlay (final Canvas canvas)
    {
       if (mSunMoonBitmap == null)
-         Log.d (LOG_TAG, "mSunMoonBitmap is null");
+         logger.debug ("mSunMoonBitmap is null");
 
       if (mLastRender + mLastRenderLag < System.currentTimeMillis ())
       {

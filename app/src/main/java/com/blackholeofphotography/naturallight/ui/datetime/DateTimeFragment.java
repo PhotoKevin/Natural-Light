@@ -2,7 +2,6 @@ package com.blackholeofphotography.naturallight.ui.datetime;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import com.blackholeofphotography.naturallight.DisplayStatus;
 import com.blackholeofphotography.naturallight.databinding.DateTimeFragmentBinding;
 
+import org.slf4j.LoggerFactory;
+
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -24,7 +25,7 @@ public class DateTimeFragment extends Fragment implements DatePicker.OnDateChang
       CompoundButton.OnCheckedChangeListener
 
 {
-   private final static String LOG_TAG = "DateTimeFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (DateTimeFragment.class);
    private DateTimeFragmentBinding binding;
    ZonedDateTime mTimeStamp;
 
@@ -95,7 +96,7 @@ public class DateTimeFragment extends Fragment implements DatePicker.OnDateChang
       }
       catch (NumberFormatException ex)
       {
-         Log.e (LOG_TAG, ex.toString ());
+         logger.error ("DateTimeFragment.onStop ", ex);
       }
    }
 

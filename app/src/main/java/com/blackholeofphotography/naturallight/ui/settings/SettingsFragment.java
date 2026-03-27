@@ -10,7 +10,6 @@ package com.blackholeofphotography.naturallight.ui.settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -25,6 +24,8 @@ import com.blackholeofphotography.naturallight.MainActivity;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +35,7 @@ import java.util.List;
 public class SettingsFragment extends PreferenceFragmentCompat
 {
    /** @noinspection FieldCanBeLocal*/
-   private final String LOG_TAG = "SettingsFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (SettingsFragment.class);
    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
    private SharedPreferences mSharedPreferences;
    private boolean timeZoneEngineReloadRequired = false;
@@ -76,7 +77,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
       }
       catch (Exception ex)
       {
-         Log.e (LOG_TAG, ex.toString ());
+         logger.error ("SettingsFragment.onCreatePreferences ", ex);
       }
    }
 
@@ -141,7 +142,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
             public void onBindEditText (@NonNull EditText editText)
             {
                editText.setInputType (inputType);
-
             }
          });
       }

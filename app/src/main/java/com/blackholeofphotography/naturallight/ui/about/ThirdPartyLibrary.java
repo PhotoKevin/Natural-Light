@@ -2,9 +2,11 @@ package com.blackholeofphotography.naturallight.ui.about;
 
 import android.util.Log;
 
+import org.slf4j.LoggerFactory;
+
 public class ThirdPartyLibrary
 {
-   private static final String LOG_TAG = "ThirdPartyLibrary";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (ThirdPartyLibrary.class);
    private final String text;
 
    public ThirdPartyLibrary (String aText)
@@ -14,7 +16,7 @@ public class ThirdPartyLibrary
 
    public String getText ()
    {
-      Log.v (LOG_TAG, String.format ("Return %s", text));
+      logger.info ("Return {}", text);
       return text;
    }
 }

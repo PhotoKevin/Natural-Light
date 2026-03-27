@@ -10,6 +10,8 @@ import com.blackholeofphotography.astrocalc.TopocentricPosition;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.util.GeoPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 public class DisplayStatus
 {
    @SuppressWarnings ("unused")
-   private static final String LOG_TAG = "DisplayStatus";
+   private static final Logger logger = LoggerFactory.getLogger (DisplayStatus.class);
    static IGeoPoint mGeoPoint = new GeoPoint (0.0, 0.0);
    static ZoneId mZoneId;
    static ZonedDateTime mTimeStamp = ZonedDateTime.now ();

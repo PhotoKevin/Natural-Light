@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -54,6 +53,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -64,7 +64,7 @@ import java.util.List;
 public class MapDisplayFragment extends Fragment implements DisplayStatusListener
 {
    @SuppressWarnings ("unused")
-   private static final String LOG_TAG = "MapDisplayFragment";
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (MapDisplayFragment.class);
 
    private MapFragmentBinding binding;
    private static MapView mMapView;
@@ -233,7 +233,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
    void moveTo (Location location)
    {
-      Log.d (LOG_TAG, String.format ("moveTo: %f, %f Current: %s", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime () ? "true" : "false"));
+      logger.info ("moveTo: {}, {} Current: {}", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime () ? "true" : "false");
       mIgnoreNextOnScroll = true;
       DisplayStatus.setGeoPoint (location.getPoint ());
       DisplayStatus.setZoomLevel (location.getZoomLevel ());
@@ -248,7 +248,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       }
       else
       {
-         Log.d (LOG_TAG, String.format ("set time: %s", ASTools.formatDateTime (location.getDateTime ())));
+         logger.info ("set time: {}}", ASTools.formatDateTime (location.getDateTime ()));
          DisplayStatus.setUseCurrentTime (false);
          DisplayStatus.setTimeStamp (location.getDateTime ());
       }
@@ -258,7 +258,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
    void moveTo (android.location.Location location)
    {
-      Log.d (LOG_TAG, String.format ("moveTo: %f, %f", location.getLatitude (), location.getLongitude ()));
+      logger.info ("moveTo: {}, {}", location.getLatitude (), location.getLongitude ());
       mIgnoreNextOnScroll = true;
       GeoPoint point = new GeoPoint (location.getLatitude (), location.getLongitude ());
       DisplayStatus.setGeoPoint (point);

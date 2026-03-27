@@ -19,12 +19,14 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
 import org.osmdroid.views.overlay.IOverlayMenuProvider;
 import org.osmdroid.views.overlay.Overlay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CompassOverlay extends Overlay implements IOverlayMenuProvider
 {
    @SuppressWarnings ("unused")
-   private static final String LOG_TAG = "CompassOverlay";
+   private static final Logger logger = LoggerFactory.getLogger (CompassOverlay.class);
    private Paint sSmoothPaint = new Paint (Paint.FILTER_BITMAP_FLAG);
    protected MapView mMapView;
    protected Bitmap mCompassFrameBitmap;

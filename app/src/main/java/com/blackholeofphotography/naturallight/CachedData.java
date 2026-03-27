@@ -3,6 +3,8 @@ import android.annotation.SuppressLint;
 
 import net.iakovlev.timeshape.TimeZoneEngine;
 
+import org.slf4j.Logger;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +17,7 @@ import java.nio.file.Paths;
 
 public class CachedData
 {
-   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
+   private static final Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
 
    private static void removeFile (File f)
    {

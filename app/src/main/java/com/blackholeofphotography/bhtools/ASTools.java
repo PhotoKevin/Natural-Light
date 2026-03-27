@@ -71,7 +71,7 @@ public class ASTools
 //    * Return the contents of the resource as a string.
 //    * @param id - Resource ID
 //    * @return String with the contents
-//    * @throws IOException - If the json file can't be opened
+//    * @throws IOException - If the JSON file can't be opened
 //    */
 //   public static String getResourceContents (int id) throws IOException
 //   {
@@ -85,7 +85,7 @@ public class ASTools
     *
     * @param stream - Stream to read
     * @return - String with the contents
-    * @throws IOException - If the json file can't be opened
+    * @throws IOException - If the JSON file can't be opened
     */
    public static String getStreamContents (InputStream stream) throws IOException
    {
@@ -112,6 +112,7 @@ public class ASTools
 
 
 
+   @SuppressWarnings("unused")
    public static String getResourceContents (Context context, String resourceName)
    {
       AssetManager assetManager = context.getAssets ();

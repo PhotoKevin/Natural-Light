@@ -60,12 +60,12 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
 
     // Java language implementation
-    implementation("androidx.navigation:navigation-fragment:2.9.6")
-    implementation("androidx.navigation:navigation-ui:2.9.6")
+    implementation("androidx.navigation:navigation-fragment:2.9.7")
+    implementation("androidx.navigation:navigation-ui:2.9.7")
 
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.7")
 
     // Feature module Support
     implementation("com.google.android.play:feature-delivery:2.1.0")
@@ -75,19 +75,19 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.9.6")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.9.7")
 
     // Jetpack Compose Integration
-    implementation("androidx.navigation:navigation-compose:2.9.6")
-    implementation("androidx.navigation:navigation-fragment:2.9.6")
-    implementation("androidx.navigation:navigation-ui:2.9.6")
+    implementation("androidx.navigation:navigation-compose:2.9.7")
+    implementation("androidx.navigation:navigation-fragment:2.9.7")
+    implementation("androidx.navigation:navigation-ui:2.9.7")
 
     implementation ("androidx.preference:preference:1.2.1")
     implementation("androidx.fragment:fragment:1.8.9")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    implementation ("com.google.android.gms:play-services-maps:19.2.0")
+    implementation ("com.google.android.gms:play-services-maps:20.0.0")
     implementation ("org.osmdroid:osmdroid-android:6.1.20")
 
     // Time Shape
@@ -97,8 +97,13 @@ dependencies {
         exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
     }
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-6@aar")
-    implementation ("com.github.erosb:json-sKema:0.28.0")
+    implementation ("com.github.luben:zstd-jni:1.5.7-7@aar")
+    implementation ("com.github.erosb:json-sKema:0.29.0")
+
+    // SLF4J
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("com.github.tony19:logback-android:3.0.0")
+
 }
 
 tasks {

@@ -21,9 +21,10 @@ import java.util.List;
 public class MoonRiseUnitTest
 {
 
-   private static File getFileFromPath (Object obj, String fileName)
+   private static File getFileFromPath (Object obj, @SuppressWarnings("SameParameterValue") String fileName)
    {
       ClassLoader classLoader = obj.getClass ().getClassLoader ();
+      Assert.assertNotNull (classLoader);
       URL resource = classLoader.getResource (fileName);
       final String externalForm = resource.getFile ().substring (1);
       String name = java.net.URLDecoder.decode (externalForm, StandardCharsets.UTF_8);
