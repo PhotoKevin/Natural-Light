@@ -59,7 +59,7 @@
         android:id="@+id/nav_about"
         android:name="com.blackholeofphotography.naturallight.ui.about.AboutFragment"
         android:label="@string/header_about"
-        tools:layout="@layout/about_activity" />
+        tools:layout="@layout/about_fragment" />
 
     <fragment
         android:id="@+id/nav_import_export"

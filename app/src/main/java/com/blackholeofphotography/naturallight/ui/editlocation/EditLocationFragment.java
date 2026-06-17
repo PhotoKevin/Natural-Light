@@ -28,7 +28,7 @@ import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 import com.blackholeofphotography.naturallight.databinding.EditLocationFragmentBinding;
 
-import org.osmdroid.util.GeoPoint;
+import org.mapsforge.core.model.LatLong;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
@@ -189,7 +189,7 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       {
          final double latitude = Double.parseDouble (mLatitude.getText ().toString ());
          final double longitude = Double.parseDouble (mLongitude.getText ().toString ());
-         final GeoPoint pt = new GeoPoint (latitude, longitude);
+         final LatLong pt = new LatLong (latitude, longitude);
          final double zoomLevel = Double.parseDouble (mZoomSpinner.getSelectedItem ().toString ());
 
          Location newItem = new Location (mLocation.getUid (), mTitle.getText ().toString (), mLocation.getSnippet (), pt, mTimeStamp, mUseCurrentTime.isChecked (), zoomLevel);

@@ -63,4 +63,5 @@
     <string name="invalid_import">Invalid import file</string>
     <string name="jump_to_current_location">Jump to current location</string>
     <string name="zoom_level">Zoom level</string>
+    <string name="compass">Compass</string>
 </resources>

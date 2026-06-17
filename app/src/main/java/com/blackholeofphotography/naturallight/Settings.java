@@ -9,8 +9,7 @@ package com.blackholeofphotography.naturallight;
 
 import android.content.SharedPreferences;
 
-import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.GeoPoint;
+import org.mapsforge.core.model.LatLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +46,7 @@ public final class Settings
    private static float mMapOrientation;
    public static final String KEY_LATITUDE = "nl_latitude";
    public static final String KEY_LONGITUDE = "nl_longitude";
-   private static IGeoPoint mMapCenter;
+   private static LatLong mMapCenter;
    public static final String KEY_ZONE_ID = "nl_zone_id";
    private static ZoneId mZoneId;
    public static final String KEY_ZOOM_LEVEL = "nl_zoom_level";
@@ -97,7 +96,7 @@ public final class Settings
          mDegreeInterval = sharedPreferences.getInteger (KEY_DEGREE_SPACING, 20);
          mDisplayTime = sharedPreferences.getZonedDateTime (KEY_DISPLAY_TIME, ZonedDateTime.now ());
          mLowAccuracy = sharedPreferences.getBoolean (KEY_LOW_ACCURACY, true);
-         mMapCenter = new GeoPoint (mLatitude, mLongitude);
+         mMapCenter = new LatLong (mLatitude, mLongitude);
          mMapOrientation = sharedPreferences.getFloat (KEY_MAP_ORIENTATION, 5.0F);
          mRegion = sharedPreferences.getString (KEY_REGION, "Northern America");
          mReverseTimeDrag = sharedPreferences.getBoolean (KEY_REVERSE_TIME_DRAG, false);
@@ -356,7 +355,7 @@ public final class Settings
       mMapOrientation = aMapOrientation;
    }
 
-   public static IGeoPoint getMapCenter ()
+   public static LatLong getMapCenter ()
    {
       return mMapCenter;
    }
@@ -366,12 +365,12 @@ public final class Settings
    }
 
    @SuppressWarnings ("unused")
-   public static void setMapCenter (GeoPoint mMapCenter)
+   public static void setMapCenter (LatLong mMapCenter)
    {
       Settings.mMapCenter = mMapCenter;
    }
 
-   public static void setMapCenter (IGeoPoint aMapCenter, ZoneId aZoneId)
+   public static void setMapCenter (LatLong aMapCenter, ZoneId aZoneId)
    {
       mMapCenter = aMapCenter;
       mZoneId = aZoneId;

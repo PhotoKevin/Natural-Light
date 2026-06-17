@@ -19,12 +19,12 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.blackholeofphotography.astrocalc.Tools;
 import com.blackholeofphotography.naturallight.databinding.ActivityMainBinding;
-import net.iakovlev.timeshape.TimeZoneEngine;
-
 import com.google.android.material.navigation.NavigationView;
 
-import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.config.Configuration;
+import net.iakovlev.timeshape.TimeZoneEngine;
+
+import org.mapsforge.core.model.LatLong;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,11 +95,6 @@ public class MainActivity extends AppCompatActivity
       NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
       NavigationUI.setupWithNavController (navigationView, navController);
 
-
-      // https://developers.google.com/maps/documentation/android-sdk/overview
-      //https://osmdroid.github.io/osmdroid/How-to-use-the-osmdroid-library.html
-      Context ctx = getApplicationContext();
-      Configuration.getInstance().load(ctx, androidx.preference.PreferenceManager.getDefaultSharedPreferences(ctx));
       loadTimeZoneEngine ();
 
       //AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_YES);
@@ -161,7 +156,9 @@ public class MainActivity extends AppCompatActivity
                if (! regionName.equals ("ALL"))
                   CachedData.saveTimeEngine (timeZoneEngine);
             }
-            DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint ());
+
+            ZoneId tz = getZoneId (DisplayStatus.getGeoPoint ());
+            DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint (), tz);
             DisplayStatus.forceCalculation ();
          }
       };
@@ -194,7 +191,7 @@ public class MainActivity extends AppCompatActivity
     * @param pt GeoPoint of interest
     * @return ZoneId for location, or UTC if it can't be figured out.
     */
-   public static ZoneId getZoneId (IGeoPoint pt)
+   public static ZoneId getZoneId (LatLong pt)
    {
       return getZoneId (pt.getLatitude (), pt.getLongitude ());
    }

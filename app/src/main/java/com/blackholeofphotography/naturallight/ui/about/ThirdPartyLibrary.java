@@ -1,7 +1,5 @@
 package com.blackholeofphotography.naturallight.ui.about;
 
-import android.util.Log;
-
 import org.slf4j.LoggerFactory;
 
 public class ThirdPartyLibrary

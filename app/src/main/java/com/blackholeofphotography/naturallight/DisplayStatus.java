@@ -8,22 +8,22 @@ import com.blackholeofphotography.astrocalc.Sun;
 import com.blackholeofphotography.astrocalc.SunRiseSet;
 import com.blackholeofphotography.astrocalc.TopocentricPosition;
 
-import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.GeoPoint;
+import org.mapsforge.core.model.LatLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 public class DisplayStatus
 {
-   @SuppressWarnings ("unused")
+   @SuppressWarnings("unused")
    private static final Logger logger = LoggerFactory.getLogger (DisplayStatus.class);
-   static IGeoPoint mGeoPoint = new GeoPoint (0.0, 0.0);
+   static LatLong mGeoPoint = new LatLong (0.0, 0.0);
    static ZoneId mZoneId;
-   static ZonedDateTime mTimeStamp = ZonedDateTime.now ();
+   static ZonedDateTime mTimeStamp = ZonedDateTime.now ().withSecond (0).withNano (0);
    static boolean mUseCurrentTime;
    static AstroPosition mSunPosition = new AstroPosition (0, 0);
    static ZonedDateTime mSunRise = ZonedDateTime.now ();
@@ -37,8 +37,7 @@ public class DisplayStatus
    static AstroPosition mMoonSetPosition = new AstroPosition (0, 0);
    private static double ZoomLevel;
    private static boolean mIsDirty = true;
-   public  static int calculations = 0;
-   public static int lighting_bitmap_skipped = 0;
+   public static int calculations = 0;
    public static int lighting_bitmap_created = 0;
    public static int astro_skipped = 0;
 
@@ -47,33 +46,44 @@ public class DisplayStatus
       mIsDirty = true;
       mLastRender = 0;
       calculatePositions ();
+      notifyListeners ();
    }
 
-   public static IGeoPoint getGeoPoint ()
+   public static LatLong getGeoPoint ()
    {
       if (mGeoPoint == null)
-         mGeoPoint = new GeoPoint (0.0, 0.0);
+         mGeoPoint = new LatLong (0.0, 0.0);
       return mGeoPoint;
    }
 
-   public static void setGeoPoint (IGeoPoint aPoint)
+   public static void setGeoPoint (LatLong aPoint)
    {
-      mIsDirty = true;
-      mGeoPoint = aPoint;
-      mZoneId = null;
+      if (!aPoint.equals (mGeoPoint))
+      {
+         mIsDirty = true;
+         mLastRender = 0;
+         mGeoPoint = aPoint;
+         mZoneId = null;
+         notifyListeners ();
+      }
    }
 
-   public static void setGeoPoint (IGeoPoint aPoint, ZoneId aZoneId)
+   public static void setGeoPoint (LatLong aPoint, ZoneId aZoneId)
    {
-      mIsDirty = true;
-      mGeoPoint = aPoint;
-      mZoneId = aZoneId;
+      if (!aPoint.equals (mGeoPoint) || !aZoneId.equals (mZoneId))
+      {
+         mIsDirty = true;
+         mLastRender = 0;
+         mGeoPoint = aPoint;
+         mZoneId = aZoneId;
+         notifyListeners ();
+      }
    }
 
    public static ZonedDateTime getTimeStamp ()
    {
       if (useCurrentTime ())
-         return ZonedDateTime.now (getDisplayZoneId ()).withSecond (0);
+         return ZonedDateTime.now (getDisplayZoneId ()).withSecond (0).withNano (0);
 
       return mTimeStamp.withSecond (0);
    }
@@ -86,7 +96,7 @@ public class DisplayStatus
       return mZoneId;
    }
 
-   @SuppressWarnings ("unused")
+   @SuppressWarnings("unused")
    public static ZonedDateTime getRawTimeStamp ()
    {
       return mTimeStamp.withSecond (0);
@@ -94,8 +104,13 @@ public class DisplayStatus
 
    public static void setTimeStamp (ZonedDateTime aTimeStamp)
    {
-      mIsDirty = true;
-      mTimeStamp = aTimeStamp.withSecond (0);
+      ZonedDateTime zeroed = aTimeStamp.withSecond (0).withNano (0);
+      if (!zeroed.equals (mTimeStamp))
+      {
+         mIsDirty = true;
+         mTimeStamp = zeroed;
+         notifyListeners ();
+      }
    }
 
    public static boolean useCurrentTime ()
@@ -105,7 +120,11 @@ public class DisplayStatus
 
    public static void setUseCurrentTime (boolean value)
    {
-      mUseCurrentTime = value;
+      if (value != mUseCurrentTime)
+      {
+         mUseCurrentTime = value;
+         mIsDirty = true;
+      }
    }
 
    public static AstroPosition getSunPosition ()
@@ -113,6 +132,7 @@ public class DisplayStatus
       calculatePositions ();
       return mSunPosition;
    }
+
    public static ZonedDateTime getSunRise ()
    {
       calculatePositions ();
@@ -143,13 +163,14 @@ public class DisplayStatus
       calculatePositions ();
       return mMoonPosition;
    }
+
    public static ZonedDateTime getMoonRise ()
    {
       calculatePositions ();
       return mMoonRise;
    }
 
-   @SuppressWarnings ("unused")
+   @SuppressWarnings("unused")
    public static AstroPosition getMoonRisePosition ()
    {
       calculatePositions ();
@@ -162,7 +183,7 @@ public class DisplayStatus
       return mMoonSet;
    }
 
-   @SuppressWarnings ("unused")
+   @SuppressWarnings("unused")
    public static AstroPosition getMoonSetPosition ()
    {
       calculatePositions ();
@@ -178,15 +199,15 @@ public class DisplayStatus
       return newDate.withHour (0).withMinute (0).plusHours (hour).plusMinutes (minute).withZoneSameInstant (getDisplayZoneId ());
    }
 
-   private static AstroPosition calculateSunPosition (ZonedDateTime when, IGeoPoint where)
+   private static AstroPosition calculateSunPosition (ZonedDateTime when, LatLong where)
    {
       double jd = Julian.JulianFromZonedDateTime (when);
       TopocentricPosition position = Sun.SunTopocentricPosition (jd, where.getLatitude (), where.getLongitude (), 0);
       return new AstroPosition ((float) position.getAzimuth (), (float) position.getElevation ());
    }
 
-   @SuppressWarnings ("unused")
-   private static AstroPosition calculateMoonPosition (ZonedDateTime when, IGeoPoint where)
+   @SuppressWarnings("unused")
+   private static AstroPosition calculateMoonPosition (ZonedDateTime when, LatLong where)
    {
       double jd = Julian.JulianFromZonedDateTime (when);
       TopocentricPosition position = Moon.MoonTopocentricPosition (jd, where.getLatitude (), where.getLongitude (), 0);
@@ -206,14 +227,14 @@ public class DisplayStatus
    /**
     * The set of listeners to be sent events.
     */
-   private static  ArrayList<DisplayStatusListener> mListeners = null;
+   private static ArrayList<DisplayStatusListener> mListeners = null;
 
    /**
     * Adds a listener to the set of listeners that are sent events.
     *
     * @param listener the listener to be added to the current set of listeners.
     */
-   public static  void addListener (DisplayStatusListener listener)
+   public static void addListener (DisplayStatusListener listener)
    {
       if (mListeners == null)
          mListeners = new ArrayList<> ();
@@ -227,7 +248,7 @@ public class DisplayStatus
     * @param listener the listener to be removed from the current set of listeners for this
     *                 animation.
     */
-   public static  void removeListener (DisplayStatusListener listener)
+   public static void removeListener (DisplayStatusListener listener)
    {
       if (mListeners == null)
          return;
@@ -262,11 +283,12 @@ public class DisplayStatus
       for (DisplayStatusListener listener : mListeners)
          listener.onChange ();
    }
-   private static boolean running = false;
+
    protected static long mLastRender = 0;
    final private static int mLastRenderLag = 200;
 
    private static long total_calc_time = 0;
+
    public static long averageCalcTime ()
    {
       if (calculations > 0)
@@ -274,14 +296,14 @@ public class DisplayStatus
       return 0;
    }
 
-   public static void calculatePositions ()
+   public static void calculatePositionsAsync ()
    {
       if (!mIsDirty)
          return;
 
       long now = System.currentTimeMillis ();
       long next = mLastRender + mLastRenderLag;
-      if (next > now || running)
+      if (next > now || running.availablePermits () <= 0)
       {
          DisplayStatus.astro_skipped += 1;
          return;
@@ -294,39 +316,60 @@ public class DisplayStatus
          @Override
          public void run ()
          {
-            long start = System.currentTimeMillis ();
-            running = true;
-            ZonedDateTime displayTime = mTimeStamp;
-
-            final double jdNoon = Julian.JulianFromZonedDateTime (displayTime.withHour (12));
-            mSunPosition = calculateSunPosition (displayTime, mGeoPoint);
-
-            RiseTransitSet riseSet = SunRiseSet.SunRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude ());
-            mSunRise = setHour (mTimeStamp, riseSet.getRise ());
-            mSunSet = setHour (mTimeStamp, riseSet.getSet ());
-
-            mSunRisePosition = calculateSunPosition (mSunRise, mGeoPoint);
-            mSunSetPosition = calculateSunPosition (mSunSet, mGeoPoint);
-
-            double jd = Julian.JulianFromZonedDateTime (displayTime);
-            mMoonPosition = Moon.MoonTopocentricPosition (jd, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
-
-            final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
-            mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
-            mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
-
-            mMoonRisePosition = calculateMoonPosition (mMoonRise, mGeoPoint);
-            mMoonSetPosition = calculateMoonPosition (mMoonSet, mGeoPoint);
-
-            mIsDirty = false;
-            running = false;
-
-            calculations += 1;
-            long delta = System.currentTimeMillis () - start;
-            total_calc_time += delta;
+            calculatePositions ();
+            mLastRender = 0;
             notifyListeners ();
          }
       };
       calc.start ();
+   }
+
+   private static final Semaphore running = new Semaphore (1);
+   public static void calculatePositions ()
+   {
+      try
+      {
+         running.acquire ();
+
+         if (!mIsDirty)
+            return;
+
+         long start = System.currentTimeMillis ();
+         ZonedDateTime displayTime = mTimeStamp;
+
+         final double jdNoon = Julian.JulianFromZonedDateTime (displayTime.withHour (12));
+         mSunPosition = calculateSunPosition (displayTime, mGeoPoint);
+
+         RiseTransitSet riseSet = SunRiseSet.SunRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude ());
+         mSunRise = setHour (mTimeStamp, riseSet.getRise ());
+         mSunSet = setHour (mTimeStamp, riseSet.getSet ());
+
+         mSunRisePosition = calculateSunPosition (mSunRise, mGeoPoint);
+         mSunSetPosition = calculateSunPosition (mSunSet, mGeoPoint);
+
+         double jd = Julian.JulianFromZonedDateTime (displayTime);
+         mMoonPosition = Moon.MoonTopocentricPosition (jd, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
+
+         final RiseTransitSet moonRiseSet = MoonRise.moonRise (jdNoon, mGeoPoint.getLatitude (), mGeoPoint.getLongitude (), 0);
+         mMoonRise = setHour (mTimeStamp, moonRiseSet.getRise ());
+         mMoonSet = setHour (mTimeStamp, moonRiseSet.getSet ());
+
+         mMoonRisePosition = calculateMoonPosition (mMoonRise, mGeoPoint);
+         mMoonSetPosition = calculateMoonPosition (mMoonSet, mGeoPoint);
+
+         calculations += 1;
+         long delta = System.currentTimeMillis () - start;
+         total_calc_time += delta;
+
+         mIsDirty = false;
+      }
+      catch (InterruptedException e)
+      {
+         logger.error ("calculatePosition", e);
+      }
+      finally
+      {
+         running.release ();
+      }
    }
 }

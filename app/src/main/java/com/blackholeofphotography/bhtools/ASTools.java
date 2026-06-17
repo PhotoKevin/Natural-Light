@@ -10,6 +10,7 @@ package com.blackholeofphotography.bhtools;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Build;
+import android.os.Looper;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -139,6 +140,12 @@ public class ASTools
       {
          throw new RuntimeException (exception);
       }
+   }
+
+   @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+   public static boolean isRunningOnMainThread ()
+   {
+      return Looper.getMainLooper ().getThread () == Thread.currentThread ();
    }
 
 }

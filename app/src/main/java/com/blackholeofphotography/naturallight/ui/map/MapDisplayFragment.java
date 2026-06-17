@@ -2,9 +2,10 @@ package com.blackholeofphotography.naturallight.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,10 +35,8 @@ import androidx.navigation.Navigation;
 
 import com.blackholeofphotography.astrocalc.Tools;
 import com.blackholeofphotography.bhtools.ASTools;
-import com.blackholeofphotography.naturallight.CompassOverlay;
 import com.blackholeofphotography.naturallight.DisplayStatus;
 import com.blackholeofphotography.naturallight.DisplayStatusListener;
-import com.blackholeofphotography.naturallight.LightingOverlay;
 import com.blackholeofphotography.naturallight.Location;
 import com.blackholeofphotography.naturallight.MainActivity;
 import com.blackholeofphotography.naturallight.R;
@@ -46,13 +46,18 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import org.osmdroid.events.MapListener;
-import org.osmdroid.events.ScrollEvent;
-import org.osmdroid.events.ZoomEvent;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.mapsforge.core.graphics.Bitmap;
+import org.mapsforge.core.model.LatLong;
+import org.mapsforge.core.model.Point;
+import org.mapsforge.map.android.graphics.AndroidBitmap;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.util.AndroidUtil;
+import org.mapsforge.map.layer.Layer;
+import org.mapsforge.map.layer.cache.TileCache;
+import org.mapsforge.map.layer.download.TileDownloadLayer;
+import org.mapsforge.map.layer.download.tilesource.OpenStreetMapMapnik;
+import org.mapsforge.map.layer.overlay.Marker;
+import org.mapsforge.map.android.view.MapView;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
@@ -78,16 +83,18 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    private Location currentLocation;
    Runnable repeatativeTaskRunnable;
    private ProgressBar mProgressBar;
-   private boolean mIgnoreNextOnScroll = false;
    private FusedLocationProviderClient fusedLocationClient;
+   protected final List<TileCache> tileCaches = new ArrayList<>();
+   private TileDownloadLayer downloadLayer;
+   private Context context;
 
 
    private final Handler taskHandler = new android.os.Handler (Looper.getMainLooper ());
 
-   // https://github.com/osmdroid/osmdroid/blob/master/OpenStreetMapViewer/src/main/java/org/osmdroid/StarterMapFragment.java
    public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
    {
+      context = getContext ();
       binding = MapFragmentBinding.inflate (inflater, container, false);
       View root = binding.getRoot ();
 
@@ -120,16 +127,20 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       setupMap (MainActivity.getContext ());
 
       final Bundle arguments = getArguments ();
-      MapDisplayFragmentArgs args = MapDisplayFragmentArgs.fromBundle (arguments);
-      if (args.getAUid () != null)
-         currentLocation = Settings.getLocation (args.getAUid ());
+      if (arguments != null)
+      {
+         MapDisplayFragmentArgs args = MapDisplayFragmentArgs.fromBundle (arguments);
+         if (args.getAUid () != null)
+            currentLocation = Settings.getLocation (args.getAUid ());
+      }
 
       if (currentLocation != null)
          moveTo (currentLocation);
       else
       {
-         mIgnoreNextOnScroll = true;
-         mMapView.getController ().setCenter (DisplayStatus.getGeoPoint ());
+       //  setCenter (DisplayStatus.getGeoPoint ());
+         setZoom (Settings.getZoomLevel ());
+         setCenter (Settings.getMapCenter ());
       }
 
       ViewCompat.setOnApplyWindowInsetsListener(binding.addLocation, (v, windowInsets) -> {
@@ -156,37 +167,12 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    @SuppressLint("ClickableViewAccessibility")
    private void setupMap (Context ctx)
    {
-      mMapView.setTileSource (TileSourceFactory.MAPNIK);
-      mMapView.setMultiTouchControls (true);
+      mMapView.getMapZoomControls ().setShowMapZoomControls (false);
+      createTileCaches (ctx);
+      createLayers ();
 
-      final CompassOverlay compassOverlay = new CompassOverlay (ctx, mMapView);
-      compassOverlay.enableCompass ();
-      mMapView.getOverlays ().add (compassOverlay);
-
-      final LightingOverlay lightingOverlay = new LightingOverlay (ctx, mMapView);
-      mMapView.getOverlays ().add (lightingOverlay);
-
-
-      mMapView.addMapListener (new MapListener ()
-      {
-         @Override
-         public boolean onScroll (ScrollEvent event)
-         {
-            if (!mIgnoreNextOnScroll)
-               DisplayStatus.setGeoPoint (mMapView.getMapCenter ());
-
-            mIgnoreNextOnScroll = false;
-            return true;
-         }
-
-
-         @Override
-         public boolean onZoom (ZoomEvent event)
-         {
-            DisplayStatus.setZoomLevel (mMapView.getZoomLevelDouble ());
-            return true;
-         }
-      });
+      binding.compass.setImageBitmap (CompassOverlay.getCompassFrameBitmap (ctx));
+      mMapView.getModel ().mapViewPosition.addObserver (this::onMapViewChanged);
 
       mSetDateTime.setOnClickListener (new View.OnClickListener ()
       {
@@ -200,105 +186,122 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          }
       });
 
-
-      lightingDate.setOnTouchListener (new View.OnTouchListener ()
-      {
-         private float previousX;
-
-         @Override
-         public boolean onTouch (View v, MotionEvent event)
-         {
-            int action = event.getActionMasked ();
-            if (action == MotionEvent.ACTION_DOWN)
-               previousX = event.getX ();
-            else if (action == MotionEvent.ACTION_MOVE)
-            {
-               float distance = previousX - event.getX ();
-               if (Settings.reverseTimeDrag ())
-                  distance = -distance;
-
-               DisplayStatus.setUseCurrentTime (false);
-               DisplayStatus.setTimeStamp (DisplayStatus.getTimeStamp ().minusMinutes ((long) distance));
-               DisplayStatus.calculatePositions ();
-
-               previousX = event.getX ();
-            }
-
-            return true;
-         }
-      });
+      lightingDate.setOnTouchListener (this::onDateTimeTouch);
 
       setupLocationOverlay ();
    }
 
-   void moveTo (Location location)
+   private float previousX;
+   @SuppressWarnings("SameReturnValue")
+   private boolean onDateTimeTouch (View ignored, MotionEvent event)
    {
-      logger.info ("moveTo: {}, {} Current: {}", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime () ? "true" : "false");
-      mIgnoreNextOnScroll = true;
+      int action = event.getActionMasked ();
+      if (action == MotionEvent.ACTION_DOWN)
+         previousX = event.getX ();
+      else if (action == MotionEvent.ACTION_MOVE)
+      {
+         float distance = previousX - event.getX ();
+         if (Settings.reverseTimeDrag ())
+            distance = -distance;
+
+         DisplayStatus.setUseCurrentTime (false);
+         DisplayStatus.setTimeStamp (DisplayStatus.getTimeStamp ().minusMinutes ((long) distance));
+         DisplayStatus.calculatePositionsAsync ();
+
+         previousX = event.getX ();
+      }
+
+      return true;
+   }
+
+
+   protected void createTileCaches (Context context)
+   {
+      this.tileCaches.add (AndroidUtil.createTileCache (context, this.getClass().getSimpleName(),
+            mMapView.getModel ().displayModel.getTileSize (), 1.0F,
+            mMapView.getModel ().frameBufferModel.getOverdrawFactor (), true));
+   }
+
+   protected void createLayers ()
+   {
+      OpenStreetMapMapnik tileSource = OpenStreetMapMapnik.INSTANCE;
+      tileSource.setUserAgent ("LocationPlayback/1.0 (contact: https://github.com/PhotoKevin)");
+      this.downloadLayer = new TileDownloadLayer (this.tileCaches.get (0),
+            mMapView.getModel ().mapViewPosition, tileSource,
+            AndroidGraphicFactory.INSTANCE)
+      {
+         public boolean onLongPress(LatLong tapLatLong, Point thisXY, Point tapXY)
+         {
+            //onLongMapClick (tapLatLong);
+            return true;
+         }
+      };
+      mMapView.getLayerManager ().getLayers ().add (this.downloadLayer);
+
+      mMapView.setZoomLevelMin (tileSource.getZoomLevelMin ());
+      mMapView.setZoomLevelMax (tileSource.getZoomLevelMax ());
+   }
+
+
+
+   private void moveTo (Location location)
+   {
+      logger.debug ("moveTo: {}, {} Current: {}", location.getPoint ().getLatitude (), location.getPoint ().getLongitude (), location.getUseCurrentTime ());
       DisplayStatus.setGeoPoint (location.getPoint ());
       DisplayStatus.setZoomLevel (location.getZoomLevel ());
-      mMapView.removeMapListener (null);
+      //mMapView.removeMapListener (null);
 
-      mMapView.getController ().setCenter (location.getPoint ());
-      mMapView.getController ().setZoom (location.getZoomLevel ());
+      setCenter (location.getPoint ());
+      setZoom (location.getZoomLevel ());
 
-      if (location.getUseCurrentTime ())
-      {
-         DisplayStatus.setUseCurrentTime (true);
-      }
-      else
+      DisplayStatus.setUseCurrentTime (location.getUseCurrentTime ());
+      if (!location.getUseCurrentTime ())
       {
          logger.info ("set time: {}}", ASTools.formatDateTime (location.getDateTime ()));
-         DisplayStatus.setUseCurrentTime (false);
          DisplayStatus.setTimeStamp (location.getDateTime ());
       }
-      DisplayStatus.calculatePositions ();
+
+      DisplayStatus.calculatePositionsAsync ();
    }
+
 
 
    void moveTo (android.location.Location location)
    {
-      logger.info ("moveTo: {}, {}", location.getLatitude (), location.getLongitude ());
-      mIgnoreNextOnScroll = true;
-      GeoPoint point = new GeoPoint (location.getLatitude (), location.getLongitude ());
+      logger.debug ("moveToX: {}, {}", location.getLatitude (), location.getLongitude ());
+      LatLong point = new LatLong (location.getLatitude (), location.getLongitude ());
       DisplayStatus.setGeoPoint (point);
       DisplayStatus.setZoomLevel (Settings.getDefaultZoomLevel ());
-      mMapView.removeMapListener (null);
+      //mMapView.removeMapListener (null);
 
-      mMapView.getController ().setCenter (point);
-      mMapView.getController ().setZoom (Settings.getDefaultZoomLevel ());
+      setCenter (point);
+      setZoom (Settings.getDefaultZoomLevel ());
 
-      DisplayStatus.calculatePositions ();
+      DisplayStatus.calculatePositionsAsync ();
    }
 
 
+   private final List<Layer> favoritesLayer = new ArrayList<> ();
+
    void setupLocationOverlay ()
    {
+      while (!favoritesLayer.isEmpty ())
+      {
+         Layer l = favoritesLayer.get (0);
+         mMapView.getLayerManager ().getLayers ().remove (l);
+         favoritesLayer.remove (0);
+      }
+
+      final Drawable drawableFavorite = ContextCompat.getDrawable (context, R.drawable.map_pin_heart_48px);
+      Bitmap bitmapFavorite = new AndroidBitmap (drawableToBitmap (drawableFavorite));
+
       List<Location> locations = new ArrayList<> (Settings.getLocationsCopy ());
-      ItemizedIconOverlay<Location> mLocationOverlay = new ItemizedIconOverlay<> (locations,
-            new ItemizedIconOverlay.OnItemGestureListener<> ()
-            {
-               @Override
-               public boolean onItemSingleTapUp (final int index, final Location item)
-               {
-                  moveTo (item);
-                  currentLocation = item;
-                  return true;
-               }
-
-               @Override
-               public boolean onItemLongPress (final int index, final Location item)
-               {
-                  NavController navController = Navigation.findNavController (binding.getRoot ());
-
-                  MapDisplayFragmentDirections.ActionNavMapToEditLocationFragment action =
-                        MapDisplayFragmentDirections.actionNavMapToEditLocationFragment (item.getUid ());
-                  navController.navigate (action);
-
-                  return true;
-               }
-            }, MainActivity.getContext ());
-      mMapView.getOverlayManager ().add (mLocationOverlay);
+      for (Location l : locations)
+      {
+         Marker marker = new FavoriteMarker (l, bitmapFavorite);
+         favoritesLayer.add (marker);
+      }
+      mMapView.getLayerManager ().getLayers ().addAll (favoritesLayer);
 
       repeatativeTaskRunnable = new Runnable ()
       {
@@ -318,6 +321,23 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       };
    }
 
+   public static android.graphics.Bitmap drawableToBitmap (Drawable drawable)
+   {
+      if (drawable instanceof BitmapDrawable)
+         return ((BitmapDrawable) drawable).getBitmap ();
+
+      final int width = Math.min (drawable.getIntrinsicWidth (), 35);
+      int height = Math.min (drawable.getIntrinsicHeight (), 35);
+
+      android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap (width, height, android.graphics.Bitmap.Config.ARGB_8888);
+      android.graphics.Canvas canvas = new android.graphics.Canvas (bitmap);
+      drawable.setBounds (0, 0, canvas.getWidth (), canvas.getHeight ());
+      drawable.draw (canvas);
+
+      return bitmap;
+   }
+
+
    void startHandler ()
    {
       taskHandler.postDelayed (repeatativeTaskRunnable, 800);
@@ -331,8 +351,14 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    @SuppressLint("DefaultLocale")
    private void updateTextDisplay ()
    {
-      if (!getLifecycle ().getCurrentState ().isAtLeast (Lifecycle.State.STARTED))
+      if (!getLifecycle ().getCurrentState ().isAtLeast (Lifecycle.State.RESUMED))
          return;
+
+      if (!ASTools.isRunningOnMainThread ())
+      {
+         new Handler (Looper.getMainLooper ()).post (this::updateTextDisplay);
+         return;
+      }
 
       ZoneId displayZone = DisplayStatus.getDisplayZoneId ();
 
@@ -350,37 +376,53 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       // 4 decimal - Particular corner of a house
 
       mTextLocation.setText (String.format ("%s %.2f", Location.formatGeoPoint (DisplayStatus.getGeoPoint ()), DisplayStatus.getZoomLevel ()));
-      mTextDebug.setText (String.format ("Astro run(skip) %d(%d), Light %d(%d) %d",
-            DisplayStatus.calculations, DisplayStatus.astro_skipped, DisplayStatus.lighting_bitmap_created, DisplayStatus.lighting_bitmap_skipped, DisplayStatus.averageCalcTime ()));
+      mTextDebug.setText (String.format ("Astro run(skip) %d(%d), Light %d %d",
+            DisplayStatus.calculations, DisplayStatus.astro_skipped, DisplayStatus.lighting_bitmap_created, DisplayStatus.averageCalcTime ()));
       String zone = DisplayStatus.getDisplayZoneId ().toString ();
       mTimeZone.setText (zone);
       mSunRise.setText (String.format ("Rise: %s", ASTools.formatTime (DisplayStatus.getSunRise ())));
       mSunSet.setText (String.format ("Set: %s", ASTools.formatTime (DisplayStatus.getSunSet ())));
    }
 
+   public void updateMapDisplay ()
+   {
+      if (!ASTools.isRunningOnMainThread ())
+      {
+         new Handler (Looper.getMainLooper ()).post (this::updateMapDisplay);
+         return;
+      }
+
+      if (getLifecycle().getCurrentState().isAtLeast (Lifecycle.State.RESUMED))
+      {
+//         DisplayStatus.setGeoPoint (mMapView.getModel ().mapViewPosition.getCenter ());
+//         DisplayStatus.setZoomLevel (mMapView.getModel ().mapViewPosition.getZoom ());
+
+         binding.riseSet.setImageBitmap (LightingOverlay.getmSunMoonBitmap (context));
+         mMapView.repaint ();
+      }
+   }
+
+   public void onMapViewChanged ()
+   {
+      LatLong center = mMapView.getModel ().mapViewPosition.getCenter ();
+      DisplayStatus.setGeoPoint (center);
+   }
 
    @Override
    public void onChange ()
    {
-      Activity activity = getActivity ();
-      if (activity != null)
+
+      if (getLifecycle ().getCurrentState ().isAtLeast (Lifecycle.State.RESUMED))
       {
-         activity.runOnUiThread (new Runnable ()
-         {
-            @Override
-            public void run ()
-            {
-               updateTextDisplay ();
-               mMapView.invalidate ();
-            }
-         });
+         updateTextDisplay ();
+         updateMapDisplay ();
       }
    }
 
 
-   public void onClick (View v)
+   public void onClick (View ignored)
    {
-      final Location newLocation = new Location ("", "", mMapView.getMapCenter (), DisplayStatus.getTimeStamp (), DisplayStatus.useCurrentTime (), DisplayStatus.getZoomLevel ());
+      final Location newLocation = new Location ("", "", mMapView.getModel ().mapViewPosition.getCenter (), DisplayStatus.getTimeStamp (), DisplayStatus.useCurrentTime (), DisplayStatus.getZoomLevel ());
 
       Settings.addLocation (newLocation);
       NavController navController = Navigation.findNavController (binding.getRoot ());
@@ -403,7 +445,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
          }
    );
 
-   public void toCurrentLocation (View v)
+   public void toCurrentLocation (View ignored)
    {
 
       if (ActivityCompat.checkSelfPermission (MainActivity.getContext (), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -430,8 +472,8 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    public void onPause ()
    {
       stopHandler ();
-      Settings.setTileProvider (mMapView.getTileProvider ().getTileSource ().name ());
-      Settings.setMapOrientation (mMapView.getMapOrientation ());
+//      Settings.setTileProvider (mMapView.getTileProvider ().getTileSource ().name ());
+//      Settings.setMapOrientation (mMapView.getMapOrientation ());
 
       Settings.setMapCenter (DisplayStatus.getGeoPoint (), DisplayStatus.getDisplayZoneId ());
       Settings.setZoomLevel (DisplayStatus.getZoomLevel ());
@@ -439,7 +481,7 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       Settings.saveToBackingStore ();
       DisplayStatus.removeListener (this);
 
-      mMapView.onPause ();
+      this.downloadLayer.onPause ();
       super.onPause ();
    }
 
@@ -449,29 +491,71 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    {
       super.onResume ();
       Tools.setReducedAccuracy (Settings.isLowAccuracy ());
-      //mMapView.setTileSource (Settings.getTileProvider ());
-      mMapView.setTileSource (TileSourceFactory.MAPNIK);
-
-      mMapView.getController ().setZoom (DisplayStatus.getZoomLevel ());
-      mMapView.getController ().setCenter (DisplayStatus.getGeoPoint ());
-      mMapView.onResume ();
-
-      // Setting the map location triggers scroll events and kills
-      // the ZoneId. Put it back to the correct value
-      DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint (), Settings.getZoneId ());
+      downloadLayer.onResume ();
 
       DisplayStatus.addListener (this);
       DisplayStatus.forceCalculation ();
       startHandler ();
+      onChange ();
    }
 
    @Override
    public void onDestroyView ()
    {
       super.onDestroyView ();
-      //this part terminates all of the overlays and background threads for osmdroid
+      //this part terminates all the overlays and background threads for osmdroid
       //only needed when you programmatically create the map
-      mMapView.onDetach ();
+      //mMapView.onDetach ();
       binding = null;
    }
+
+   private void setCenter (LatLong center)
+   {
+      mMapView.getModel ().mapViewPosition.setCenter (center);
+   }
+
+   private void setZoom (double zoom)
+   {
+      if (zoom == 0.0)
+         logger.error ("Zoom is zero");
+
+      mMapView.getModel ().mapViewPosition.setZoom (zoom);
+   }
+
+   private class FavoriteMarker extends Marker
+   {
+      private final Location mLocation;
+      public FavoriteMarker (@NonNull Location location, Bitmap bitmap)
+      {
+         super (location.getPoint (), bitmap, 0, 0);
+         mLocation = location;
+      }
+
+      @Override
+      public boolean onTap (LatLong tapLatLong, Point layerXY, Point tapXY)
+      {
+         boolean good = this.contains (layerXY, tapXY, mMapView);
+         if (good)
+            moveTo (mLocation);
+         return good;
+      }
+
+      @Override
+      public boolean onLongPress (LatLong tapLatLong, Point layerXY, Point tapXY)
+      {
+         boolean good = this.contains (layerXY, tapXY, mMapView);
+         if (good)
+         {
+            NavController navController = Navigation.findNavController (binding.getRoot ());
+
+            MapDisplayFragmentDirections.ActionNavMapToEditLocationFragment action =
+                  MapDisplayFragmentDirections.actionNavMapToEditLocationFragment (mLocation.getUid ());
+
+            navController.navigate (action);
+         }
+
+         return good;
+      }
+   }
+
 }

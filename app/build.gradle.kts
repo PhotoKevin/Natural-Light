@@ -10,14 +10,14 @@ plugins {
 
 android {
     namespace = "com.blackholeofphotography.naturallight"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 37
-        versionCode = 16
-        versionName = "1.16"
+        versionCode = 17
+        versionName = "1.17"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,15 +48,19 @@ android {
             excludes += "data.tar.zstdX"
         }
     }
+    compileSdkMinor = 0
 }
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.10.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
     implementation("com.github.tony19:logback-android:3.0.0")
+    implementation("org.mapsforge:mapsforge-core:0.25.0")
+    implementation("org.mapsforge:mapsforge-map-android:0.25.0")
+    implementation("org.mapsforge:mapsforge-map:0.25.0")
     implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
 
     // Java language implementation
@@ -88,7 +92,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     implementation ("com.google.android.gms:play-services-maps:20.0.0")
-    implementation ("org.osmdroid:osmdroid-android:6.1.20")
 
     // Time Shape
     implementation ("net.iakovlev:timeshape:2025b.28") {
@@ -97,7 +100,7 @@ dependencies {
         exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
     }
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-9@aar")
+    implementation ("com.github.luben:zstd-jni:1.5.7-11@aar")
     implementation ("com.github.erosb:json-sKema:0.31.0")
 
     // SLF4J

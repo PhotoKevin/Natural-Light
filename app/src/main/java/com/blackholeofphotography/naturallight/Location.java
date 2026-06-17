@@ -5,9 +5,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.osmdroid.api.IGeoPoint;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.overlay.OverlayItem;
+import org.mapsforge.core.model.LatLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class Location extends OverlayItem
+public class Location
 {
    private static final Logger logger = LoggerFactory.getLogger (Location.class);
    public static final String UID = "uid";
@@ -34,18 +32,30 @@ public class Location extends OverlayItem
    private final boolean mUseCurrentTime;
    private final ZonedDateTime mDateTime;
    private final double ZoomLevel;
+   private final String mUid;
+   private final String mTitle;
+   private final LatLong mLatLong;
+   private final String mSnippet;
 
-   public Location (String aTitle, String aSnippet, IGeoPoint aGeoPoint, ZonedDateTime dateTime, boolean aUseCurrentTime, double aZoomLevel)
+
+   public Location (String aTitle, String aSnippet, LatLong aGeoPoint, ZonedDateTime dateTime, boolean aUseCurrentTime, double aZoomLevel)
    {
-      super (UUID.randomUUID ().toString (), aTitle, aSnippet, aGeoPoint);
+
+      mUid = UUID.randomUUID ().toString ();
+      mTitle = aTitle;
+      mSnippet = aSnippet;
+      mLatLong = aGeoPoint;
       mDateTime = dateTime;
       mUseCurrentTime = aUseCurrentTime;
       ZoomLevel = aZoomLevel;
    }
 
-   public Location (String aUid, String aTitle, String aSnippet, IGeoPoint aGeoPoint, ZonedDateTime dateTime, boolean aUseCurrentTime, double aZoomLevel)
+   public Location (String aUid, String aTitle, String aSnippet, LatLong aGeoPoint, ZonedDateTime dateTime, boolean aUseCurrentTime, double aZoomLevel)
    {
-      super (aUid != null ? aUid : UUID.randomUUID ().toString (), aTitle, aSnippet, aGeoPoint);
+      mUid = aUid;
+      mTitle = aTitle;
+      mSnippet = aSnippet;
+      mLatLong = aGeoPoint;
       mDateTime = dateTime;
       mUseCurrentTime = aUseCurrentTime;
       ZoomLevel = aZoomLevel;
@@ -64,6 +74,26 @@ public class Location extends OverlayItem
    {
       return ZoomLevel;
    }
+   public String getUid ()
+   {
+      return mUid;
+   }
+
+   public String getTitle ()
+   {
+      return mTitle;
+   }
+
+   public String getSnippet ()
+   {
+      return mSnippet;
+   }
+
+   public LatLong getPoint ()
+   {
+      return mLatLong;
+   }
+
    public JSONObject toJson ()
    {
       try
@@ -91,7 +121,7 @@ public class Location extends OverlayItem
    {
       try
       {
-         GeoPoint point = new GeoPoint (jo.getDouble (LATITUDE), jo.getDouble (LONGITUDE));
+         LatLong point = new LatLong (jo.getDouble (LATITUDE), jo.getDouble (LONGITUDE));
          ZonedDateTime timestamp = ZonedDateTime.parse (jo.getString (TIMESTAMP));
          boolean useCurrentTime = jo.getBoolean (USE_CURRENT_TIME);
          double zoomLevel = jo.getDouble (ZOOM);
@@ -153,7 +183,7 @@ public class Location extends OverlayItem
       return String.format (Locale.getDefault (), "%.4f", latLon);
    }
 
-   public static String formatGeoPoint (IGeoPoint pt)
+   public static String formatGeoPoint (LatLong pt)
    {
       Locale l = Locale.getDefault ();
       DecimalFormat format = (DecimalFormat) NumberFormat.getInstance(l);

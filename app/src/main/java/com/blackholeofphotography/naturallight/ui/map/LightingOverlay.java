@@ -1,67 +1,21 @@
-package com.blackholeofphotography.naturallight;
+package com.blackholeofphotography.naturallight.ui.map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
-import android.graphics.Rect;
 
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.Projection;
-import org.osmdroid.views.overlay.Overlay;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.blackholeofphotography.naturallight.DisplayStatus;
+import com.blackholeofphotography.naturallight.Settings;
 
 
-public class LightingOverlay extends Overlay implements DisplayStatusListener
+public class LightingOverlay
 {
-   private static final Logger logger = LoggerFactory.getLogger (LightingOverlay.class);
-   private Paint sSmoothPaint = new Paint (Paint.FILTER_BITMAP_FLAG);
-   protected MapView mMapView;
-
-   protected Bitmap mSunMoonBitmap;
-   protected long mLastRender = 0;
-   /** @noinspection FieldCanBeLocal*/
-   final private int mLastRenderLag = 200;
-   private final Matrix mSunMoonMatrix = new Matrix ();
-
-
-   // ===========================================================
-   // Constructors
-   // ===========================================================
-
-   /** @noinspection unused*/
-   @SuppressWarnings({"unchecked", "deprecation", "RedundantSuppression"})
-   public LightingOverlay (Context ignoredContext,
-                           MapView mapView)
-   {
-      super ();
-
-      mMapView = mapView;
-      //final WindowManager windowManager = (WindowManager) context
-      //        .getSystemService (Context.WINDOW_SERVICE);
-      // final Display mDisplay = windowManager.getDefaultDisplay ();
-      // Requires a higher API 34 than I want
-      //mDisplay = context.getDisplay ();
-   }
-
-   @Override
-   public void onDetach (MapView mapView)
-   {
-      this.mMapView = null;
-      sSmoothPaint = null;
-
-      if (mSunMoonBitmap != null)
-         mSunMoonBitmap.recycle ();
-      super.onDetach (mapView);
-   }
-
-   protected void createBitmap (Context context)
+   public static Bitmap getmSunMoonBitmap (Context context)
    {
       DisplayStatus.lighting_bitmap_created +=1;
       final int widthPixels = context.getResources ().getDisplayMetrics ().widthPixels;
@@ -100,9 +54,8 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
 
       final int picBorderWidthAndHeight = Math.min (widthPixels, heightPixels);
       final int center = picBorderWidthAndHeight / 2;
-      if (mSunMoonBitmap != null)
-         mSunMoonBitmap.recycle ();
-      mSunMoonBitmap = Bitmap.createBitmap (picBorderWidthAndHeight, picBorderWidthAndHeight,
+
+      Bitmap mSunMoonBitmap = Bitmap.createBitmap (picBorderWidthAndHeight, picBorderWidthAndHeight,
             Config.ARGB_8888);
       final Canvas canvas = new Canvas (mSunMoonBitmap);
 
@@ -131,59 +84,12 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
          final Point sunsetPoint = calculatePointOnCircle (center, center, radius, DisplayStatus.getSunSetPosition ().getAzimuth ());
          canvas.drawLine (center, center, sunsetPoint.x, sunsetPoint.y, riseSetPaint);
       }
+
+      return mSunMoonBitmap;
    }
 
-   protected void drawOverlay (final Canvas canvas)
-   {
-      if (mSunMoonBitmap == null)
-         logger.debug ("mSunMoonBitmap is null");
 
-      if (mLastRender + mLastRenderLag < System.currentTimeMillis ())
-      {
-         createBitmap (mMapView.getContext ());
-         mLastRender = System.currentTimeMillis ();
-      }
-      else
-         DisplayStatus.lighting_bitmap_skipped += 1;
-
-      final Projection proj = mMapView.getProjection ();
-      final Rect rect = proj.getScreenRect ();
-      final float centerX = rect.exactCenterX ();
-      final float centerY = rect.exactCenterY ();
-
-      float mCompassFrameCenterX = mSunMoonBitmap.getWidth () / 2f - 0.5f;
-      float mCompassFrameCenterY = mSunMoonBitmap.getHeight () / 2f - 0.5f;
-
-      mSunMoonMatrix.setTranslate (-mCompassFrameCenterX, -mCompassFrameCenterY);
-      mSunMoonMatrix.postTranslate (centerX, centerY);
-
-      proj.save (canvas, false, true);
-      canvas.concat (mSunMoonMatrix);
-      canvas.drawBitmap (mSunMoonBitmap, 0, 0, sSmoothPaint);
-      proj.restore (canvas, true);
-
-      mSunMoonMatrix.postTranslate (centerX, centerY);
-
-      proj.save (canvas, false, true);
-      canvas.concat (mSunMoonMatrix);
-      proj.restore (canvas, true);
-   }
-
-   // ===========================================================
-   // Methods from SuperClass/Interfaces
-   // ===========================================================
-
-   @Override
-   public void draw (Canvas c, Projection pProjection)
-   {
-      drawOverlay (c);
-   }
-
-   // ===========================================================
-   // Inner and Anonymous Classes
-   // ===========================================================
-
-   private Point calculatePointOnCircle (final float centerX, final float centerY,
+   private static Point calculatePointOnCircle (final float centerX, final float centerY,
                                          final float radius, final float degrees)
    {
       // for trigonometry, 0 is pointing east, so subtract 90
@@ -196,9 +102,4 @@ public class LightingOverlay extends Overlay implements DisplayStatusListener
       return new Point ((int) centerX + intX, (int) centerY - intY);
    }
 
-   @Override
-   public void onChange ()
-   {
-
-   }
 }
