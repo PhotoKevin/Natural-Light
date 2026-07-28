@@ -503,9 +503,6 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
    public void onDestroyView ()
    {
       super.onDestroyView ();
-      //this part terminates all the overlays and background threads for osmdroid
-      //only needed when you programmatically create the map
-      //mMapView.onDetach ();
       binding = null;
    }
 
