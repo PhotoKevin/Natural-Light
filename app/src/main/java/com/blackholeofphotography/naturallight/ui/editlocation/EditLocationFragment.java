@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,22 +33,20 @@ import org.slf4j.LoggerFactory;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class EditLocationFragment extends Fragment implements TimePicker.OnTimeChangedListener, DatePicker.OnDateChangedListener
-   , CompoundButton.OnCheckedChangeListener, View.OnClickListener
+public class EditLocationFragment extends Fragment
 {
    private static final org.slf4j.Logger logger = LoggerFactory.getLogger (EditLocationFragment.class);
    private EditLocationFragmentBinding binding;
    private Location mLocation;
-   TextView mTitle;
-   TextView mLatitude;
-   TextView mLongitude;
-   ZonedDateTime mTimeStamp;
-   ZoneId mZoneId;
-   DatePicker mDatePicker;
-   TimePicker mTimePicker;
-   CheckBox mUseCurrentTime;
-   ImageButton mDeleteButton;
-   Spinner mZoomSpinner;
+   private TextView mTitle;
+   private TextView mLatitude;
+   private TextView mLongitude;
+   private ZonedDateTime mTimeStamp;
+   private ZoneId mZoneId;
+   private DatePicker mDatePicker;
+   private TimePicker mTimePicker;
+   private CheckBox mUseCurrentTime;
+   private Spinner mZoomSpinner;
 
    public View onCreateView (@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -66,7 +63,6 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
       mUseCurrentTime = binding.useCurrentTime;
       mDatePicker = binding.datePicker1;
       mTimePicker = binding.timePicker1;
-      mDeleteButton = binding.btnDelete;
       mZoomSpinner = binding.spinZoomLevel;
 
       String[] zoomLevels = getResources ().getStringArray (R.array.zoom_entries);
@@ -75,9 +71,15 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
 
       try
       {
-         EditLocationFragmentArgs args = EditLocationFragmentArgs.fromBundle (getArguments ());
-         String aUid = args.getAUid ();
-         mLocation = Settings.getLocation (aUid);
+         final Bundle arguments = getArguments ();
+         if (arguments == null)
+            mLocation = new Location ("New location", "snippet", new LatLong (0, 0.0), ZonedDateTime.now (), true, 1);
+         else
+         {
+            EditLocationFragmentArgs args = EditLocationFragmentArgs.fromBundle (arguments);
+            String aUid = args.getAUid ();
+            mLocation = Settings.getLocation (aUid);
+         }
       }
       catch (Exception ex)
       {
@@ -90,22 +92,21 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
 
       setSpinnerSelection (mZoomSpinner, zoomAdapter, String.valueOf ((int) mLocation.getZoomLevel ()));
 
-      mDeleteButton.setOnClickListener (this);
-      mUseCurrentTime.setOnCheckedChangeListener (this);
-      mTimePicker.setOnTimeChangedListener (this);
+      binding.btnDelete.setOnClickListener (this::onDeleteClick);
+      mUseCurrentTime.setOnCheckedChangeListener (this::onUseCurrentTimeChanged);
+      mTimePicker.setOnTimeChangedListener (this::onTimeChanged);
 
       return root;
    }
 
-   @Override
-   public void onCheckedChanged (@NonNull CompoundButton buttonView, boolean isChecked)
+   @SuppressWarnings("unused")
+   public void onUseCurrentTimeChanged (@NonNull CompoundButton buttonView, boolean isChecked)
    {
       mDatePicker.setEnabled (!isChecked);
       mTimePicker.setEnabled (!isChecked);
    }
 
-   @Override
-   public void onClick (View v)
+   public void onDeleteClick (View v)
    {
       AlertDialog.Builder builder = new AlertDialog.Builder (v.getContext ());
       builder.setMessage ("Delete location?")
@@ -131,15 +132,14 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
             .show ();
    }
 
-
-   @Override
+   @SuppressWarnings("unused")
    public void onDateChanged (DatePicker view, int year, int monthOfYear, int dayOfMonth)
    {
       // monthOfYear comes in as 0-11
       mTimeStamp = ZonedDateTime.of (year, monthOfYear + 1, dayOfMonth, mTimeStamp.getHour (), mTimeStamp.getMinute (), 0, 0, mZoneId);
    }
 
-   @Override
+   @SuppressWarnings("unused")
    public void onTimeChanged (TimePicker view, int hourOfDay, int minute)
    {
       mTimeStamp = ZonedDateTime.of (mTimeStamp.getYear (), mTimeStamp.getMonthValue (), mTimeStamp.getDayOfMonth (), hourOfDay, minute, 0, 0, mZoneId);
@@ -169,7 +169,7 @@ public class EditLocationFragment extends Fragment implements TimePicker.OnTimeC
          mUseCurrentTime.setChecked (mLocation.getUseCurrentTime ());
          mDatePicker.setEnabled (!mLocation.getUseCurrentTime ());
          mTimePicker.setEnabled (!mLocation.getUseCurrentTime ());
-         mDatePicker.init (mTimeStamp.getYear (), mTimeStamp.getMonthValue () - 1, mTimeStamp.getDayOfMonth (), this);
+         mDatePicker.init (mTimeStamp.getYear (), mTimeStamp.getMonthValue () - 1, mTimeStamp.getDayOfMonth (), this::onDateChanged);
 
          mTimePicker.setHour (mTimeStamp.getHour ());
          mTimePicker.setMinute (mTimeStamp.getMinute ());
