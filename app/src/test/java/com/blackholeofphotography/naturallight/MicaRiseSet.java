@@ -21,7 +21,8 @@ class MicaRiseSet
 
    //public int BegTwiHH, BegTwiMM, EndTwiHH, EndTwiMM;
    public int RiseAz, TransHH, TransMM, TransAlt;
-   public int SetAz;
+   @SuppressWarnings("unused")
+   public int SetAz; // Needed for future
    public int RiseHH, RiseMM;
    public int SetHH, SetMM;
    public String dataLine;

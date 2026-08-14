@@ -16,15 +16,21 @@ android {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 37
-        versionCode = 17
-        versionName = "1.17"
+        versionCode = 18
+        versionName = "1.18"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // Enables code-related app optimization.
+            isMinifyEnabled = true
+
+            // Enables resource shrinking.
+            isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -51,46 +57,51 @@ android {
     compileSdkMinor = 0
 }
 dependencies {
+    implementation(libs.appcompat)
+    implementation(libs.constraintlayout)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp.android)
+    implementation(libs.okhttp)
+    implementation(libs.jakarta.annotation.api)
+    implementation(libs.javax.annotation.api)
+    implementation(libs.jackson.databind.nullable)
+//    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.gson.fire)
+    implementation(libs.powermock.api.easymock)
+    implementation(libs.preference)
+    implementation(libs.play.services.location)
+    implementation(libs.recyclerview)
+    implementation(libs.legacy.support.v4)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.powermock.module.junit4)
+    implementation(libs.work.runtime)
+    implementation(libs.mapsforge.core)
+    implementation(libs.mapsforge.map)
+    implementation(libs.mapsforge.map.reader)
+    implementation(libs.mapsforge.themes)
+    implementation(libs.mapsforge.map.android)
+    implementation(libs.androidsvg)
+    implementation(libs.slf4j.api)
+    implementation(libs.logback.android)
+    implementation (libs.json.skema)
 
-    implementation("androidx.appcompat:appcompat:1.7.1")
-    implementation("com.google.android.material:material:1.14.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.11.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
-    implementation("com.github.tony19:logback-android:3.0.0")
-    implementation("org.mapsforge:mapsforge-core:0.25.0")
-    implementation("org.mapsforge:mapsforge-map-android:0.25.0")
-    implementation("org.mapsforge:mapsforge-map:0.25.0")
-    implementation("org.slf4j:slf4j-api:2.1.0-alpha1")
-
-    // Java language implementation
-    implementation("androidx.navigation:navigation-fragment:2.9.8")
-    implementation("androidx.navigation:navigation-ui:2.9.8")
-
-    // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.8")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.8")
-
-    // Feature module Support
-    implementation("com.google.android.play:feature-delivery:2.1.0")
-    implementation("com.google.android.play:asset-delivery:2.3.0")
-    implementation("com.google.android.play:review:2.0.2")
-    implementation("com.google.android.play:app-update:2.1.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.material)
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing:2.9.8")
 
     // Jetpack Compose Integration
-    implementation("androidx.navigation:navigation-compose:2.9.8")
-    implementation("androidx.navigation:navigation-fragment:2.9.8")
-    implementation("androidx.navigation:navigation-ui:2.9.8")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation ("androidx.preference:preference:1.2.1")
-    implementation("androidx.fragment:fragment:1.8.9")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    implementation("androidx.fragment:fragment:1.9.0")
     implementation ("com.google.android.gms:play-services-maps:20.0.0")
 
     // Time Shape
@@ -99,14 +110,9 @@ dependencies {
         exclude (group= "com.github.luben", module= "zstd-jni")
         exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
     }
+
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-11@aar")
-    implementation ("com.github.erosb:json-sKema:0.31.0")
-
-    // SLF4J
-    implementation("org.slf4j:slf4j-api:2.0.18")
-    implementation("com.github.tony19:logback-android:3.0.0")
-
+    implementation ("com.github.luben:zstd-jni:1.5.7-13@aar")
 }
 
 tasks {

@@ -163,8 +163,8 @@ public class SunRiseTest
       Hprime2 = Normalization.fix180degrees (Hprime2);
 
       Assert.assertEquals (0.03976705054927265, Hprime0, 0.02);
-      Assert.assertEquals (-83.49633824244398, Hprime1, 0.02); // hPrime[(int)TERM5.SUN_RISE];
-      Assert.assertEquals (83.52427410847486, Hprime2, 0.02); // hPrime[(int)TERM5.SUN_SET];
+      Assert.assertEquals (-83.49633824244398, Hprime1, 0.02); // hprime[(int)TERM5.SUN_RISE];
+      Assert.assertEquals (83.52427410847486, Hprime2, 0.02); // hprime[(int)TERM5.SUN_SET];
 
 
       // A2.2.12 - RtsSunAltitude

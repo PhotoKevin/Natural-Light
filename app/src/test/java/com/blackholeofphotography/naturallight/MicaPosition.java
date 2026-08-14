@@ -9,14 +9,13 @@ import java.util.regex.Pattern;
 /** @noinspection SpellCheckingInspection*/
 public class MicaPosition
 {
-   public double jd;
    public double latitude;
    public double longitude;
    public int    altitude;
 
    //  Location:  W 83°47'05.7", N42°17'19.6",   256m
    final private static String LOCATION_PATTEN =
-         " *Location:  (?<ewchar>[EW]) (?<londeg>[0-9][0-9]).(?<lonmin>[0-9][0-9]).(?<lonsec>[0-9][0-9]\\.[0-9])\", (?<nschar>[NS])(?<latdeg>[0-9][0-9]).(?<latmin>[0-9][0-9]).(?<latsec>[0-9][0-9]\\.[0-9])\", *(?<elevation>[0-9]*)m.*";
+         " *Location: {2}(?<ewchar>[EW]) (?<londeg>[0-9][0-9]).(?<lonmin>[0-9][0-9]).(?<lonsec>[0-9][0-9]\\.[0-9])\", (?<nschar>[NS])(?<latdeg>[0-9][0-9]).(?<latmin>[0-9][0-9]).(?<latsec>[0-9][0-9]\\.[0-9])\", *(?<elevation>[0-9]*)m.*";
 
    public static MicaPosition parseMicaLocation (String line)
    {
@@ -36,7 +35,7 @@ public class MicaPosition
          int latmin = Integer.parseInt (Objects.requireNonNull (matcher.group ("latmin")));
          double latsec = Float.parseFloat (Objects.requireNonNull (matcher.group ("latsec")));
 
-         int alt = Integer.parseInt (matcher.group ("elevation"));
+         int alt = Integer.parseInt (Objects.requireNonNull (matcher.group ("elevation")));
 
          assert ewchar != null;
          int ewSign = ewchar.equals ("E") ? 1 : -1;
