@@ -3,6 +3,7 @@ package com.blackholeofphotography.naturallight;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.blackholeofphotography.astrocalc.Tools;
+import com.blackholeofphotography.bhtools.ASTools;
+import com.blackholeofphotography.bhtools.CrashLogger;
 import com.blackholeofphotography.naturallight.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,7 +37,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-   private static final Logger logger = LoggerFactory.getLogger (MainActivity.class);
+   private static Logger logger;
    private AppBarConfiguration mAppBarConfiguration;
    private static Context _ApplicationContext;
 
@@ -50,6 +53,29 @@ public class MainActivity extends AppCompatActivity
    @Override
    protected void onCreate (Bundle savedInstanceState)
    {
+      super.onCreate (savedInstanceState);
+//      if (Build.HARDWARE.contains ("ranchuX"))
+//         disableLogToDownload ();
+
+      final Thread.UncaughtExceptionHandler oldHandler = Thread.getDefaultUncaughtExceptionHandler ();
+      if (!ASTools.isEmulator ())
+      {
+         Thread.setDefaultUncaughtExceptionHandler (new Thread.UncaughtExceptionHandler ()
+         {
+            @Override
+            public void uncaughtException (@NonNull Thread paramThread, @NonNull Throwable paramThrowable)
+            {
+               logger.error ("Global catch: ", paramThrowable);
+               CrashLogger.logException (paramThrowable);
+               if (oldHandler != null)
+                  oldHandler.uncaughtException (paramThread, paramThrowable); //Delegates to Android's error handling
+               else
+                  System.exit (1);
+            }
+         });
+      }
+      logger = LoggerFactory.getLogger (MainActivity.class);
+
       EdgeToEdge.enable(this);
       _ApplicationContext = getApplicationContext ();
       Settings.loadFromBackingStore ();
@@ -60,7 +86,8 @@ public class MainActivity extends AppCompatActivity
       else
          DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
       DisplayStatus.setUseCurrentTime (Settings.useCurrentTime ());
-      super.onCreate (savedInstanceState);
+
+
 
       //int apiKey = BuildConfig.apiKey;
 
@@ -145,11 +172,18 @@ public class MainActivity extends AppCompatActivity
             {
                long start = System.currentTimeMillis ();
 
-               if (boundingBox == null)
-                  timeZoneEngine = TimeZoneEngine.initialize (false);
-               else
-                  timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude (), boundingBox.getMinLongitude (),
-                        boundingBox.getMaxLatitude (), boundingBox.getMaxLongitude (), false);
+               try
+               {
+                  if (boundingBox == null)
+                     timeZoneEngine = TimeZoneEngine.initialize (false);
+                  else
+                     timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude (), boundingBox.getMinLongitude (),
+                           boundingBox.getMaxLatitude (), boundingBox.getMaxLongitude (), false);
+               }
+               catch (Exception ex)
+               {
+                  logger.error ("Can't initialize TimeZoneEngine: ", ex);
+               }
 
                long delta = System.currentTimeMillis () - start;
                logger.info ("TimeZoneEngine.initialize took {}ms", delta);

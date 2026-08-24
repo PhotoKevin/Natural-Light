@@ -107,16 +107,19 @@ public class CachedData
 
    public static void saveTimeEngine (TimeZoneEngine engine)
    {
-      File f = timeZoneEngineCacheFile ();
-      try
+      if (engine != null)
       {
-         removeFile (f);
-         serialize (f, engine);
-      }
-      catch (IOException e)
-      {
-         log.error ("Serializing TimeZoneEngine", e);
-         removeFile (f);
+         File f = timeZoneEngineCacheFile ();
+         try
+         {
+            removeFile (f);
+            serialize (f, engine);
+         }
+         catch (IOException e)
+         {
+            log.error ("Serializing TimeZoneEngine", e);
+            removeFile (f);
+         }
       }
    }
 

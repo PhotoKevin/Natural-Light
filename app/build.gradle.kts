@@ -16,8 +16,8 @@ android {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 37
-        versionCode = 18
-        versionName = "1.18"
+        versionCode = 21
+        versionName = "1.21"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -26,18 +26,20 @@ android {
     buildTypes {
         release {
             // Enables code-related app optimization.
-            isMinifyEnabled = true
+            // isMinifyEnabled = true
 
             // Enables resource shrinking.
-            isShrinkResources = true
+            // isShrinkResources = true
 
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//            ndk {
+//                debugSymbolLevel = "FULL"
+//                isMinifyEnabled = true
+//                isShrinkResources = true
+//            }
         }
     }
     compileOptions {
@@ -92,7 +94,6 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.logback.android)
     implementation (libs.json.skema)
-
     implementation(libs.material)
 
     // Testing Navigation
