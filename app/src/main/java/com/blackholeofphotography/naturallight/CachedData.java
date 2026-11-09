@@ -53,7 +53,7 @@ public class CachedData
 
    /**
     * Serializes an instance of {@link TimeZoneEngine} to a file
-    * This is a blocking long running operation.
+    * This is a blocking long-running operation.
     *
     * @param f Destination File.
     * @param engine Instance of TimeZoneEngine to serialize
@@ -71,7 +71,7 @@ public class CachedData
 
    /**
     * Creates a new instance of {@link TimeZoneEngine} from previously serialized data.
-    * This is a blocking long running operation.
+    * This is a blocking long-running operation.
     *
     * @return an initialized instance of {@link TimeZoneEngine}
     */

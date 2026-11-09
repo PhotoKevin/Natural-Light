@@ -19,42 +19,8 @@ import java.time.format.DateTimeFormatter;
 public class CrashLogger
 {
    private static final Logger logger = LoggerFactory.getLogger (CrashLogger.class);
-
-   public static void logException (Exception ex)
-   {
-      final StrictMode.ThreadPolicy oldPolicy = StrictMode.allowThreadDiskWrites ();
-      try
-      {
-         String ymd = ZonedDateTime.now ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd_HH-mm-ss"));
-         String backupFileName = String.format ("crash%s.byp", ymd);
-         final File downloadsDirectory = Environment.getExternalStoragePublicDirectory (Environment.DIRECTORY_DOWNLOADS);
-         File backupFile = new File (downloadsDirectory, backupFileName);
-
-         StringBuilder sb = new StringBuilder ();
-         sb.append (ex.toString ());
-         sb.append ("\n");
-         for (var trace : ex.getStackTrace ())
-         {
-            sb.append ("    at ");
-            sb.append (trace.toString ());
-            sb.append ("\n");
-         }
-
-         StandardOpenOption mode = StandardOpenOption.CREATE;
-         if (backupFile.exists ())
-            mode = StandardOpenOption.APPEND;
-
-         Files.write (backupFile.toPath (), sb.toString ().getBytes (), mode);
-      }
-      catch (IOException e)
-      {
-         logger.error ("CrashLogger: ", ex);
-      }
-      finally
-      {
-         StrictMode.setThreadPolicy (oldPolicy);
-      }
-   }
+   private static final String PREFIX = "NaturalLight";
+   private static final String EXTENSION = "log";
 
    public static void logException (Throwable ex)
    {
@@ -62,9 +28,9 @@ public class CrashLogger
       try
       {
          String ymd = ZonedDateTime.now ().format (DateTimeFormatter.ofPattern ("yyyy-MM-dd_HH-mm-ss"));
-         String backupFileName = String.format ("crash%s.byp", ymd);
+         String logFileName = String.format ("%s%s.%s", PREFIX, ymd, EXTENSION);
          final File downloadsDirectory = Environment.getExternalStoragePublicDirectory (Environment.DIRECTORY_DOWNLOADS);
-         File backupFile = new File (downloadsDirectory, backupFileName);
+         File backupFile = new File (downloadsDirectory, logFileName);
 
          StringBuilder sb = new StringBuilder ();
          sb.append (ex.toString ());
@@ -92,6 +58,7 @@ public class CrashLogger
       }
    }
 
+   @SuppressWarnings("unused")
    public static String getLastCrash ()
    {
       final File downloadsDirectory = Environment.getExternalStoragePublicDirectory (Environment.DIRECTORY_DOWNLOADS);
@@ -100,7 +67,7 @@ public class CrashLogger
          @Override
          public boolean accept (File dir, String name)
          {
-            return name.startsWith ("crash") && name.endsWith (".byp");
+            return name.startsWith (PREFIX) && name.endsWith (EXTENSION);
          }
       });
 
