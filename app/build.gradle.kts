@@ -97,23 +97,23 @@ dependencies {
     implementation(libs.material)
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.9.8")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.10.2")
 
     // Jetpack Compose Integration
     implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.fragment:fragment:1.9.0")
-    implementation ("com.google.android.gms:play-services-maps:20.0.0")
+    implementation("androidx.fragment:fragment:1.9.1")
+    implementation ("com.google.android.gms:play-services-maps:20.1.0")
 
     // Time Shape
-    implementation ("net.iakovlev:timeshape:2025b.28") {
+    implementation ("net.iakovlev:timeshape:2026b.29") {
         // Exclude standard compression library
         exclude (group= "com.github.luben", module= "zstd-jni")
-        exclude (group= "net.iakovlev:timeshape:2024a.25", module= "zata.tar.*")
+        exclude (group= "net.iakovlev:timeshape:2026b.29", module= "zata.tar.*")
     }
 
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-13@aar")
+    implementation ("com.github.luben:zstd-jni:1.5.7-26@aar")
 }
 
 tasks {
