@@ -26,17 +26,18 @@ import com.google.android.material.navigation.NavigationView;
 import net.iakovlev.timeshape.TimeZoneEngine;
 
 import org.mapsforge.core.model.LatLong;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
 {
    private static Logger logger;
+
    private AppBarConfiguration mAppBarConfiguration;
    private static Context _ApplicationContext;
 
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity
    }
 
    public static TimeZoneEngine timeZoneEngine;
-   static TimeZoneAreas timeZoneAreas;
    public static PlanetaryRegions planetaryRegions;
 
    @Override
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
       }
       logger = LoggerFactory.getLogger (MainActivity.class);
 
-      EdgeToEdge.enable(this);
+      EdgeToEdge.enable (this);
       _ApplicationContext = getApplicationContext ();
       Settings.loadFromBackingStore ();
       DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity
       else
          DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
       DisplayStatus.setUseCurrentTime (Settings.useCurrentTime ());
-
 
 
       //int apiKey = BuildConfig.apiKey;
@@ -114,13 +113,14 @@ public class MainActivity extends AppCompatActivity
       // Passing each menu ID as a set of Ids because each
       // menu should be considered as top level destinations.
       mAppBarConfiguration = new AppBarConfiguration.Builder (
-              R.id.nav_map, R.id.nav_detail, R.id.nav_locations)
-              .setOpenableLayout (drawer)
-              .build ();
+            R.id.nav_map, R.id.nav_detail, R.id.nav_locations)
+            .setOpenableLayout (drawer)
+            .build ();
       NavController navController = Navigation.findNavController (this, R.id.nav_host_fragment_content_main);
       NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
       NavigationUI.setupWithNavController (navigationView, navController);
 
+      CachedData.clearCache ();
       loadTimeZoneEngine ();
 
       //AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_YES);
@@ -138,20 +138,11 @@ public class MainActivity extends AppCompatActivity
       loadTimeZoneEngine ();
    }
 
-   private static void loadTimeAreas ()
-   {
-      timeZoneAreas = CachedData.loadTimeAreas ();
 
-      if (timeZoneAreas == null)
-      {
-         timeZoneAreas = TimeZoneAreas.initialize ();
-         CachedData.saveTimeAreas (timeZoneAreas);
-      }
-   }
 
    private static void loadTimeZoneEngine ()
    {
-      Thread background = new Thread (null, null, "loader", 20*1024)
+      Thread background = new Thread (null, null, "loader", 20 * 1024)
       {
          @Override
          public void run ()
@@ -159,25 +150,23 @@ public class MainActivity extends AppCompatActivity
             if (planetaryRegions == null)
                planetaryRegions = PlanetaryRegions.loadRegions ();
 
-            if (timeZoneAreas == null)
-               loadTimeAreas ();
-
             String regionName = Settings.getRegion ();
             var region = planetaryRegions.getRegion (regionName);
-            final BoundingBox boundingBox = regionName.equals ("ALL") ? null : region.getBigBoundingBox ();
+            final Set<ZoneId> zoneIds = regionName.equals ("ALL") ? null : region.getZoneIds ();
 
+            // Load the cached (serialized) engine data, if it exists.
             timeZoneEngine = CachedData.loadTimeZoneEngine ();
             if (timeZoneEngine == null)
             {
+               // No cached data, do it the slow way.
                long start = System.currentTimeMillis ();
 
                try
                {
-                  if (boundingBox == null)
+                  if (zoneIds == null)
                      timeZoneEngine = TimeZoneEngine.initialize (false);
                   else
-                     timeZoneEngine = TimeZoneEngine.initialize (boundingBox.getMinLatitude (), boundingBox.getMinLongitude (),
-                           boundingBox.getMaxLatitude (), boundingBox.getMaxLongitude (), false);
+                     timeZoneEngine = TimeZoneEngine.initialize (zoneIds, false);
                }
                catch (Exception ex)
                {
@@ -186,7 +175,7 @@ public class MainActivity extends AppCompatActivity
 
                long delta = System.currentTimeMillis () - start;
                logger.info ("TimeZoneEngine.initialize took {}ms", delta);
-               if (! regionName.equals ("ALL"))
+               if (!regionName.equals ("ALL"))
                   CachedData.saveTimeEngine (timeZoneEngine);
             }
 
@@ -201,7 +190,8 @@ public class MainActivity extends AppCompatActivity
 
    /**
     * Get the ZoneId for the specified location
-    * @param latitude Latitude of interest
+    *
+    * @param latitude  Latitude of interest
     * @param longitude Longitude of interest
     * @return ZoneId for location, or UTC if it can't be figured out.
     */
@@ -221,6 +211,7 @@ public class MainActivity extends AppCompatActivity
 
    /**
     * Get the ZoneId for the specified location
+    *
     * @param pt GeoPoint of interest
     * @return ZoneId for location, or UTC if it can't be figured out.
     */
@@ -245,12 +236,12 @@ public class MainActivity extends AppCompatActivity
       // Without this, the menu/back button doesn't work
       NavController navController = Navigation.findNavController (this, R.id.nav_host_fragment_content_main);
       return NavigationUI.navigateUp (navController, mAppBarConfiguration)
-              || super.onSupportNavigateUp ();
+            || super.onSupportNavigateUp ();
    }
 
-   public void onResume()
+   public void onResume ()
    {
-      super.onResume();
+      super.onResume ();
       Tools.setReducedAccuracy (Settings.isLowAccuracy ());
       DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
@@ -258,9 +249,9 @@ public class MainActivity extends AppCompatActivity
       DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
    }
 
-   public void onPause()
+   public void onPause ()
    {
-      super.onPause();
+      super.onPause ();
       DisplayStatus.removeAllListeners ();
       logger.trace ("onPause");
 
@@ -313,13 +304,13 @@ public class MainActivity extends AppCompatActivity
 //         Log.e (LOG_TAG, "onOptionsItemSelected", e);
       }
 
-      return super.onOptionsItemSelected(item);
+      return super.onOptionsItemSelected (item);
    }
 
    private void setOptionMenuVisibility (boolean visibility)
    {
       Toolbar toolbar = findViewById (R.id.toolbar);
-      toolbar.getMenu().setGroupVisible (0, visibility);
+      toolbar.getMenu ().setGroupVisible (0, visibility);
    }
 
 

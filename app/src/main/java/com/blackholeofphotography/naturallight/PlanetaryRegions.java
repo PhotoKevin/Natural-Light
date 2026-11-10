@@ -8,6 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Works with the various regions of the planet. The regions are defined in a JSON file.
+ * <br />
+ * The purpose of the regions is to allow the user to reduce the memory footprint by
+ * selecting the region of interest.
+ *
+ */
 public class PlanetaryRegions
 {
    final private List<PlanetaryRegion> mPlanetaryRegions;
@@ -61,13 +68,10 @@ public class PlanetaryRegions
             PlanetaryRegion planetaryRegion = new PlanetaryRegion (regionName);
             regions.add (planetaryRegion);
 
-            planetaryRegion.setBoundingBox (new BoundingBox (jsonRegion.getDouble ("minlatitude"), jsonRegion.getDouble ("minlongitude"),
-                  jsonRegion.getDouble ("maxlatitude"), jsonRegion.getDouble ("maxlongitude")));
-
             JSONArray jsonZones = jsonRegion.getJSONArray ("zones");
             for (int z = 0; z < jsonZones.length (); z++)
-               planetaryRegion.getTimeZones ().add (jsonZones.getJSONObject (z).getString ("name"));
-            Collections.sort (planetaryRegion.getTimeZones ());
+               planetaryRegion.getTimeZoneNames ().add (jsonZones.getJSONObject (z).getString ("name"));
+            Collections.sort (planetaryRegion.getTimeZoneNames ());
 
             JSONArray jsonCountries = jsonRegion.getJSONArray ("countries");
             for (int z = 0; z < jsonCountries.length (); z++)

@@ -1,64 +1,67 @@
 
 package com.blackholeofphotography.naturallight;
 
+import org.slf4j.LoggerFactory;
+
+import java.time.DateTimeException;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- *
- * @author Kevin Nickerson
+ * Describe a single region of the planet such as "North America".
+ * A region contains a list of countries, timezones, etc.
  */
 public class PlanetaryRegion
 {
+   private static final org.slf4j.Logger logger = LoggerFactory.getLogger (PlanetaryRegion.class);
+
    final private  String mRegionName;
-   private  BoundingBox box;
-   final private  List<String> zones;
-   final private  List<String> countries;
+   final private  List<String> mZoneNames;
+   final private  List<String> mCountries;
 
    
    public PlanetaryRegion (String aRegionName)
    {
       mRegionName = aRegionName;
-      zones = new ArrayList<> ();
-      countries = new ArrayList<> ();
+      mZoneNames = new ArrayList<> ();
+      mCountries = new ArrayList<> ();
    }
 
-   @SuppressWarnings ("unused")
-   public BoundingBox getBoundingBox ()
-   {
-      return box;
-   }
-
-   public void setBoundingBox (BoundingBox aBoundingBox)
-   {
-      box = aBoundingBox;
-   }
-
-   public BoundingBox getBigBoundingBox ()
-   {
-      BoundingBox bb = box;
-      if (MainActivity.timeZoneAreas != null)
-         for (var zone : getTimeZones ())
-         {
-            BoundingBox box = MainActivity.timeZoneAreas.getBoundingBox (zone);
-            if (box != null)
-               bb = bb.include (box);
-         }
-
-      return bb;
-   }
    public String getRegionName ()
    {
       return mRegionName;
    }
    
-   public List<String> getTimeZones ()
+   public List<String> getTimeZoneNames ()
    {
-      return this.zones;
+      return this.mZoneNames;
+   }
+
+   public Set<ZoneId> getZoneIds ()
+   {
+      Set<ZoneId> zoneIds = new HashSet<> ();
+
+      for (var zoneName : this.mZoneNames)
+      {
+         try
+         {
+            var id = ZoneId.of (zoneName);
+            zoneIds.add (id);
+         }
+         catch (DateTimeException ex)
+         {
+            logger.error ("Unknown Time zone {}", zoneName);
+         }
+      }
+
+      return zoneIds;
    }
 
    public List<String> getCountries ()
    {
-      return this.countries;
+      return this.mCountries;
    }
 }

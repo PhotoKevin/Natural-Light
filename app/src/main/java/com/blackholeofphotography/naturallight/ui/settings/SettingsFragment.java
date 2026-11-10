@@ -34,7 +34,7 @@ import java.util.List;
 
 public class SettingsFragment extends PreferenceFragmentCompat
 {
-   /** @noinspection FieldCanBeLocal*/
+   /** */
    private static final org.slf4j.Logger logger = LoggerFactory.getLogger (SettingsFragment.class);
    private SharedPreferences.OnSharedPreferenceChangeListener mSharedPreferenceChangeListener;
    private SharedPreferences mSharedPreferences;

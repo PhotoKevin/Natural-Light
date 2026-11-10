@@ -9,15 +9,19 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CachedData
 {
    private static final Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
+   static final String CACHE_FILE_REGEX = "TZ_(?<region>.*)_(?<version>[0-9]+)\\.cache";
 
    private static void removeFile (File f)
    {
@@ -27,8 +31,49 @@ public class CachedData
          if (!deleted)
             log.error ("unable to delete {}", f.getAbsolutePath ());
       }
-
    }
+
+
+   /**
+    * Delete cached files from older versions.
+    */
+   public static void clearCache ()
+   {
+      Pattern cachePattern = Pattern.compile (CACHE_FILE_REGEX);
+
+      final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
+      final File[] cacheFiles = outputDir.listFiles (new FilenameFilter ()
+      {
+         @Override
+         public boolean accept (File dir, String name)
+         {
+            Matcher matcher = cachePattern.matcher (name);
+            return matcher.matches ();
+         }
+      });
+
+      if (cacheFiles != null)
+      {
+         for (var f : cacheFiles)
+         {
+            Matcher matcher = cachePattern.matcher (f.getName ());
+            if (matcher.matches ())
+            {
+               String version = matcher.group ("version");
+               if (version != null)
+               {
+                  int v = Integer.parseInt (version);
+                  if (v < BuildConfig.VERSION_CODE && v > 0)
+                  {
+                     //noinspection ResultOfMethodCallIgnored
+                     f.delete ();
+                  }
+               }
+            }
+         }
+      }
+   }
+
    private static File timeZoneEngineCacheFile ()
    {
       // /data/user/0/com.blackholeofphotography.naturallight/cache
@@ -39,17 +84,6 @@ public class CachedData
 
       return saved.toFile ();
    }
-
-   private static File timeZoneAreasCacheFile ()
-   {
-      final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
-      @SuppressLint("DefaultLocale")
-      final String fileName = String.format ("TZAreas_%d.cache", BuildConfig.VERSION_CODE);
-      final Path saved = Paths.get (outputDir.toString (), fileName);
-
-      return saved.toFile ();
-   }
-
 
    /**
     * Serializes an instance of {@link TimeZoneEngine} to a file
@@ -120,27 +154,6 @@ public class CachedData
             log.error ("Serializing TimeZoneEngine", e);
             removeFile (f);
          }
-      }
-   }
-
-
-   public static TimeZoneAreas loadTimeAreas ()
-   {
-      File f = CachedData.timeZoneAreasCacheFile ();
-      return TimeZoneAreas.deSerialize (f);
-   }
-
-   public static void saveTimeAreas (TimeZoneAreas areas)
-   {
-      File f = CachedData.timeZoneAreasCacheFile ();
-      try
-      {
-         removeFile (f);
-         areas.serialize (f);
-      }
-      catch (IOException e)
-      {
-         removeFile (f);
       }
    }
 }

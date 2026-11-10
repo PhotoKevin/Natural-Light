@@ -74,7 +74,7 @@ public class LocationsRecycleAdapter
       return dataProviders.size ();
    }
 
-   // stores and recycles views as they are scrolled off screen
+   // stores and recycles views as they are scrolled off-screen
    public class RecycleViewHolder extends RecyclerView.ViewHolder
    {
       final TextView locationTitle;
