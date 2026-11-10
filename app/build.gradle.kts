@@ -100,7 +100,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.fragment)
-    implementation ("com.google.android.gms:play-services-maps:20.1.0")
+    implementation (libs.play.services.maps)
 
     // Time Shape
     implementation ("net.iakovlev:timeshape:2026b.29") {
