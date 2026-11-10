@@ -1,6 +1,3 @@
-import com.android.build.api.dsl.Packaging
-import org.apache.tools.ant.util.JavaEnvUtils.VERSION_11
-//import org.jetbrains.kotlin.com.intellij.psi.compiled.ClassFileDecompilers.Full
 
 plugins {
     id("com.android.application")
@@ -97,12 +94,12 @@ dependencies {
     implementation(libs.material)
 
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:2.10.2")
+    androidTestImplementation(libs.androidx.navigation.testing)
 
     // Jetpack Compose Integration
     implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.fragment:fragment:1.9.1")
+    implementation(libs.androidx.fragment)
     implementation ("com.google.android.gms:play-services-maps:20.1.0")
 
     // Time Shape
