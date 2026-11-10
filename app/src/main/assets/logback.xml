@@ -11,7 +11,7 @@
   </appender>
 
   <!-- if EXT_DIR is defined, use that. Else, use DATA_DIR -->
-  <!-- EXT_DIR seems to be .../com.blackholeofphotography.burnyourplan/files -->
+  <!-- EXT_DIR seems to be .../com.blackholeofphotography.naturallight/files -->
    <!--  <property name="LOG_DIR" value="${EXT_DIR:-${DATA_DIR}}" />-->
   <property name="LOG_DIR" value="/storage/emulated/0/Download" />
   <property name="LOG_FILE" value="BurnYourPlan" />
