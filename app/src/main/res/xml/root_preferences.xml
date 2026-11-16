@@ -49,8 +49,8 @@
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
-        android:key="nl_show_advanced_preferences"
-        android:title="@string/title_show_advanced_options"
+        android:key="nl_enable_developer_mode"
+        android:title="@string/title_developer_mode"
         android:visibility="visible" />
 
     <PreferenceCategory

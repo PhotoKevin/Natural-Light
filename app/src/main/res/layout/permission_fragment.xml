@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/system_ui_warning_margin"
+    tools:context=".ui.PermissionFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/txt_permission_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/edt_access_code"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/enter_access_code" />
+
+    <EditText
+        android:id="@+id/edt_access_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="null"
+        android:ems="10"
+        android:inputType="text"
+
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_permission_title" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        app:layout_constraintTop_toBottomOf="@+id/edt_access_code"
+        app:layout_constraintEnd_toStartOf="@id/btn_ok"
+        tools:layout_editor_absoluteX="182dp" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintTop_toTopOf="@+id/btn_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

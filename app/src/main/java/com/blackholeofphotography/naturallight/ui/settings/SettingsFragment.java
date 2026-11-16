@@ -65,7 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
             {
                Settings.loadFromBackingStore ();
 
-               if (key.equals (Settings.KEY_SHOW_ADVANCED_PREFERENCES))
+               if (key.equals (Settings.KEY_ENABLE_DEVELOPER_MODE))
                   showHideAdvanced ();
 
                if (key.equals (Settings.KEY_REGION))
@@ -103,13 +103,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
    private void showHideAdvanced ()
    {
       PreferenceManager preferenceManager = getPreferenceManager ();
-      Preference showAdvanced = preferenceManager.findPreference (Settings.KEY_SHOW_ADVANCED_PREFERENCES);
-      boolean advancedAvailable = Settings.getEnableAdvancedFeatures ();
+      Preference showAdvanced = preferenceManager.findPreference (Settings.KEY_ENABLE_DEVELOPER_MODE);
+      boolean advancedAvailable = Settings.isDeveloper ();
 
       if (showAdvanced != null)
          showAdvanced.setVisible (advancedAvailable);
 
-      boolean visibility = Settings.getShowAdvancedSettings ();
+      boolean visibility = Settings.isDeveloper ();
       if (!advancedAvailable)
          visibility = false;
 

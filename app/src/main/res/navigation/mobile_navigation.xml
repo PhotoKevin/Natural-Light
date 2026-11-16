@@ -81,5 +81,10 @@
         android:id="@+id/nav_date_time"
         android:name="com.blackholeofphotography.naturallight.ui.datetime.DateTimeFragment"
         android:label="@string/title_select_date_time" />
+    <fragment
+        android:id="@+id/permissionFragment"
+        android:name="com.blackholeofphotography.naturallight.ui.PermissionFragment"
+        android:label="permission_fragment"
+        tools:layout="@layout/permission_fragment" />
 
 </navigation>

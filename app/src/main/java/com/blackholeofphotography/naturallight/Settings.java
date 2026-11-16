@@ -37,9 +37,12 @@ public final class Settings
    private static float mAngleLabelFontSize = 1.0F;
    public static final String KEY_COMPASS_RADIUS_PERCENT ="nl_compass_radius_percent";
    private static int mCompassPercentage = 90;
-   public static final String KEY_SHOW_ADVANCED_PREFERENCES = "nl_show_advanced_preferences";
-   private static boolean mEnableAdvancedSettings = false;
-   private static boolean mShowAdvancedSettings = false;
+
+   public static final String KEY_ENABLE_DEVELOPER_MODE = "nl_enable_developer_mode";
+   private static final String KEY_SHOW_DEBUG_DATA = "nl_show_debug_data";
+   private static boolean mShowDebugData;
+   private static boolean mDeveloper = false;
+
    public static final String KEY_TILE_PROVIDER = "nl_tile_provider";
    private static String mTileProvider = "";
    public static final String KEY_MAP_ORIENTATION = "nl_map_orientation";
@@ -58,8 +61,6 @@ public final class Settings
    private static ZonedDateTime mDisplayTime;
    public static final String KEY_USE_CURRENT_TIME = "nl_use_current_time";
    private static boolean mUseCurrentTime;
-   private static final String KEY_SHOW_DEBUG_DATA = "nl_show_debug_data";
-   private static boolean mShowDebugData;
 
    public static final String KEY_SUN_RISE_SET_NEEDLE_THICKNESS = "nl_rise_set_needle_thickness";
    private static float mSunRiseSetNeedleThickness;
@@ -100,9 +101,11 @@ public final class Settings
          mMapOrientation = sharedPreferences.getFloat (KEY_MAP_ORIENTATION, 5.0F);
          mRegion = sharedPreferences.getString (KEY_REGION, "Northern America");
          mReverseTimeDrag = sharedPreferences.getBoolean (KEY_REVERSE_TIME_DRAG, false);
-         mShowAdvancedSettings = sharedPreferences.getBoolean (KEY_SHOW_ADVANCED_PREFERENCES, true);
          mShowCrosshair = sharedPreferences.getBoolean (KEY_SHOW_CROSSHAIR, true);
+
          mShowDebugData = sharedPreferences.getBoolean (KEY_SHOW_DEBUG_DATA, false);
+         mDeveloper = sharedPreferences.getBoolean (KEY_ENABLE_DEVELOPER_MODE, false);
+
          mShowSunRiseSetNeedle = sharedPreferences.getBoolean (KEY_SHOW_SUN_RISE_SET_NEEDLE, true);
          mSunRiseSetNeedleThickness = sharedPreferences.getFloat (KEY_SUN_RISE_SET_NEEDLE_THICKNESS, 2.0f);
          mTickInterval = sharedPreferences.getInteger (KEY_TICK_MARK_SPACING, 10);
@@ -144,13 +147,14 @@ public final class Settings
    public static void saveToBackingStore ()
    {
       SensibleSharedPreferences sharedPreferences = new SensibleSharedPreferences (MainActivity.getContext ());
-
       SharedPreferences.Editor ed = sharedPreferences.edit ();
 
       ed.putBoolean (KEY_LOW_ACCURACY, mLowAccuracy);
-      ed.putBoolean (KEY_SHOW_ADVANCED_PREFERENCES, mShowAdvancedSettings);
       ed.putBoolean (KEY_SHOW_CROSSHAIR, mShowCrosshair);
+
+      ed.putBoolean (KEY_ENABLE_DEVELOPER_MODE, mDeveloper);
       ed.putBoolean (KEY_SHOW_DEBUG_DATA, mShowDebugData);
+
       ed.putBoolean (KEY_SHOW_SUN_RISE_SET_NEEDLE, mShowSunRiseSetNeedle);
       ed.putString (KEY_COMPASS_RADIUS_PERCENT, String.valueOf (mCompassPercentage));
       ed.putString (KEY_CROSSHAIR_LENGTH, String.valueOf (mCrosshairLength));
@@ -294,14 +298,6 @@ public final class Settings
       return mRegion;
    }
 
-   public static boolean getEnableAdvancedFeatures ()
-   {
-      if (com.blackholeofphotography.naturallight.BuildConfig.DEBUG)
-         mEnableAdvancedSettings = true;
-
-      return mEnableAdvancedSettings;
-   }
-
    public static boolean isLowAccuracy ()
    {
       return mLowAccuracy;
@@ -318,43 +314,24 @@ public final class Settings
       return mShowDebugData;
    }
 
-   /**
-    * Enable/Disable the advanced settings.
-    * @param value true to enable, false to disable.
-    */
-   public static void setEnableAdvancedSettings (boolean value)
+   public static void setDeveloper (boolean developer)
    {
-      Settings.mEnableAdvancedSettings = value;
+      mDeveloper = developer;
+   }
+   public static boolean isDeveloper ()
+   {
+      return mDeveloper;
    }
 
-   /**
-    * Determine if the advanced settings should be shown.
-    * @return True if the advanced settings should be shown.
-    */
-   public static boolean getShowAdvancedSettings ()
-   {
-      return mShowAdvancedSettings;
-   }
 
    public static String getTileProvider ()
    {
       return mTileProvider;
    }
-   public static void setTileProvider (String aTileProvider)
-   {
-      mTileProvider = aTileProvider;
-   }
-
    public static float getMapOrientation ()
    {
       return mMapOrientation;
    }
-
-   public static void setMapOrientation (float aMapOrientation)
-   {
-      mMapOrientation = aMapOrientation;
-   }
-
    public static LatLong getMapCenter ()
    {
       return mMapCenter;

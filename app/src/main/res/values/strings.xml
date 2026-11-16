@@ -11,7 +11,7 @@
     <string name="menu_map">Map</string>
     <string name="menu_details">Detail</string>
     <string name="menu_locations">Locations</string>
-    <string name="title_show_advanced_options">Show Advanced Options</string>
+    <string name="title_developer_mode">Developer Mode</string>
     <string name="title_edit_location">Edit Location</string>
 
     <string name="tick_mark_summary">Interval of the tick marks</string>
@@ -49,13 +49,22 @@
     <string name="title_select_date_time">Select Date/Time</string>
     <string name="moon_elevation">Moon Elevation</string>
     <string name="moon_azimuth">Moon Azimuth</string>
+
     <string name="appTitle">Natural Light</string>
     <string name="version">Version %d</string>
     <string name="appDescription">A tool for outdoor photographers</string>
-    <string name="appCopyRight">© 2024–2025 Kevin Nickerson</string>
+    <string name="appCopyRight">© 2024–2026 Kevin Nickerson</string>
     <string name="source_code">Source code and issue reporting</string>
     <string name="app_source_url">https://github.com/PhotoKevin/Natural-Light</string>
     <string name="about_libraries">Third-Party Libraries</string>
+    <string name="privacy"><u>Privacy Policy</u></string>
+    <string name="privacy_policy_text">Natural Light has a very simple privacy policy: No personal data is collected, and nothing is sent anywhere.</string>
+
+    <string name="enter_access_code">Enter access code</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+
+
     <string name="action_import_export">Export/Import</string>
     <string name="header_import_export">Import/Export</string>
     <string name="export_locations">Export Locations</string>

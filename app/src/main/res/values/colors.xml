@@ -16,5 +16,6 @@
     <color name="secondaryDarkColor" >#643f00</color>
     <color name="primaryTextColor" >#000000</color>
     <color name="secondaryTextColor" >#ffffff</color>
+    <color name="androidColorBackground">#ffffff</color>
 
 </resources>

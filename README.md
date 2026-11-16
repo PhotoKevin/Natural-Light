@@ -4,7 +4,7 @@
 Natural Light is an Android application to show where the sun will be on any given date/time/location so you can plan your shoot.
 
 ## Why this application
-There are other apps that do pretty much what this one does. Why pick it? The base reasons are privacy and cost. I wrote the application strictly for my own use. As such, it collects zero information and it costs zero dollars. My privacy thoughts extend to using Open Street Maps instead of Google Maps. 
+There are other apps that do pretty much what this one does. Why pick it? The base reasons are privacy and cost. I wrote the application strictly for my own use. As such, it collects zero information, and it costs zero dollars. My privacy thoughts extend to using Open Street Maps instead of Google Maps. 
 
 ## Typical use case
 

@@ -122,14 +122,6 @@ public class MainActivity extends AppCompatActivity
 
       CachedData.clearCache ();
       loadTimeZoneEngine ();
-
-      //AppCompatDelegate.setDefaultNightMode (AppCompatDelegate.MODE_NIGHT_YES);
-
-      //noinspection RedundantIfStatement
-      if (BuildConfig.DEBUG)
-         Settings.setEnableAdvancedSettings (true);
-      else
-         Settings.setEnableAdvancedSettings (false);
    }
 
    public static void reloadTimeEngine ()
