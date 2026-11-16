@@ -539,7 +539,7 @@
     "minlongitude": -180,
     "maxlatitude": -60,
     "maxlongitude": 180,
-    "sub-region": "",
+    "sub-region": "Antarctica",
     "countries": [{"name": "Antarctica"}],
     "minlatitude": -85.0511287,
     "zones": [
