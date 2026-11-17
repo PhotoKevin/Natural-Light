@@ -1,4 +1,5 @@
 [versions]
+timeshape = "2026b.29"
 androidsvg = "1.4"
 fragment = "1.9.1"
 jsonSkema = "0.32.0"

@@ -13,8 +13,8 @@ android {
         applicationId = "com.blackholeofphotography.naturallight"
         minSdk = 28
         targetSdk = 37
-        versionCode = 22
-        versionName = "1.22"
+        versionCode = 23
+        versionName = "1.23"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -50,7 +50,7 @@ android {
 
     packaging {
         resources {
-            excludes += "data.tar.zstdX"
+            excludes += "data.tar.zstd"
         }
     }
     compileSdkMinor = 0
@@ -106,7 +106,6 @@ dependencies {
     implementation ("net.iakovlev:timeshape:2026b.29") {
         // Exclude standard compression library
         exclude (group= "com.github.luben", module= "zstd-jni")
-        exclude (group= "net.iakovlev:timeshape:2026b.29", module= "zata.tar.*")
     }
 
     // Import aar for native component compilation

@@ -20,17 +20,17 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
+import com.blackholeofphotography.naturallight.CachedData;
+import com.blackholeofphotography.naturallight.DataFetcher;
 import com.blackholeofphotography.naturallight.MainActivity;
 import com.blackholeofphotography.naturallight.R;
 import com.blackholeofphotography.naturallight.Settings;
 
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
-
-// Consider using this:
-// https://github.com/gregkorossy/Android-Support-Preference-V7-Fix
 
 public class SettingsFragment extends PreferenceFragmentCompat
 {
@@ -47,7 +47,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
       {
          setPreferencesFromResource (R.xml.root_preferences, rootKey);
          mSharedPreferences = PreferenceManager.getDefaultSharedPreferences (MainActivity.getContext ());
-         showHideAdvanced ();
+         showHideDeveloperSettings ();
 
          setInputType (Settings.KEY_COMPASS_RADIUS_PERCENT, InputType.TYPE_CLASS_NUMBER);
          setInputType (Settings.KEY_DEGREE_FONT_SIZE, InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
@@ -57,6 +57,8 @@ public class SettingsFragment extends PreferenceFragmentCompat
          ListPreference regionPreference = findPreference (Settings.KEY_REGION);
          assert regionPreference != null;
          setListPreferenceData (regionPreference, MainActivity.planetaryRegions.getRegionNames (), Settings.getRegion ());
+         regionPreference.setSummary (regionPreference.getValue ());
+         Settings.deleteTimeShapeData (false);
 
          mSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener ()
          {
@@ -66,10 +68,26 @@ public class SettingsFragment extends PreferenceFragmentCompat
                Settings.loadFromBackingStore ();
 
                if (key.equals (Settings.KEY_ENABLE_DEVELOPER_MODE))
-                  showHideAdvanced ();
+                  showHideDeveloperSettings ();
 
                if (key.equals (Settings.KEY_REGION))
+               {
                   timeZoneEngineReloadRequired = true;
+                  regionPreference.setSummary (regionPreference.getValue ());
+               }
+
+               if (key.equals ("nl_delete_timeshape_data") && sharedPreferences.getBoolean (key, false))
+               {
+                  final File localTimeShapeDataFile = DataFetcher.getLocalTimeShapeDataFile ();
+                  if (localTimeShapeDataFile != null && localTimeShapeDataFile.exists ())
+                  {
+                     boolean deleted = localTimeShapeDataFile.delete ();
+                     if (! deleted)
+                        logger.error ("Can't delete {}", localTimeShapeDataFile);
+                  }
+
+                  CachedData.clearAllCache ();
+               }
             }
          };
 
@@ -100,7 +118,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
          MainActivity.reloadTimeEngine ();
    }
 
-   private void showHideAdvanced ()
+   /**
+    * Show or hide the Developer section based on the current settings.
+    */
+   private void showHideDeveloperSettings ()
    {
       PreferenceManager preferenceManager = getPreferenceManager ();
       Preference showAdvanced = preferenceManager.findPreference (Settings.KEY_ENABLE_DEVELOPER_MODE);
@@ -113,17 +134,20 @@ public class SettingsFragment extends PreferenceFragmentCompat
       if (!advancedAvailable)
          visibility = false;
 
-
       final PreferenceScreen preferenceScreen = preferenceManager.getPreferenceScreen ();
       for (int i=0; i<preferenceScreen.getPreferenceCount (); i++)
       {
          String key = preferenceScreen.getPreference (i).getKey ();
          if (key != null && key.startsWith ("nladv_"))
             setVisible (key, visibility);
-
       }
    }
 
+   /**
+    * Set the visibility of a preference by key name
+    * @param key Name of the preference
+    * @param visibility Visible or not
+    */
    private void setVisible (String key, boolean visibility)
    {
       Preference pref = getPreferenceManager ().findPreference (key);
@@ -131,9 +155,14 @@ public class SettingsFragment extends PreferenceFragmentCompat
          pref.setVisible (visibility);
    }
 
+   /**
+    * Set the input type of the preference.
+    * @param key Key of preference
+    * @param inputType Input type such as InputType.TYPE_CLASS_NUMBER
+    */
    private void setInputType (String key, int inputType)
    {
-      EditTextPreference editTextPreference = getPreferenceManager ().findPreference (key); // ("nl_rise_set_needle_thickness");
+      EditTextPreference editTextPreference = getPreferenceManager ().findPreference (key);
       if (editTextPreference != null)
       {
          editTextPreference.setOnBindEditTextListener (new androidx.preference.EditTextPreference.OnBindEditTextListener ()

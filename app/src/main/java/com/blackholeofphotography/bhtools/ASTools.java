@@ -11,7 +11,10 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.util.Log;
+
+import com.blackholeofphotography.naturallight.BuildConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -146,6 +149,26 @@ public class ASTools
    public static boolean isRunningOnMainThread ()
    {
       return Looper.getMainLooper ().getThread () == Thread.currentThread ();
+   }
+
+   public static void setupStrictMode ()
+   {
+      if (BuildConfig.DEBUG)
+      {
+         StrictMode.setThreadPolicy (new StrictMode.ThreadPolicy.Builder ()
+//                 .detectDiskReads ()
+               .detectDiskWrites ()
+               .detectNetwork ()   // or .detectAll() for all detectable problems
+               .penaltyLog ()
+               .build ());
+
+         StrictMode.setVmPolicy (new StrictMode.VmPolicy.Builder ()
+               .detectLeakedSqlLiteObjects ()
+               .detectLeakedClosableObjects ()
+               .penaltyLog ()
+//                 .penaltyDeath ()
+               .build ());
+      }
    }
 
 }

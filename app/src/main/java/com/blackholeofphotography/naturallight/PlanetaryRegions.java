@@ -56,6 +56,8 @@ public class PlanetaryRegions
    public static PlanetaryRegions deSerialize (String jsonString)
    {
       List<PlanetaryRegion> regions = new ArrayList<> ();
+      PlanetaryRegion entirePlanet = new PlanetaryRegion ("ALL");
+      regions.add (entirePlanet);
 
       try
       {

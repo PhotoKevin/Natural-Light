@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -80,6 +81,18 @@ public final class Settings
    public static final String KEY_REVERSE_TIME_DRAG = "nl_reverse_time_drag";
    private static boolean mReverseTimeDrag;
 
+   public static final String KEY_DELETE_TIMESHAPE_DATA = "nl_delete_timeshape_data";
+   public static final String KEY_ALLOW_MOBILE_DATA_USAGE = "nl_allow_mobile_data_usage";
+   public static final String KEY_FAKE_AS_MOBILE = "nl_fake_as_mobile";
+   public static final String KEY_MOBILE_USAGE_REQUESTED = "nl_mobile_usage_requested";
+   private static boolean mAllowMobileDataUsage;
+   private static boolean mFakeAsMobile;
+   private static boolean mMobileUsageRequested;
+   private static boolean mDeleteTimeShapeData;
+
+   public static final String KEY_LAST_DATA_CHECK = "nl_last_data_check";
+   private static ZonedDateTime mLastDataCheck;
+
    private static boolean firstTime = true;
    public static void loadFromBackingStore ()
    {
@@ -103,8 +116,6 @@ public final class Settings
          mReverseTimeDrag = sharedPreferences.getBoolean (KEY_REVERSE_TIME_DRAG, false);
          mShowCrosshair = sharedPreferences.getBoolean (KEY_SHOW_CROSSHAIR, true);
 
-         mShowDebugData = sharedPreferences.getBoolean (KEY_SHOW_DEBUG_DATA, false);
-         mDeveloper = sharedPreferences.getBoolean (KEY_ENABLE_DEVELOPER_MODE, false);
 
          mShowSunRiseSetNeedle = sharedPreferences.getBoolean (KEY_SHOW_SUN_RISE_SET_NEEDLE, true);
          mSunRiseSetNeedleThickness = sharedPreferences.getFloat (KEY_SUN_RISE_SET_NEEDLE_THICKNESS, 2.0f);
@@ -115,6 +126,14 @@ public final class Settings
          mZoneId = ZoneId.of (zoneName);
          mZoomLevel = sharedPreferences.getFloat (KEY_ZOOM_LEVEL, 5.0F);
          mDefaultZoomLevel = sharedPreferences.getFloat (KEY_DEFAULT_ZOOM_LEVEL, 17);
+
+         mShowDebugData = sharedPreferences.getBoolean (KEY_SHOW_DEBUG_DATA, false);
+         mDeveloper = sharedPreferences.getBoolean (KEY_ENABLE_DEVELOPER_MODE, false);
+         mAllowMobileDataUsage = sharedPreferences.getBoolean (KEY_ALLOW_MOBILE_DATA_USAGE, false);
+         mFakeAsMobile = sharedPreferences.getBoolean (KEY_FAKE_AS_MOBILE, false);
+         mMobileUsageRequested = sharedPreferences.getBoolean (KEY_MOBILE_USAGE_REQUESTED, false);
+         mLastDataCheck = sharedPreferences.getZonedDateTime (KEY_LAST_DATA_CHECK, earliest ());
+         mDeleteTimeShapeData = sharedPreferences.getBoolean (KEY_DELETE_TIMESHAPE_DATA, false);
 
          if (!BuildConfig.DEBUG)
             mShowDebugData = false;
@@ -174,6 +193,11 @@ public final class Settings
       ed.putString (KEY_ZONE_ID, mZoneId.toString ());
       ed.putString (KEY_ZOOM_LEVEL, String.valueOf (getZoomLevel ()));
       ed.putString (KEY_DEFAULT_ZOOM_LEVEL, String.valueOf ((int) getDefaultZoomLevel ()));
+      ed.putBoolean (KEY_FAKE_AS_MOBILE, fakeAsMobile ());
+      ed.putBoolean (KEY_ALLOW_MOBILE_DATA_USAGE, mAllowMobileDataUsage);
+      ed.putBoolean (KEY_MOBILE_USAGE_REQUESTED, mMobileUsageRequested);
+      ed.putString (KEY_LAST_DATA_CHECK, mLastDataCheck.format (DateTimeFormatter.ISO_DATE_TIME));
+      ed.putBoolean (KEY_DELETE_TIMESHAPE_DATA, mDeleteTimeShapeData);
 
       ed.apply ();
    }   
@@ -293,6 +317,12 @@ public final class Settings
       }
    }
 
+
+   public static void setRegion (String regionName)
+   {
+      mRegion = regionName;
+   }
+
    public static String getRegion ()
    {
       return mRegion;
@@ -371,5 +401,49 @@ public final class Settings
    public static double getDefaultZoomLevel ()
    {
       return mDefaultZoomLevel;
+   }
+
+   public static void allowMobileDataUsage (boolean allow)
+   {
+      mAllowMobileDataUsage = allow;
+   }
+
+   public static boolean fakeAsMobile ()
+   {
+      return mFakeAsMobile;
+   }
+   public static boolean allowMobileDataUsage ()
+   {
+      return mAllowMobileDataUsage;
+   }
+
+   public static void setMobileUsageRequested (boolean requested)
+   {
+      mMobileUsageRequested = requested;
+   }
+
+   public static boolean mobileUsageRequested ()
+   {
+      return mMobileUsageRequested;
+   }
+
+   public static void deleteTimeShapeData (boolean delete)
+   {
+      mDeleteTimeShapeData = delete;
+   }
+
+   public static ZonedDateTime getLastDataCheck ()
+   {
+      return mLastDataCheck;
+   }
+
+   public static void setLastDataCheck (ZonedDateTime mLastDataCheck)
+   {
+      Settings.mLastDataCheck = mLastDataCheck;
+   }
+
+   public static ZonedDateTime earliest ()
+   {
+      return ZonedDateTime.of (2000, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault ());
    }
 }

@@ -2,6 +2,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/design_default_color_background">
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Data Usage">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="nl_allow_mobile_data_usage"
+        android:title="Allow download of timezone boundaries on mobile data" />
+    </PreferenceCategory>
+
 
     <PreferenceCategory
         android:layout_width="wrap_content"
@@ -37,13 +47,13 @@
             android:key="nl_region"
             android:summary="@string/regions_summary"
             android:title="@string/regions_title" />
-        <ListPreference
-            android:defaultValue="15"
-            android:entries="@array/zoom_entries"
-            android:entryValues="@array/zoom_entries"
-            android:key="nl_default_zoom_level"
-            android:summary="@string/zoom_level"
-            android:title="@string/zoom_level" />
+<!--        <ListPreference-->
+<!--            android:defaultValue="15"-->
+<!--            android:entries="@array/zoom_entries"-->
+<!--            android:entryValues="@array/zoom_entries"-->
+<!--            android:key="nl_default_zoom_level"-->
+<!--            android:summary="@string/zoom_level"-->
+<!--            android:title="@string/zoom_level" />-->
         />
     </PreferenceCategory>
 
@@ -121,6 +131,25 @@
             android:defaultValue="true"
             android:key="nl_low_accuracy"
             android:title="Lower Accuracy" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Data" app:key="nladv_reset">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_fake_as_mobile"
+            android:title="Pretend to be on metered connection" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_mobile_usage_requested"
+            android:title="Mobile data use has been requested" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="nl_delete_timeshape_data"
+            android:title="Delete Time Shape data" />
+
+
     </PreferenceCategory>
 
     <!--    </PreferenceCategory>

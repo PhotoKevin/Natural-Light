@@ -365,6 +365,9 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
       if (MainActivity.timeZoneEngine != null && mProgressBar.getVisibility () != View.GONE)
          mProgressBar.setVisibility (View.GONE);
 
+      if (! MainActivity.isTimeZoneDataDownloaded ())
+         mProgressBar.setVisibility (View.GONE);
+
       ZonedDateTime displayTime = DisplayStatus.getTimeStamp ().withZoneSameLocal (displayZone);
       DisplayStatus.setTimeStamp (displayTime);
 

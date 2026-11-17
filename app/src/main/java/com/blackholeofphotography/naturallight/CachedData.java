@@ -20,24 +20,55 @@ import java.util.regex.Pattern;
 
 public class CachedData
 {
-   private static final Logger log = org.slf4j.LoggerFactory.getLogger (CachedData.class);
+   private static final Logger logger = org.slf4j.LoggerFactory.getLogger (CachedData.class);
    static final String CACHE_FILE_REGEX = "TZ_(?<region>.*)_(?<version>[0-9]+)\\.cache";
 
    private static void removeFile (File f)
    {
-      if (f.exists ())
+      try
       {
-         boolean deleted = f.delete ();
-         if (!deleted)
-            log.error ("unable to delete {}", f.getAbsolutePath ());
+         if (f.exists ())
+         {
+            boolean deleted = f.delete ();
+            if (!deleted)
+               logger.error ("unable to delete {}", f.getAbsolutePath ());
+         }
+      }
+      catch (SecurityException ex)
+      {
+         logger.error ("Security error: ", ex);
       }
    }
 
+   /**
+    * Delete all the cached TimeShape serialization files.
+    */
+   public static void clearAllCache ()
+   {
+      Pattern cachePattern = Pattern.compile (CACHE_FILE_REGEX);
+
+      final File outputDir = MainActivity.getContext ().getCacheDir (); // context being the Activity pointer
+      final File[] cacheFiles = outputDir.listFiles (new FilenameFilter ()
+      {
+         @Override
+         public boolean accept (File dir, String name)
+         {
+            Matcher matcher = cachePattern.matcher (name);
+            return matcher.matches ();
+         }
+      });
+
+      if (cacheFiles != null)
+      {
+         for (var f : cacheFiles)
+            removeFile (f);
+      }
+   }
 
    /**
     * Delete cached files from older versions.
     */
-   public static void clearCache ()
+   public static void clearObsoleteCache ()
    {
       Pattern cachePattern = Pattern.compile (CACHE_FILE_REGEX);
 
@@ -64,20 +95,23 @@ public class CachedData
                {
                   int v = Integer.parseInt (version);
                   if (v < BuildConfig.VERSION_CODE && v > 0)
-                  {
-                     //noinspection ResultOfMethodCallIgnored
-                     f.delete ();
-                  }
+                     removeFile (f);
                }
             }
          }
       }
    }
 
-   private static File timeZoneEngineCacheFile ()
+   /**
+    * Get the current TimeShape data cached file. Note that it
+    * may not exist yet, this is also used when saving a new one.
+    * @return The current file.
+    */
+
+   private static File currentTimeShapeDataCacheFile ()
    {
       // /data/user/0/com.blackholeofphotography.naturallight/cache
-      final File outputDir = MainActivity.getContext ().getCacheDir(); // context being the Activity pointer
+      final File outputDir = MainActivity.getContext ().getCacheDir();
       @SuppressLint("DefaultLocale")
       final String fileName = String.format ("TZ_%s_%d.cache", Settings.getRegion (), BuildConfig.VERSION_CODE);
       final Path saved = Paths.get (outputDir.toString (), fileName);
@@ -119,7 +153,7 @@ public class CachedData
 
    public static TimeZoneEngine loadTimeZoneEngine ()
    {
-      File f = timeZoneEngineCacheFile ();
+      File f = currentTimeShapeDataCacheFile ();
       TimeZoneEngine engine = null;
       if (f.exists ())
       {
@@ -128,7 +162,7 @@ public class CachedData
             long s = System.currentTimeMillis ();
             engine = deserialize (f);
             long d = System.currentTimeMillis () - s;
-            log.info ("TimeZoneEngine.deSerialize took {}ms", d);
+            logger.info ("TimeZoneEngine.deSerialize took {}ms", d);
          }
          catch (IOException | ClassNotFoundException | ClassCastException e)
          {
@@ -143,7 +177,7 @@ public class CachedData
    {
       if (engine != null)
       {
-         File f = timeZoneEngineCacheFile ();
+         File f = currentTimeShapeDataCacheFile ();
          try
          {
             removeFile (f);
@@ -151,7 +185,7 @@ public class CachedData
          }
          catch (IOException e)
          {
-            log.error ("Serializing TimeZoneEngine", e);
+            logger.error ("Serializing TimeZoneEngine", e);
             removeFile (f);
          }
       }

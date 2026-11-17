@@ -1,8 +1,7 @@
 package com.blackholeofphotography.naturallight;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,30 +20,41 @@ import com.blackholeofphotography.astrocalc.Tools;
 import com.blackholeofphotography.bhtools.ASTools;
 import com.blackholeofphotography.bhtools.CrashLogger;
 import com.blackholeofphotography.naturallight.databinding.ActivityMainBinding;
+import com.github.luben.zstd.ZstdInputStream;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import net.iakovlev.timeshape.TimeZoneEngine;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.mapsforge.core.model.LatLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 
 public class MainActivity extends AppCompatActivity
 {
    private static Logger logger;
 
    private AppBarConfiguration mAppBarConfiguration;
-   private static Context _ApplicationContext;
+   private static Context mApplicationContext;
+   private static boolean mTimeZoneDataDownloaded = false;
 
    public static Context getContext ()
    {
-      return _ApplicationContext;
+      return mApplicationContext;
    }
+   NetworkTransport networkTransport;
 
    public static TimeZoneEngine timeZoneEngine;
    public static PlanetaryRegions planetaryRegions;
@@ -75,8 +85,11 @@ public class MainActivity extends AppCompatActivity
       }
       logger = LoggerFactory.getLogger (MainActivity.class);
 
+      if (ASTools.isEmulator ())
+         ASTools.setupStrictMode ();
+
       EdgeToEdge.enable (this);
-      _ApplicationContext = getApplicationContext ();
+      mApplicationContext = getApplicationContext ();
       Settings.loadFromBackingStore ();
       DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
@@ -86,23 +99,6 @@ public class MainActivity extends AppCompatActivity
          DisplayStatus.setTimeStamp (Settings.getDisplayTime ());
       DisplayStatus.setUseCurrentTime (Settings.useCurrentTime ());
 
-
-      //int apiKey = BuildConfig.apiKey;
-
-      String apiKey;
-
-      try
-      {
-         PackageManager packageManager = getPackageManager ();
-         String me = getPackageName ();
-         ApplicationInfo applicationInfo = packageManager.getApplicationInfo (me, PackageManager.GET_META_DATA);
-         apiKey = applicationInfo.metaData.getString ("com.facebook.sdk.API_KEY");
-         logger.info (apiKey);
-      }
-      catch (PackageManager.NameNotFoundException e)
-      {
-         throw new RuntimeException (e);
-      }
       ActivityMainBinding binding = ActivityMainBinding.inflate (getLayoutInflater ());
       setContentView (binding.getRoot ());
 
@@ -120,7 +116,19 @@ public class MainActivity extends AppCompatActivity
       NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
       NavigationUI.setupWithNavController (navigationView, navController);
 
-      CachedData.clearCache ();
+      networkTransport = new NetworkTransport (getApplicationContext ());
+      CachedData.clearObsoleteCache ();
+
+//      Settings.fakeAsMobile (true);
+//      Settings.allowMobileDataUsage (true);
+//      Settings.setMobileUsageRequested (false);
+      File timeShapeDataFile = DataFetcher.getLocalTimeShapeDataFile ();
+      if (timeShapeDataFile == null)
+      {
+         Settings.setLastDataCheck (Settings.earliest ());
+         promptToDownload ();
+      }
+
       loadTimeZoneEngine ();
    }
 
@@ -130,55 +138,100 @@ public class MainActivity extends AppCompatActivity
       loadTimeZoneEngine ();
    }
 
-
+   private static Semaphore semaphore = new Semaphore(1);
 
    private static void loadTimeZoneEngine ()
    {
-      Thread background = new Thread (null, null, "loader", 20 * 1024)
+      Thread background = new Thread (null, null, "loader", 30 * 1024)
       {
          @Override
          public void run ()
          {
-            if (planetaryRegions == null)
-               planetaryRegions = PlanetaryRegions.loadRegions ();
-
-            String regionName = Settings.getRegion ();
-            var region = planetaryRegions.getRegion (regionName);
-            final Set<ZoneId> zoneIds = regionName.equals ("ALL") ? null : region.getZoneIds ();
-
-            // Load the cached (serialized) engine data, if it exists.
-            timeZoneEngine = CachedData.loadTimeZoneEngine ();
-            if (timeZoneEngine == null)
+            try
             {
-               // No cached data, do it the slow way.
-               long start = System.currentTimeMillis ();
+               semaphore.acquire ();
 
-               try
+               if (planetaryRegions == null)
+                  planetaryRegions = PlanetaryRegions.loadRegions ();
+
+               updateTimeShapeDataFile ();
+
+               String regionName = Settings.getRegion ();
+               var region = planetaryRegions.getRegion (regionName);
+               if (region == null)
                {
-                  if (zoneIds == null)
-                     timeZoneEngine = TimeZoneEngine.initialize (false);
-                  else
-                     timeZoneEngine = TimeZoneEngine.initialize (zoneIds, false);
+                  regionName = "ALL";
+                  Settings.setRegion (regionName);
                }
-               catch (Exception ex)
+               final Set<ZoneId> zoneIds = regionName.equals ("ALL") ? getAllZoneIds () : region.getZoneIds ();
+
+               File timeShapeDataFile = DataFetcher.getLocalTimeShapeDataFile ();
+               mTimeZoneDataDownloaded = timeShapeDataFile != null;
+               if (timeShapeDataFile != null)
+                  logger.info (timeShapeDataFile.getName ());
+               // Load the cached (serialized) engine data, if it exists.
+               timeZoneEngine = CachedData.loadTimeZoneEngine ();
+               if (timeZoneEngine == null && timeShapeDataFile != null)
                {
-                  logger.error ("Can't initialize TimeZoneEngine: ", ex);
+                  // No cached data, do it the slow way.
+                  long start = System.currentTimeMillis ();
+
+                  try (InputStream resourceAsStream = timeShapeDataFile.toURI ().toURL ().openStream ();
+                       ZstdInputStream unzipStream = new ZstdInputStream (resourceAsStream);
+                       BufferedInputStream bufferedStream = new BufferedInputStream (unzipStream);
+                       TarArchiveInputStream shapeInputStream = new TarArchiveInputStream (bufferedStream))
+                  {
+                     timeZoneEngine = TimeZoneEngine.initialize (zoneIds, false, TimeShapeFile.getAreas (timeShapeDataFile), shapeInputStream);
+                  }
+                  catch (IOException | OutOfMemoryError ex)
+                  {
+                     timeZoneEngine = null;
+                     logger.error ("Can't initialize TimeZoneEngine: ", ex);
+                  }
+
+                  long delta = System.currentTimeMillis () - start;
+                  logger.info ("TimeZoneEngine.initialize took {}ms", delta);
+                  if (!regionName.equals ("ALL"))
+                     CachedData.saveTimeEngine (timeZoneEngine);
                }
 
-               long delta = System.currentTimeMillis () - start;
-               logger.info ("TimeZoneEngine.initialize took {}ms", delta);
-               if (!regionName.equals ("ALL"))
-                  CachedData.saveTimeEngine (timeZoneEngine);
+               ZoneId tz = getZoneId (DisplayStatus.getGeoPoint ());
+               DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint (), tz);
+               DisplayStatus.forceCalculation ();
             }
-
-            ZoneId tz = getZoneId (DisplayStatus.getGeoPoint ());
-            DisplayStatus.setGeoPoint (DisplayStatus.getGeoPoint (), tz);
-            DisplayStatus.forceCalculation ();
+            catch (InterruptedException e)
+            {
+               Thread.currentThread().interrupt();
+             }
+            finally
+            {
+               semaphore.release ();
+            }
          }
       };
 
       background.start ();
    }
+
+   private static void updateTimeShapeDataFile ()
+   {
+      File dataFile = DataFetcher.getLocalTimeShapeDataFile ();
+      String version = "";
+      if (dataFile != null)
+         version = TimeShapeFile.getVersion (dataFile);
+
+      DataFetcher.getNewerTimeShapeData (version);
+   }
+
+   private static Set<ZoneId> getAllZoneIds ()
+   {
+      Set<ZoneId> zoneIds = new HashSet<> ();
+      for (var z : ZoneId.getAvailableZoneIds ())
+         zoneIds.add (ZoneId.of (z));
+
+      return zoneIds;
+   }
+
 
    /**
     * Get the ZoneId for the specified location
@@ -234,6 +287,9 @@ public class MainActivity extends AppCompatActivity
    public void onResume ()
    {
       super.onResume ();
+      if (networkTransport == null)
+         networkTransport = new NetworkTransport (getApplicationContext ());
+
       Tools.setReducedAccuracy (Settings.isLowAccuracy ());
       DisplayStatus.setGeoPoint (Settings.getMapCenter (), Settings.getZoneId ());
       DisplayStatus.setZoomLevel (Settings.getZoomLevel ());
@@ -246,6 +302,10 @@ public class MainActivity extends AppCompatActivity
       super.onPause ();
       DisplayStatus.removeAllListeners ();
       logger.trace ("onPause");
+
+      if (networkTransport != null)
+         networkTransport.shutdown ();
+      networkTransport = null;
 
       Settings.setMapCenter (DisplayStatus.getGeoPoint (), DisplayStatus.getDisplayZoneId ());
       Settings.setZoomLevel (DisplayStatus.getZoomLevel ());
@@ -305,5 +365,29 @@ public class MainActivity extends AppCompatActivity
       toolbar.getMenu ().setGroupVisible (0, visibility);
    }
 
+   public static boolean isTimeZoneDataDownloaded ()
+   {
+      return mTimeZoneDataDownloaded;
+   }
+
+   private void promptToDownload ()
+   {
+      if (!DataFetcher.okToDownload () && !Settings.mobileUsageRequested ())
+      {
+         MaterialAlertDialogBuilder b = new MaterialAlertDialogBuilder (this);
+         b.setTitle ("May I download the timezone boundaries on WiFi?")
+               .setPositiveButton ("OK", this::downloadTimeShapeData)
+               .setNegativeButton ("No", null)
+               .setCancelable (false)
+               .create ().show ();
+         Settings.setMobileUsageRequested (true);
+      }
+   }
+
+   private void downloadTimeShapeData (DialogInterface dialogInterface, int i)
+   {
+      Settings.allowMobileDataUsage (true);
+      loadTimeZoneEngine ();
+   }
 
 }
