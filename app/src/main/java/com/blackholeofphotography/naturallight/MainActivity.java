@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
       loadTimeZoneEngine ();
    }
 
-   private static Semaphore semaphore = new Semaphore(1);
+   private static final Semaphore semaphore = new Semaphore(1);
 
    private static void loadTimeZoneEngine ()
    {

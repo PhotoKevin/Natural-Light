@@ -9,44 +9,46 @@
     android:orientation="vertical"
     tools:context=".ui.map.MapDisplayFragment">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fab_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="8dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/fab_right"
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:contentDescription="@string/add_marker"
         android:src="@drawable/add_48px"
         app:layout_constraintBottom_toBottomOf="@+id/map"
-        app:layout_constraintEnd_toEndOf="parent" />
+         />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/jumpToLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/fab_right"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:icon="@android:drawable/ic_menu_search"
         android:contentDescription="@string/jump_to_current_location"
         android:src="@drawable/my_location_48px"
         app:layout_constraintBottom_toTopOf="@+id/addLocation"
-        app:layout_constraintEnd_toEndOf="parent" />
+         />
 
     <org.mapsforge.map.android.view.MapView
         android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-
         app:layout_constraintBottom_toTopOf="@+id/textDebug"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
-
     </org.mapsforge.map.android.view.MapView>
 
     <ImageView
@@ -57,8 +59,8 @@
         app:layout_constraintStart_toStartOf="@id/map"
         app:layout_constraintTop_toTopOf="@id/map"
         android:contentDescription=""
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="ContentDescription">
+        tools:ignore="ContentDescription"
+        app:layout_constraintVertical_bias="1.0">
     </ImageView>
 
     <ImageView
@@ -72,7 +74,6 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="ContentDescription">
     </ImageView>
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/center_vertical"
@@ -94,7 +95,6 @@
         android:id="@+id/guidelineSecond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintGuide_end="96dp" />
