@@ -105,8 +105,10 @@ public class MapDisplayFragment extends Fragment implements DisplayStatusListene
 
       lightingDate = binding.lightingDate;
       mSetDateTime = binding.buttonSetDateTime;
-      mSunRise = binding.textSunLeft;
-      mSunSet = binding.textSunRight;
+      mSunRise = binding.textSunRight;
+      mSunSet = binding.textSunLeft;
+      mSunRise.setContentDescription (getString (R.string.sun_rise));
+      mSunSet.setContentDescription (getString (R.string.sun_set));
 
       mProgressBar = binding.progressBar;
       mProgressBar.setIndeterminate (true);
