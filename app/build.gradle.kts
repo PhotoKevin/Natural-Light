@@ -109,7 +109,14 @@ dependencies {
     }
 
     // Import aar for native component compilation
-    implementation ("com.github.luben:zstd-jni:1.5.7-26@aar")
+    implementation(libs.zstd.jni) {
+        artifact {
+            type = "aar"
+        }
+    }
+    
+    // Optional: Keep the standard JAR for local JVM unit tests
+    testImplementation(libs.zstd.jni)
 }
 
 tasks {

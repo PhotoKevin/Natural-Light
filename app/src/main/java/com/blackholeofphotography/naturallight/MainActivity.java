@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -112,9 +114,13 @@ public class MainActivity extends AppCompatActivity
             R.id.nav_map, R.id.nav_detail, R.id.nav_locations)
             .setOpenableLayout (drawer)
             .build ();
-      NavController navController = Navigation.findNavController (this, R.id.nav_host_fragment_content_main);
-      NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
-      NavigationUI.setupWithNavController (navigationView, navController);
+      NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById (R.id.nav_host_fragment_content_main);
+      if (navHostFragment != null)
+      {
+         NavController navController = navHostFragment.getNavController ();
+         NavigationUI.setupActionBarWithNavController (this, navController, mAppBarConfiguration);
+         NavigationUI.setupWithNavController (navigationView, navController);
+      }
 
       networkTransport = new NetworkTransport (getApplicationContext ());
       CachedData.clearObsoleteCache ();
@@ -187,6 +193,11 @@ public class MainActivity extends AppCompatActivity
                   {
                      timeZoneEngine = null;
                      logger.error ("Can't initialize TimeZoneEngine: ", ex);
+                  }
+                  catch (UnsatisfiedLinkError ex)
+                  {
+                     logger.error ("Major issue with linkages: ", ex);
+                     throw ex;
                   }
 
                   long delta = System.currentTimeMillis () - start;

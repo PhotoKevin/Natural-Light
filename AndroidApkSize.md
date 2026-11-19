@@ -28,7 +28,10 @@ it's probably easier to extract it from the jar. On Windows you will
 find it somewhere under your user directory. 
 
 ```agsl
-C:\Users\kevin>dir timeshape-2026b*.jar /s
+C:\Users\kevin>dir timeshape-2026b*.jar /s/b
+
+(User)\.gradle\caches\modules-2\files-2.1\net.iakovlev\timeshape\2026b.29\(some cache ID)\timeshape-2026b.29.jar
+
 ```
 Gives quite a few copies of it. Realizing that a JAR file is just a ZIP file
 you can use the usual tools to extract it.
